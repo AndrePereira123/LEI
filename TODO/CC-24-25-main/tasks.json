@@ -1,0 +1,108 @@
+{
+    "id": "1",
+    "frequency": "5",
+    "devices": [
+        {
+            "id": "1",
+            "device_metrics": {
+                "cpu_usage": "0",
+                "ram_usage": "0",
+                "interface_stats": "eth0,eth1"
+            },
+            "link_metrics": {
+                "bandwidth": {
+                    "jitter": {
+                        "destiny": "10.0.5.10",
+                        "duration": "3",
+                        "transport": ""
+                    },
+                    "packet_loss": {
+                        "destiny": "10.0.5.10",
+                        "duration": "5",
+                        "transport": ""
+                    },
+                    "latency": {
+                        "destiny": "10.0.5.10",
+                        "package_count": "3",
+                        "frequency": "1"
+                    }
+                },
+                "alertflow_conditions": {
+                    "cpu_usage": "70",
+                    "ram_usage": "80",
+                    "interface_stats": "70",
+                    "packet_loss": "5",
+                    "jitter": "0.3"
+                }
+            }
+        },
+        {
+            "id": "2",
+            "device_metrics": {
+                "cpu_usage": "1",
+                "ram_usage": "0",
+                "interface_stats": "eth0,eth1"
+            },
+            "link_metrics": {
+                "bandwidth": {
+                    "jitter": {
+                        "destiny": "10.0.5.10",
+                        "duration": "3",
+                        "transport": "-u"
+                    },
+                    "packet_loss": {
+                        "destiny": "10.0.5.10",
+                        "duration": "5",
+                        "transport": "-u"
+                    },
+                    "latency": {
+                        "destiny": "10.0.5.10",
+                        "package_count": "3",
+                        "frequency": "1"
+                    }
+                },
+                "alertflow_conditions": {
+                    "cpu_usage": "70",
+                    "ram_usage": "80",                    "interface_stats": "70",
+                    "packet_loss": "5",
+                    "jitter": "0.3"
+                }
+            }
+        },
+        {
+            "id": "3",
+            "device_metrics": {
+                "cpu_usage": "1",
+                "ram_usage": "0",
+                "interface_stats": "eth0,eth1"
+            },
+            "link_metrics": {
+                "bandwidth": {
+                    "jitter": {
+                        "destiny": "10.0.5.10",
+                        "duration": "3",
+                        "transport": "-u"
+                    },
+                    "packet_loss": {
+                        "destiny": "10.0.5.10",
+                        "duration": "5",
+                        "transport": "-u"
+                    },
+                    "latency": {
+                        "destiny": "10.0.5.10",
+                        "package_count": "3",
+                        "frequency": "1"
+                    }
+                },
+                "alertflow_conditions": {
+                    "cpu_usage": "70",
+                    "ram_usage": "80",
+                    "interface_stats": "70",
+                    "packet_loss": "5",
+                    "jitter": "0.3"
+                }
+            }
+        }
+
+    ]
+}
