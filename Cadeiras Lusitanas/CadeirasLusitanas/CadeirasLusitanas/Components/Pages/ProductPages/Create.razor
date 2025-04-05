@@ -1,0 +1,460 @@
+﻿@page "/products/create"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Models.ViewModels
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<style>
+    .container {
+    margin-left: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    justify-content: center;
+    height: 76vh;
+    overflow-y: auto;
+    padding-top: 0;
+    }
+
+    .container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #f2f2f2;
+    }
+
+    .container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    }
+
+    .container .table {
+    margin-left: 0;
+    padding-top: 0;
+    justify-content: left;
+    text-align: left;
+    width: 100%;
+    background-color: #E9E9E8;
+    border: none;
+    }
+
+    .container .table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border: none;
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 500;
+    background-color: white;
+    }
+
+    .container .table td {
+    line-height: 3;
+    border: none;
+    text-align: center;
+    font-size: 1.6rem;
+    }
+
+    .container .table tbody {
+    border-top: none;
+    }
+
+    .container .table thead {
+    border-bottom: none;
+    background-color: white;
+    }
+
+    .mb-3 .form-control {
+    border: 3px solid #4a4a4a; /* Cinza escuro */
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    }
+
+    .mb-3 .form-control:focus {
+    background-color: white;
+    }
+
+    h1 {
+        font-weight: 800;
+        font-size: 1.6rem;
+        padding-bottom: 1%;
+        padding-left: 2%;
+    }
+
+</style>
+
+
+<PageTitle>Criar novo Produto</PageTitle>
+
+<h1>Criar novo Produto</h1>
+<hr />
+
+<div class="container" style="background-color: #E9E9E8;height : 75vh; padding :2%; text-align:center;">
+    <EditForm method="post" Model="ProductViewModel" OnSubmit="AddProduct" FormName="create" Enhance>
+        <DataAnnotationsValidator />
+
+        <div class="mb-3">
+            <InputText id="nome" @bind-Value="ProductViewModel.nome" class="form-control" placeholder="Nome"/>
+            <span class="text-danger">@NomeErrorTypeMessage</span>
+        </div>
+
+        <div class="mb-3">
+            <InputText id="descricao" @bind-Value="ProductViewModel.descricao" class="form-control" placeholder="Descrição" />
+            <span class="text-danger">@DescricaoErrorTypeMessage</span>
+        </div>
+
+
+        <!-- roda -->
+        <div class="mb-3">
+            <label for="roda" class="form-label">RODA</label>
+            <InputSelect id="roda" @bind-Value="ProductViewModel.rodaEscolhida" class="form-control">
+                <option value="">Selecione...</option>
+                @foreach (var component in Components.Where(c => c.tipo == "RODA"))
+                {
+                    if (component.visible == 1)
+                    {
+                        <option value="@component.Id">@component.nome</option>
+                    }
+                }
+            </InputSelect>
+            <span class="text-danger">@RodaErrorTypeMessage</span>
+        </div>
+
+        <div class="mb-3">
+            <InputNumber id="numero_rodas" @bind-Value="ProductViewModel.numero_rodas" class="form-control" placeholder="Número de Rodas" />
+            <span class="text-danger">@NRodasErrorTypeMessage</span>
+        </div>
+
+
+        <!-- pistao -->
+        <div class="mb-3">
+            <label for="pistao" class="form-label">PISTÃO</label>
+            <InputSelect id="pistao" @bind-Value="ProductViewModel.pistaoEscolhido" class="form-control">
+                <option value="">Selecione...</option>
+                @foreach (var component in Components.Where(c => c.tipo == "PISTÃO"))
+                {
+                    if (component.visible == 1)
+                    {
+                        <option value="@component.Id">@component.nome</option>
+                    }
+                }
+            </InputSelect>
+            <span class="text-danger">@PistaoErrorTypeMessage</span>
+        </div>
+
+        <!-- encosto -->
+        <div class="mb-3">
+            <label for="encosto" class="form-label">ENCOSTO</label>
+            <InputSelect id="encosto" @bind-Value="ProductViewModel.encostoEscolhido" class="form-control">
+                <option value="">Selecione...</option>
+                @foreach (var component in Components.Where(c => c.tipo == "ENCOSTO"))
+                {
+                    if (component.visible == 1)
+                    {
+                        <option value="@component.Id">@component.nome</option>
+                    }
+                }
+            </InputSelect>
+            <span class="text-danger">@EncostoErrorTypeMessage</span>
+        </div>
+
+        <!-- braco direito -->
+        <div class="mb-3">
+            <label for="bracodir" class="form-label">BRAÇO DIREITO</label>
+            <InputSelect id="bracodir" @bind-Value="ProductViewModel.bracoDirEscolhido" class="form-control">
+                <option value="">Selecione...</option>
+                @foreach (var component in Components.Where(c => c.tipo == "BRAÇO_DIREITO"))
+                {
+                    if (component.visible == 1)
+                    {
+                        <option value="@component.Id">@component.nome</option>
+                    }
+                }
+            </InputSelect>
+            <span class="text-danger">@BracoDirErrorTypeMessage</span>
+        </div>
+
+        <!-- braco esquerdo -->
+        <div class="mb-3">
+            <label for="bracoesq" class="form-label">BRAÇO ESQUERDO</label>
+            <InputSelect id="bracoesq" @bind-Value="ProductViewModel.bracoEsqEscolhido" class="form-control">
+                <option value="">Selecione...</option>
+                @foreach (var component in Components.Where(c => c.tipo == "BRAÇO_ESQUERDO"))
+                {
+                    if (component.visible == 1)
+                    {
+                        <option value="@component.Id">@component.nome</option>
+                    }
+                }
+            </InputSelect>
+            <span class="text-danger">@BracoEsqErrorTypeMessage</span>
+        </div>
+
+        <!-- almofada -->
+        <div class="mb-3">
+            <label for="almofada" class="form-label">ALMOFADA</label>
+            <InputSelect id="almofada" @bind-Value="ProductViewModel.almofadaEscolhida" class="form-control">
+                <option value="">Selecione...</option>
+                @foreach (var component in Components.Where(c => c.tipo == "ALMOFADA"))
+                {
+                    if (component.visible == 1)
+                    {
+                        <option value="@component.Id">@component.nome</option>
+                    }
+                }
+            </InputSelect>
+            <span class="text-danger">@AlmofadaErrorTypeMessage</span>
+        </div>
+        <div style="margin-top: 3%;text-align: center; width: 100%;">
+            <button type="submit" class="btn" style="background-color: black; color: white; width: 35%; height: 25%; font-size: 1.5rem; border-radius: 8px;">
+                Adicionar Produto
+            </button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private ProductCreateViewModel ProductViewModel { get; set; } = new ProductCreateViewModel {
+        nome = String.Empty,
+        descricao = String.Empty,
+        peso = .0f,
+        custo = .0f,
+        rodaEscolhida = -1,
+        pistaoEscolhido = -1,
+        encostoEscolhido = -1,
+        bracoDirEscolhido = -1,
+        bracoEsqEscolhido = -1,
+        almofadaEscolhida = -1
+    };
+
+    private List<Component> Components { get; set; } = new List<Component>();
+
+
+    private string? RodaErrorTypeMessage;
+    private string? PistaoErrorTypeMessage;
+    private string? EncostoErrorTypeMessage;
+    private string? BracoDirErrorTypeMessage;
+    private string? BracoEsqErrorTypeMessage;
+    private string? AlmofadaErrorTypeMessage;
+    private string? NomeErrorTypeMessage;
+    private string? DescricaoErrorTypeMessage;
+    private string? NRodasErrorTypeMessage;
+
+
+    private void ValidateType(String str, String type)
+    {
+        var value = str.ToUpper();
+
+        if (String.IsNullOrEmpty(value))
+        {
+            switch(type) {
+                case "RODA": {
+                        RodaErrorTypeMessage = "Selecione algum tipo";
+                        break;
+                    }
+                case "PISTÃO":
+                    {
+                        PistaoErrorTypeMessage = "Selecione algum tipo";
+                        break;
+                    }
+                case "ENCOSTO":
+                    {
+                        EncostoErrorTypeMessage = "Selecione algum tipo";
+                        break;
+                    }
+                case "BRAÇO_DIREITO":
+                    {
+                        BracoDirErrorTypeMessage = "Selecione algum tipo";
+                        break;
+                    }
+                case "BRAÇO_ESQUERDO":
+                    {
+                        BracoEsqErrorTypeMessage = "Selecione algum tipo";
+                        break;
+                    }
+                case "ALMOFADA":
+                    {
+                        AlmofadaErrorTypeMessage = "Selecione algum tipo";
+                        break;
+                    }
+
+            }
+
+        }
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Components = await context.Component.ToListAsync();
+
+    }
+
+    private async Task AddProduct()
+    {
+        RodaErrorTypeMessage = null;
+        PistaoErrorTypeMessage = null;
+        EncostoErrorTypeMessage = null;
+        BracoDirErrorTypeMessage = null;
+        BracoEsqErrorTypeMessage = null;
+        AlmofadaErrorTypeMessage = null;
+        NomeErrorTypeMessage = null;
+        DescricaoErrorTypeMessage = null;
+        NRodasErrorTypeMessage = null;
+
+        float peso_produto = 0;
+		float custo_produto = 0;
+
+        using var context = DbFactory.CreateDbContext();
+
+		if (String.IsNullOrEmpty(ProductViewModel.nome))
+		{
+			NomeErrorTypeMessage = "O nome do produto não pode ser vazio.";
+		}
+        else if (ProductViewModel.nome.Length >= 45)
+        {
+            NomeErrorTypeMessage = "O nome tem que ter tamanho inferior a 45 caracteres.";
+        }
+
+		if (String.IsNullOrEmpty(ProductViewModel.descricao))
+		{
+			DescricaoErrorTypeMessage = "A descrição do produto não pode ser vazia.";
+		}
+        else if (ProductViewModel.descricao.Length >= 200)
+        {
+            DescricaoErrorTypeMessage = "A descrição tem que ter tamanho inferior a 200 caracteres.";
+        }
+
+		if (ProductViewModel.numero_rodas == null) 
+        {
+			NRodasErrorTypeMessage = "O número de rodas não pode ser vazio.";
+        }
+		else if (ProductViewModel.numero_rodas <= 0)
+		{
+			NRodasErrorTypeMessage = "O número de rodas tem que ser maior do que 0.";
+		}
+
+
+
+
+		ValidateType(ProductViewModel.rodaEscolhida.ToString(), "RODA");
+        ValidateType(ProductViewModel.pistaoEscolhido.ToString(), "PISTÃO");
+        ValidateType(ProductViewModel.encostoEscolhido.ToString(), "ENCOSTO");
+        ValidateType(ProductViewModel.bracoDirEscolhido.ToString(), "BRAÇO_DIREITO");
+        ValidateType(ProductViewModel.bracoEsqEscolhido.ToString(), "BRAÇO_ESQUERDO");
+		ValidateType(ProductViewModel.almofadaEscolhida.ToString(), "ALMOFADA");
+
+		if (!string.IsNullOrEmpty(RodaErrorTypeMessage) || !string.IsNullOrEmpty(PistaoErrorTypeMessage) 
+        || !string.IsNullOrEmpty(EncostoErrorTypeMessage) || !string.IsNullOrEmpty(BracoDirErrorTypeMessage) 
+        || !string.IsNullOrEmpty(BracoEsqErrorTypeMessage) || !string.IsNullOrEmpty(AlmofadaErrorTypeMessage) 
+        || !string.IsNullOrEmpty(NomeErrorTypeMessage) || !string.IsNullOrEmpty(DescricaoErrorTypeMessage) 
+        || !string.IsNullOrEmpty(NRodasErrorTypeMessage))
+		{
+			return;
+		}
+
+        
+        var teste = ProductViewModel;
+
+        var produto = new Product
+			{
+				nome = ProductViewModel.nome,
+				descricao = ProductViewModel.descricao,
+				peso = ProductViewModel.peso,
+				custo = ProductViewModel.custo,
+				Components = new List<Component>()
+			};
+
+        if (ProductViewModel.numero_rodas != null)
+        {
+            produto.numeroRodas = (int)ProductViewModel.numero_rodas;
+        }
+
+        var componentes = new List<Component>();
+
+        if (ProductViewModel.rodaEscolhida != null)
+        {
+            var componenteRoda = await context.Component.FindAsync(ProductViewModel.rodaEscolhida);
+            if (componenteRoda != null)
+            {
+                componentes.Add(componenteRoda);
+                peso_produto += componenteRoda.peso * produto.numeroRodas;
+                custo_produto += componenteRoda.custo * produto.numeroRodas;
+            }
+        }
+		    
+		if (ProductViewModel.pistaoEscolhido != null)
+        {
+            var componentePistao = await context.Component.FindAsync(ProductViewModel.pistaoEscolhido);
+            if (componentePistao != null)
+            {
+                componentes.Add(componentePistao);
+                peso_produto += componentePistao.peso;
+				custo_produto += componentePistao.custo;
+            }
+        }
+		if (ProductViewModel.encostoEscolhido != null)
+        {
+            var componenteEncosto = await context.Component.FindAsync(ProductViewModel.encostoEscolhido);
+            if (componenteEncosto != null)
+            {
+                componentes.Add(componenteEncosto);
+                peso_produto += componenteEncosto.peso;
+				custo_produto += componenteEncosto.custo;
+            }
+        }
+
+        if (ProductViewModel.bracoDirEscolhido != null)
+        {
+            var componenteBracoDir = await context.Component.FindAsync(ProductViewModel.bracoDirEscolhido);
+            if (componenteBracoDir != null)
+            {
+                componentes.Add(componenteBracoDir);
+                peso_produto += componenteBracoDir.peso;
+				custo_produto += componenteBracoDir.custo;
+            }
+        }
+
+        if (ProductViewModel.bracoEsqEscolhido != null)
+        {
+            var componenteBracoEsq = await context.Component.FindAsync(ProductViewModel.bracoEsqEscolhido);
+            if (componenteBracoEsq != null)
+            {
+                componentes.Add(componenteBracoEsq);
+                peso_produto += componenteBracoEsq.peso;
+				custo_produto += componenteBracoEsq.custo;
+            }
+        }
+
+        if (ProductViewModel.almofadaEscolhida != null)
+        {
+            var componenteAlmofada = await context.Component.FindAsync(ProductViewModel.almofadaEscolhida);
+            if (componenteAlmofada != null)
+            {
+                componentes.Add(componenteAlmofada);
+                peso_produto += componenteAlmofada.peso;
+				custo_produto += componenteAlmofada.custo;
+            }
+        }
+
+		produto.Components = componentes;
+		produto.peso = peso_produto;
+		produto.custo = custo_produto;
+		produto.visible = 1;
+		
+        context.Product.Add(produto);
+        await context.SaveChangesAsync();
+
+		NavigationManager.NavigateTo("/products"); 
+    }
+}

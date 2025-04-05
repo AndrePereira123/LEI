@@ -1,0 +1,207 @@
+﻿@page "/users/edit"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [StreamRendering]
+@attribute [Authorize(Roles = "ADMIN")]
+
+
+<style>
+    .modal {
+        left: 27%;
+    }
+
+    .row {
+        background-color: #E9E9E8;
+        padding: 1%;
+        width: 100%;
+        font-size: 1.5rem; /* Texto maior */
+        padding-left: 26%;
+    }
+
+        .row .form-control:focus {
+            background-color: white;
+        }
+
+    .mb-3 .form-control {
+        border: 3px solid #4a4a4a; /* Cinza escuro */
+        background-color: #E9E9E8;
+        padding: 1%;
+        width: 100%;
+        font-size: 1.5rem; /* Texto maior */
+    }
+
+        .mb-3 .form-control:focus {
+            background-color: white;
+        }
+    h1 {
+        font-weight: 800;
+        font-size: 1.8rem;
+        padding-left: 2%;
+    }
+
+</style>
+
+<PageTitle>Editar Utilizador</PageTitle>
+
+<h1>Editar Utilizador</h1>
+@if (User is null)
+{
+    <p><em>A carregar...</em></p>
+}
+else
+{
+    <div class="container" style="background-color: #E9E9E8;
+        border: 3px solid #4a4a4a;height : 75vh; padding :2%; text-align:center;justify-content:center;">
+        <EditForm method="post" Model="User" OnValidSubmit="UpdateUser" FormName="editar" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary role="alert"/>
+
+            <input type="hidden" name="User.Id" value="@User.Id" />
+
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail:</label>
+                <InputText id="email" @bind-Value="User.email" class="form-control" />
+                <ValidationMessage For="() => User.email" class="text-danger" />
+                <span class="text-danger">@EmailErrorMessage</span>
+                <span class="text-danger">@errorMessage</span>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Palavra-Passe:</label>
+                <InputText id="password" @bind-Value="User.password" class="form-control" />
+                <ValidationMessage For="() => User.password" class="text-danger" />
+                <span class="text-danger">@PasswordErrorMessage</span>
+            </div>
+
+            <div class="mb-3">
+                <label for="type" class="form-label">Tipo:</label>  
+                <InputSelect id="type" @bind-Value="User.type" class="form-control">
+                    <option value="">Selecione o tipo...</option>
+                    @foreach (var tipo in Enum.GetValues<Tipos>())
+                    {
+                        <option value="@tipo">@tipo</option>
+                    }
+                </InputSelect>
+                <span class="text-danger">@errorTypeMessage</span>
+            </div>
+
+
+            <button type="submit" class="btn" style="background-color: black; color: white; width: 21%; height: 20%; font-size: 1.5rem; border-radius: 8px;">
+                Guardar
+            </button>
+            <a href="/users">Voltar</a>
+        </EditForm>
+    </div>
+}
+
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private User? User { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        User ??= await context.User.FirstOrDefaultAsync(m => m.Id == Id);
+        if (User is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+    private string? emailoriginal;
+    private string? errorMessage;
+    private string? errorTypeMessage;
+    private string? EmailErrorMessage;
+    private string? PasswordErrorMessage;
+    public enum Tipos
+    {
+        ADMIN,
+        USER
+    }
+
+    private void ValidateType(String str)
+    {
+
+        if (String.IsNullOrEmpty(str))
+        {
+            errorTypeMessage = "Selecione algum tipo";
+            return;
+        }
+
+        errorTypeMessage = null;
+
+    }
+
+    private void ValidateEmail(String email)
+    {
+
+        var regex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+
+        if (string.IsNullOrWhiteSpace(email) || !regex.IsMatch(email))
+        {
+            EmailErrorMessage = "O campo deve conter um endereço de e-mail válido.";
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateUser()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(User!).State = EntityState.Modified;
+
+        PasswordErrorMessage = null;
+
+        var emailCount = await context.User.CountAsync(u => u.email == User.email && u.Id != User.Id);
+            if (emailCount >= 1)
+            {
+                errorMessage = "Já existe um utilizador registado com esse email.";
+            }
+        
+
+        if (string.IsNullOrEmpty(User.password))
+        {
+            PasswordErrorMessage = "Insira uma password.";
+        }
+
+        
+        EmailErrorMessage = null;
+
+        ValidateType(User.type);
+        ValidateEmail(User.email);
+
+
+        if (errorTypeMessage == null && EmailErrorMessage == null && PasswordErrorMessage == null && errorMessage == null)
+        {
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!UserExists(User!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/users");
+        }
+    }
+    private bool UserExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.User.Any(e => e.Id == id);
+    }
+}

@@ -1,0 +1,58 @@
+﻿@page "/components/details"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Component</h2>
+    <hr />
+    @if (component is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">nome</dt>
+            <dd class="col-sm-10">@component.nome</dd>
+            <dt class="col-sm-2">descricao</dt>
+            <dd class="col-sm-10">@component.descricao</dd>
+            <dt class="col-sm-2">peso</dt>
+            <dd class="col-sm-10">@component.peso</dd>
+            <dt class="col-sm-2">tipo</dt>
+            <dd class="col-sm-10">@component.tipo</dd>
+            <dt class="col-sm-2">custo</dt>
+            <dd class="col-sm-10">@component.custo</dd>
+            <dt class="col-sm-2">stock</dt>
+            <dd class="col-sm-10">@component.stock</dd>
+        </dl>
+        <div>
+            <a href="@($"/components/edit?id={component.Id}")">Edit</a> |
+            <a href="@($"/components")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Component? component;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        component = await context.Component.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (component is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

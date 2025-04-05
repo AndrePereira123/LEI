@@ -1,0 +1,176 @@
+﻿@rendermode InteractiveServer
+
+
+<style>
+    .sidebar {
+    width: 27% !important;
+    height: 100vh;
+    background-color: #f3e5cb;
+    left: 0;
+    }
+
+    .navbar {
+    width: 100% !important;
+    height: 27%;
+    background-color: #f3e5cb;
+    }
+
+    .nav-scrollable {
+    background-color: #f3e5cb;
+    font-size: 1.6rem;
+    font-weight: bold;
+    font-family: 'Calibri', sans-serif;
+    color: black;
+    width: 100%;
+    height: 100vh;
+    padding-top: 10%;
+    padding-left: 5%;
+    }
+    .nav-scrollable .nav-item .nav-link {
+    color: black;
+    font-size: 1.6rem;
+    font-weight: bold;
+    font-family: 'Calibri', sans-serif;
+    }
+
+    .nav-scrollable .nav-item .nav-link.active {
+    color: #e67e22;
+    font-size: 1.6rem;
+    font-weight: bold;
+    font-family: 'Calibri', sans-serif;
+    }
+
+    .nav-scrollable .nav-item .nav-link:hover {
+    color: #e67e22;
+    font-size: 1.6rem;
+    font-weight: bold;
+    font-family: 'Calibri', sans-serif;
+    }
+
+    .navbar-toggler {
+    display: none;
+    /*tirar 3 linhas (icon) nas opcoes*/
+    }
+
+</style>
+
+<div class="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="" style="text-align: center;">
+            <img src="images/logotipo.png" alt="Logo" class="img-fluid" width="55%">
+        </a>
+    </div>
+</div>
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                Página Inicial
+            </NavLink>
+        </div>
+
+        <AuthorizeView Roles= "ADMIN,USER"> 
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/products" role="button" @onclick="() => ToggleSubMenu(1)">
+                        Gestão de Produtos
+                    </NavLink>
+
+                    @if(showSubMenu[1])
+                    {
+                        <div class="nav-item px-3 py-0" style="max-height: 30px;">
+                            <NavLink class="nav-link" href="/produzir" style="font-size: 1.3rem; font-weight: 500;">
+                                Produzir produto
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-3 py-0" style="max-height: 30px;">
+                            <NavLink class="nav-link" href="/linhaDeMontagem" style="font-size: 1.3rem; font-weight: 500;">
+                                Visualizar linha de montagem
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-3 py-0" style="max-height: 30px;">
+                            <NavLink class="nav-link" href="/products/create" style="font-size: 1.3rem; font-weight: 500;">
+                                Criar novo produto
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-3 py-0" style="max-height: 30px;">
+                            <NavLink class="nav-link" href="/diminuir-produtos" style="font-size: 1.3rem; font-weight: 500;">
+                                Diminuir stock de produto
+                            </NavLink>
+                        </div>
+                    }
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/components" @onclick="() => ToggleSubMenu(2)">
+                        Gestão de Componentes
+                    </NavLink>
+
+                    @if(showSubMenu[2]){
+                        <div class="nav-item px-3 py-0" style="max-height: 30px;">
+                            <NavLink class="nav-link" href="/components/create" style="font-size: 1.3rem; font-weight: 500;">
+                                Criar novo componente
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-3 pt-0" style="max-height: 30px;">
+                            <NavLink class="nav-link" href="/diminuir-componentes" style="font-size: 1.3rem; font-weight: 500;">
+                                Diminuir stock de componente
+                            </NavLink>
+                        </div>
+                    }
+                </div>
+
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="ADMIN">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/users">
+                        Gestão de Utilizadores
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+
+        <div class="nav-item px-3" style="position: absolute; bottom: 5%; width: 100%;">
+            <NavLink class="nav-link" href="/logout">
+                Terminar Sessão
+            </NavLink>
+        </div>
+
+
+
+    </nav>
+</div>
+
+@code {
+    bool[] showSubMenu = new bool[3];
+
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    void ToggleSubMenu(int index)
+    {
+        showSubMenu[index] = true;
+            if (index == 1)
+            {
+                showSubMenu[2] = false;
+            }
+            else
+            {
+                showSubMenu[1] = false;
+            }
+        Console.WriteLine($"SubMenu {index} expanded: {showSubMenu[index]}"); // Exibe o estado
+    }
+
+
+}

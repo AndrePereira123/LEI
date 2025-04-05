@@ -1,0 +1,205 @@
+﻿@page "/users"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@using Microsoft.AspNetCore.Authorization
+@attribute [StreamRendering]
+@attribute [Authorize(Roles = "ADMIN")]
+
+<PageTitle>Gestão de Utilizadores</PageTitle>
+
+<style>
+    .container {
+        margin-left: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        justify-content: center;
+        height: 76vh;
+        overflow-y: auto;
+        padding-top: 0;
+    }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 10px;
+        border: 2px solid #f2f2f2;
+    }
+
+        .container::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+    .container .table {
+        margin-left: 0;
+        padding-top: 0;
+        justify-content: left;
+        text-align: left;
+        width: 100%;
+        background-color: #E9E9E8;
+        border: none;
+    }
+
+        .container .table th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border: none;
+            font-size: 1.6rem;
+            text-align: center;
+            font-weight: 500;
+            background-color: white;
+        }
+
+        .container .table td {
+            line-height: 3;
+            border: none;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .container .table tbody {
+            border-top: none;
+        }
+
+        .container .table thead {
+            border-bottom: none;
+            background-color: white;
+        }
+
+    h1 {
+        font-weight: 800;
+        font-size: 2rem;
+        padding-bottom: 1%;
+        padding-left: 2%;
+    }
+
+
+    .actions-container {
+        max-width: 50px;
+        display: box;
+        align-items: center;
+        justify-items: center;
+        text-align:center;
+        font-size: 1.1rem;
+    }
+
+    .remover {
+        font-weight: 700;
+        font-size: 1.3rem;
+        padding-left: 10px;
+    }
+
+        .remover:hover {
+            color: red;
+        }
+
+    .editar {
+        font-weight: 700;
+        font-size: 1.3rem;
+        padding-left: 10px;
+    }
+
+        .editar:hover {
+            color: green;
+        }
+
+    .btn_descrição {
+        border: 0;
+        color: gray;
+        background-color: #E9E9E8;
+        margin: auto;
+        display: block;
+        font-size: 0.9rem;
+        text-decoration: underline;
+    }
+
+        .btn_descrição:hover {
+            color: red;
+        }
+
+    .btn-close {
+        position: fixed;
+        top: 40%; /* Positioning from the top */
+        right: 40%; /* Positioning from the right */
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Gestão de Utilizadores</h1>
+    <a href="users/create" style="text-decoration: none; color: white; background-color: black; padding: 8px 16px; border-radius: 5px;">
+        Criar novo utilizador
+    </a>
+</div>
+
+
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th >E-mail</th>
+                <th>Palavra-passe</th>
+                <th >Tipo</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in context.User)
+            {
+                <tr>
+                    <td>@user.email</td>
+                    <td>@user.password</td>
+                    <td>@user.type</td>
+                    <td>
+                        <div class="actions-container">
+                            <a href="@($"users/edit?id={user.Id}")" class="editar">Editar</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="actions-container">
+                            <a href="@($"users/delete?id={user.Id}")" class="remover">Remover</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private CadeirasLusitanasContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

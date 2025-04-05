@@ -1,0 +1,56 @@
+﻿@page "/products/details"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Product</h2>
+    <hr />
+    @if (product is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">nome</dt>
+            <dd class="col-sm-10">@product.nome</dd>
+            <dt class="col-sm-2">descricao</dt>
+            <dd class="col-sm-10">@product.descricao</dd>
+            <dt class="col-sm-2">peso</dt>
+            <dd class="col-sm-10">@product.peso</dd>
+            <dt class="col-sm-2">custo</dt>
+            <dd class="col-sm-10">@product.custo</dd>
+            <dt class="col-sm-2">stock</dt>
+            <dd class="col-sm-10">@product.stock</dd>
+        </dl>
+        <div>
+            <a href="@($"/products/edit?id={product.Id}")">Edit</a> |
+            <a href="@($"/products")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Product? product;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        product = await context.Product.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (product is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

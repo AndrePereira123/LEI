@@ -1,0 +1,325 @@
+﻿@page "/products"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Data
+@using CadeirasLusitanas.Components.Pages.GestaoProdutos
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<PageTitle>Catálogo de Produtos</PageTitle>
+
+<style>
+    .container {
+    margin-left: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    justify-content: center;
+    height: 76vh;
+    overflow-y: auto;
+    padding-top: 0;
+    }
+
+    .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    }
+
+    .container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #f2f2f2;
+    }
+
+    .container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    }
+
+    .container .table {
+    margin-left: 0;
+    padding-top: 0;
+    justify-content: left;
+    text-align: left;
+    width: 100%;
+    background-color: #E9E9E8;
+    border: none;
+    }
+
+    .container .table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border: none;
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 500;
+    background-color: white;
+    }
+
+    .container .table td {
+    line-height: 3;
+    border: none;
+    text-align: center;
+    font-size: 1.6rem;
+    }
+
+    .container .table tbody {
+    border-top: none;
+    }
+
+    .container .table thead {
+    border-bottom: none;
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 2rem;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    }
+
+    .small-width {
+    width: 10%;
+    text-align: center;
+    justify-content: center;
+    }
+
+    .normal-width {
+    text-align: center;
+    justify-content: center;
+    }
+
+    .container .table .btn-adicionar {
+    width: 70px; /* Define a largura do botão */
+    height: 70px; /* Define a altura do botão */
+    background-color: black; /* Cor de fundo preta */
+    color: white; /* Cor do texto branca */
+    font-size: 2rem; /* Aumenta o tamanho do "+" */
+    border-radius: 5px; /* Bordas arredondadas (opcional) */
+    display: flex; /* Usado para centralizar o conteúdo dentro do botão */
+    align-items: center; /* Alinha verticalmente o conteúdo */
+    justify-content: center; /* Alinha horizontalmente o conteúdo */
+    border: none; /* Remove qualquer borda padrão */
+    cursor: pointer; /* Aplica o cursor de ponteiro */
+    }
+
+    .container .table .btn-adicionar:hover {
+    background-color: lightgreen; /* Cor de fundo mais escura ao passar o mouse */
+    width: 80px; /* Define a largura do botão */
+    height: 80px; /* Define a altura do botão */
+    }
+
+    .actions-container {
+    padding-top: 7%;
+    padding-left: 10%;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    flex-grow: 0;
+    }
+
+    .remover {
+      font-weight: 700;
+        font-size: 1.1rem;
+    padding-left: 10px;
+    }
+
+    .remover:hover {
+    color: red;
+    }
+
+    .btn_descrição {
+    border: 0;
+    color: gray;
+    background-color: #E9E9E8;
+    margin: auto;
+    display: block;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    }
+
+    .btn_descrição:hover {
+    color: red;
+    }
+
+    .btn-close {
+    position: fixed;
+    top: 40%; /* Positioning from the top */
+    right: 40%; /* Positioning from the right */
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    }
+
+    .container .table .btn-componentes {
+    width: 70px; /* Define a largura do botão */
+    height: 70px; /* Define a altura do botão */
+    background-color: black; /* Cor de fundo preta */
+    color: white; /* Cor do texto branca */
+    font-size: 2rem; /* Aumenta o tamanho do "+" */
+    border-radius: 5px; /* Bordas arredondadas (opcional) */
+    display: flex; /* Usado para centralizar o conteúdo dentro do botão */
+    align-items: center; /* Alinha verticalmente o conteúdo */
+    justify-content: center; /* Alinha horizontalmente o conteúdo */
+    border: none; /* Remove qualquer borda padrão */
+    cursor: pointer; /* Aplica o cursor de ponteiro */
+    }
+
+    .container .table .btn-componentes:hover {
+    background-color: lightgreen; /* Cor de fundo mais escura ao passar o mouse */
+    width: 80px; /* Define a largura do botão */
+    height: 80px; /* Define a altura do botão */
+    }
+</style>
+
+
+<h1>Catálogo de Produtos</h1>
+
+@if (!products.Any() || products == null)
+{
+    <p>Nenhum componente existe no catálogo</p>
+}
+else 
+{
+    <div class="container">
+        @if (isPopupVisible)
+        {
+            <div class="popup-overlay">
+                <div actions-container style=" border: 2px solid #4a4a4a;background-color:lightgray;min-width: 20%;min-height:20%;word-wrap: break-word;white-space: pre-wrap;max-width: 20%;">
+                    @descricao
+                    <button class="btn-close" @onclick="ClosePopup"></button>
+                </div>
+            </div>
+        }
+        @if (isPopupVisible_componentes)
+        {
+            <div class="popup-overlay">
+                <div actions-container style=" border: 2px solid #4a4a4a;background-color:lightgray;min-width: 20%;min-height:20%;word-wrap: break-word;white-space: pre-wrap;max-width: 20%;">
+                    @foreach (var s in lista_componentes)
+                    {
+                        <div style="text-align:left">
+                            Id:@s.Item1 - @s.Item2
+                        </div>
+                    }
+                    <button class="btn-close" @onclick="ClosePopup"></button>
+                </div>
+            </div>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="small-width">Identificador</th>
+                    <th>Nome</th>
+                    <th>Componentes</th>
+                    <th class="small-width">Peso</th>
+                    <th>Custo</th>
+                    <th>Stock</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in context.Product)
+                {
+                    if (product.visible == 1)
+                    {
+                        <tr>
+                            <td>@product.Id</td>
+                            <td>
+                                <div style="font-size: 1.4rem; margin-top:10px; line-height: 1.2;justify-content:center;">
+                                    @product.nome
+                                    <button class="btn_descrição" @onclick="() => ShowPopup(product.descricao)">Ver descrição</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex;justify-content: center;align-content:center;text-align: center;">
+                                    <button class="btn btn-componentes" @onclick="() => ShowPopup_componentes(product.Id)">C</button>
+                                </div>
+
+                            </td>
+                            <td>@($"{product.peso}kg")</td>
+                            <td>@($"{product.custo}€")</td>
+                            <td>@product.stock</td>
+                            <td>
+                                <div class="actions-container">
+                                    <a href="@($"products/delete?id={product.Id}")" class="remover">Remover</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@code {
+
+    private CadeirasLusitanasContext context = default!;
+
+    private List<Product> products = new();
+
+    private string descricao;
+    private List<(int, string)> lista_componentes = new List<(int, string)>();
+
+    private bool isPopupVisible = false;
+    private bool isPopupVisible_componentes = false;
+
+
+    private void ShowPopup(string d)
+    {
+        descricao = d;
+        isPopupVisible = true; // Show the popup
+    }
+
+    private void ShowPopup_componentes(int id)
+    {
+        var produto = (context.Product.Include(p => p.Components).FirstOrDefault(p => p.Id == id));
+		var componentes = produto.Components;
+
+        foreach(var c in componentes)
+        {
+            string text = c.nome;
+            if (c.tipo == "RODA") {
+				text = text + "\n                                Nº de rodas: " + produto.numeroRodas;
+            }
+            lista_componentes.Add((c.Id, text));
+        }
+
+        isPopupVisible_componentes = true; // Show the popup
+    }
+
+    private void ClosePopup()
+    {
+        isPopupVisible = false;
+        isPopupVisible_componentes = false;
+        lista_componentes = new List<(int, string)>();
+    }
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+		products = context.Product.ToList();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

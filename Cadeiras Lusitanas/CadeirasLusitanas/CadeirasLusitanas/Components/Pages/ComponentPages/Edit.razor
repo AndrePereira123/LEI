@@ -1,0 +1,326 @@
+﻿@page "/components/edit"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<PageTitle>Editar componente</PageTitle>
+<style>
+    .modal {
+    left: 27%;
+    }
+
+    .container {
+    margin-left: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    justify-content: center;
+    height: 76vh;
+    overflow-y: auto;
+    padding-top: 0;
+    }
+
+    .container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #f2f2f2;
+    }
+
+    .container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    }
+
+    .row {
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    padding-left: 26%;
+    }
+
+    .row .form-control:focus {
+    background-color: white;
+    }
+
+    .mb-3 .form-control {
+    border: 3px solid #4a4a4a; /* Cinza escuro */
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    }
+
+    .mb-3 .form-control:focus {
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 1.8rem;
+    padding-left: 2%;
+    }
+
+</style>
+
+
+<h1>Editar Componente</h1>
+
+@if (Component is null)
+{
+    <p><em>A Carregar...</em></p>
+}
+else
+{
+    <div class="container" style="background-color: #E9E9E8;height : 75vh; padding :2%; text-align:center;">
+        <EditForm method="post" Model="Component" OnValidSubmit="UpdateComponent" FormName="edit" Enhance>
+            <ValidationSummary role="alert"/>
+            <input type="hidden" name="Component.Id" value="@Component.Id" />
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <InputText id="nome" @bind-Value="Component.nome" class="form-control" />
+                <ValidationMessage For="() => Component.nome" class="text-danger" />
+                <span class="text-danger">@NomeErrorMessage</span>
+            </div>
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição:</label>
+                <InputText id="descricao" @bind-Value="Component.descricao" class="form-control" />
+                <ValidationMessage For="() => Component.descricao" class="text-danger" />
+                <span class="text-danger">@DescricaoErrorMessage</span>
+            </div>
+            <div class="mb-3">
+                <label for="peso" class="form-label">Peso:</label>
+                <InputNumber id="peso" @bind-Value="Component.peso" class="form-control" />
+                <ValidationMessage For="() => Component.peso" class="text-danger" />
+                <span class="text-danger">@PesoErrorMessage</span>
+            </div>
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo:</label>
+                <InputSelect id="tipo" @bind-Value="Component.tipo" class="form-control" placeholder="Tipo">
+                    <option value="">Selecione o tipo...</option>
+                    @foreach (var tipo in Enum.GetValues<Tipos>())
+                    {
+                        <option value="@tipo">@tipo</option>
+                    }
+                </InputSelect>
+                <span class="text-danger">@errorMessage</span>
+            </div>
+            <div class="mb-3">
+                <label for="custo" class="form-label">Custo:</label>
+                <InputNumber id="custo" @bind-Value="Component.custo" class="form-control" />
+                <ValidationMessage For="() => Component.custo" class="text-danger" />
+                <span class="text-danger">@CustoErrorMessage</span>
+            </div>
+            <div class="mb-3">
+                <label for="stock" class="form-label">Tempo:</label>
+                <InputText id="tempo" @bind-Value="Component.tempo" class="form-control" />
+                <ValidationMessage For="() => Component.tempo" class="text-danger" />
+                <span class="text-danger">@TempoErrorMessage</span>
+            </div>
+            <div style="margin-top: 3%;text-align: center; width: 100%;">
+                <button type="submit" class="btn btn-primary" style="background-color: black; color: white; width: 35%; height: 25%; font-size: 1.5rem; border-radius: 8px;">
+                    Guardar
+                </button>
+            </div>
+            <a href="/components">Voltar</a>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private Component? Component { get; set; }
+
+    public enum Tipos
+    {
+        RODA,
+        PISTÃO,
+        ENCOSTO,
+        BRAÇO_DIREITO,
+        BRAÇO_ESQUERDO,
+        ALMOFADA
+    }
+
+    public string? errorMessage;
+    public string? NomeErrorMessage;
+    public string? DescricaoErrorMessage;
+    public string? PesoErrorMessage;
+    public string? CustoErrorMessage;
+    public string? TempoErrorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Component ??= await context.Component.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (Component is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private void ValidateType(String str)
+    {
+        var value = str.ToUpper();
+
+        if (String.IsNullOrEmpty(value))
+        {
+            errorMessage = "Selecione algum tipo";
+            return;
+        }
+
+        if (!Enum.TryParse(typeof(Tipos), value, out var parsedValue) || !Enum.IsDefined(typeof(Tipos), parsedValue))
+        {
+            errorMessage = "O tipo selecionado não é válido.";
+            return;
+        }
+
+        errorMessage = null;
+
+    }
+
+    private void ValidateTempo(string tempo)
+    {
+        var regex = new System.Text.RegularExpressions.Regex(@"^[1-9]\d*-[1-9]\d*$");
+
+        if (string.IsNullOrWhiteSpace(tempo) || !regex.IsMatch(tempo))
+        {
+            TempoErrorMessage = "O campo tempo deve estar num formato do tipo '15-20'.";
+            return;
+        }
+
+        if (tempo.Length > 10)
+        {
+            TempoErrorMessage = "O campo tempo deve ter no máximo 10 caracteres.";
+            return;
+        }
+
+        var parts = tempo.Split('-');
+        if (parts.Length == 2 && int.TryParse(parts[0], out int first) && int.TryParse(parts[1], out int second))
+        {
+            if (first >= second)
+            {
+                TempoErrorMessage = "O primeiro número deve ser menor que o segundo.";
+                return;
+            }
+        }
+    }
+
+    private async Task UpdateComponent()
+    {
+        NomeErrorMessage = null;
+        DescricaoErrorMessage = null;
+        PesoErrorMessage = null;
+        CustoErrorMessage = null;
+        TempoErrorMessage = null;
+
+        using var context = DbFactory.CreateDbContext();
+        var componentToChange = await context.Component.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (componentToChange == null)
+        {
+            NavigationManager.NavigateTo("notfound");
+            return;
+        }
+
+        ValidateType(Component.tipo);
+        ValidateTempo(Component.tempo);
+
+
+        if (string.IsNullOrEmpty(Component.nome))
+        {
+            NomeErrorMessage = "O nome é obrigatório.";
+        }
+        else if (Component.nome.Length >= 45)
+        {
+            NomeErrorMessage = "O nome tem que ter tamanho inferior a 45 caracteres.";
+        }
+
+        if (string.IsNullOrEmpty(Component.descricao))
+        {
+            DescricaoErrorMessage = "A descrição é obrigatória.";
+        }
+        else if (Component.descricao.Length >= 200)
+        {
+            DescricaoErrorMessage = "A descrição tem que ter tamanho inferior a 200 caracteres.";
+        }
+
+        if (Component.peso <= 0)
+        {
+            PesoErrorMessage = "O peso tem que ser maior do que 0.";
+        }
+        if (Component.peso > 999)
+        {
+            PesoErrorMessage = "O peso tem que ser menor que 1000.";
+        }
+
+        if (Component.custo <= 0)
+        {
+            CustoErrorMessage = "O custo tem que ser maior do que 0.";
+        }
+
+        if (Component.custo > 999)
+        {
+            CustoErrorMessage = "O custo tem que ser menor que 1000.";
+        }
+
+        if (!string.IsNullOrEmpty(NomeErrorMessage) || !string.IsNullOrEmpty(DescricaoErrorMessage) ||
+        !string.IsNullOrEmpty(PesoErrorMessage) || !string.IsNullOrEmpty(CustoErrorMessage) || !string.IsNullOrEmpty(TempoErrorMessage))
+        {
+            return;
+        }
+
+        var products = await context.Product
+                                    .Include(p => p.Components)
+                                    .Where(p => p.Components.Contains(componentToChange))
+                                    .ToListAsync();
+
+		componentToChange.nome = Component.nome;
+        componentToChange.descricao = Component.descricao;
+        componentToChange.peso = Component.peso;
+        componentToChange.tipo = Component.tipo;
+        componentToChange.custo = Component.custo;
+        componentToChange.tempo = Component.tempo;
+
+        foreach(var product in products){
+			product.Components.Remove(componentToChange);
+			product.Components.Add(componentToChange);
+			product.custo = product.Components.Sum(c => c.custo);
+			product.peso = product.Components.Sum(c => c.peso);
+        }
+
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ComponentExists(Component!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/components");
+    }
+
+    private bool ComponentExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.Component.Any(e => e.Id == id);
+    }
+}

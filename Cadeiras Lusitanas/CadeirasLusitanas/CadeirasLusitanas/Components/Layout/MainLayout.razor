@@ -1,0 +1,47 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+
+<style>
+    h44 {
+            width: 100%;
+            margin-top: 0;        
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: 'Calibri', sans-serif;
+            color: #434243;
+        }
+</style>
+
+<div class="page">
+
+    <AuthorizeView Roles="ADMIN,USER">
+        <Authorized>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+        </Authorized>
+    </AuthorizeView>
+
+    <main>
+        <AuthorizeView>
+            <Authorized>
+                <div class="top-row px-4" style="z-index:11;">
+                    <h44 class="fw-bolder d-inline">Bem vindo à <strong class="d-inline">Cadeiras Lusitanas</strong></h44>
+                    <span class="d-inline" style="text-align:left">Utilizador autenticado como <b>@context.User.Identity.Name</b></span>
+        </div>
+            </Authorized>
+        </AuthorizeView>
+        
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+

@@ -1,0 +1,156 @@
+﻿@page "/login"
+
+@using CadeirasLusitanas.Models.ViewModels
+@using CadeirasLusitanas.Data
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Authentication
+@inject CadeirasLusitanasContext dbcontext
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<style>
+
+    .sidebar {
+    background-color: #f3e5cb; 
+    position: fixed; 
+    left: 0; 
+    width: 40%; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.logo {
+    max-width: 80%; 
+    height: auto; 
+    display: block; 
+}
+
+
+    .login-container {
+    width: 50%; /* Login form takes half the screen */
+    position: fixed; /* Make the login container fixed */
+    top: 15%; /* Adjust the vertical position as needed */
+    left: 60%; /* Center it horizontally */
+    transform: translateX(-50%); /* Center it perfectly horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Adjust the height as necessary */
+}
+
+    .mb-3 .form-control {
+        border: 2px solid #4a4a4a; /* Cinza escuro */
+        background-color: #E9E9E8;
+        height: 30%; /* Maior altura */
+        font-size: 1.3rem; /* Texto maior */
+    }
+
+    .mb-3 .form-control:focus{
+        background-color: white;
+    }
+</style>
+
+<PageTitle>Iniciar Sessão</PageTitle>
+
+<header class="top-row" style="z-index:11;">
+    <div class="col-12">
+        <AuthorizeView>
+            <Authorized>
+        @code {
+        private bool isRedirecting = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated && !isRedirecting)
+            {
+                isRedirecting = true;
+                navigationManager.NavigateTo("/", true); // Forces a full page reload
+            }
+        }
+        }
+
+            </Authorized>
+            <NotAuthorized>
+                
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</header>
+
+<div class="sidebar">
+    <img src="images/logotipo.png" alt="Logo" class="logo"/>
+</div>
+
+<div class="login-container">
+    <div class="col-lg-6 offset-lg-6 pt-6 pb-6 border" style="background-color: #E9E9E8; padding: 2rem;">
+        <EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="LoginForm">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3 text-center flex-column">
+                <img src="images/login.png" asp-append-version="true" width="60%" />
+                <h3 style="font-weight: bold;">LOGIN</h3>
+            </div>
+
+            <div class="mb-3" >
+                <InputText @bind-Value="Model.UserName" class="form-control" placeholder="E-mail" />
+                <ValidationMessage For="() => Model.UserName" />
+            </div>
+
+            <div class="mb-3" >
+                <InputText @bind-Value="Model.Password" type="password" class="form-control" placeholder="Palavra-passe" />
+                <ValidationMessage For="() => Model.Password" />
+            </div>
+
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-center">
+                <button type="submit" class="btn" style="background-color: black; color: white; width: 70%; height: 20%; font-size: 1.5rem; border-radius: 8px;">
+                    Iniciar Sessão
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    [SupplyParameterFromForm]
+    public LoginViewModel Model { get; set; } = new();
+
+    private string? errorMessage;
+
+    private async Task Authenticate()
+    {
+        var userAccount = dbcontext.User.Where(x => x.email == Model.UserName).FirstOrDefault();
+        if (userAccount is null || userAccount.password != Model.Password)
+        {
+            errorMessage = "E-mail ou palavra-passe invalido(s)";
+            return;
+        }
+
+        var claims = new List<Claim>{
+            new Claim(ClaimTypes.Name,Model.UserName),
+            new Claim(ClaimTypes.Role,userAccount.type)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(principal);
+        navigationManager.NavigateTo("/", forceLoad: true);
+    }
+
+
+}

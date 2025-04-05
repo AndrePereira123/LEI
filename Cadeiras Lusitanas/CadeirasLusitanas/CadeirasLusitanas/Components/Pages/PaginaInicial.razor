@@ -1,0 +1,197 @@
+﻿@page "/"
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Services
+@inject CadeirasLusitanas.Data.CadeirasLusitanasContext context
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Página Inicial</PageTitle>
+
+<style>
+    .container {
+        margin-left: 0;
+        font-family: Arial, sans-serif;
+        text-align: left;
+        justify-content: left;
+        max-height: 349px;
+        overflow-y: auto;
+    }
+
+    h2 {
+        width: 100%;
+        margin-top: 0;        
+        font-size: 2.5rem;
+        font-weight: bold;
+        font-family: 'Calibri', sans-serif;
+        color: #434243;
+    }
+    .container::-webkit-scrollbar {
+    width: 8px; 
+    height: 8px; 
+    }
+
+
+    .container::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px; 
+    border: 2px solid #f2f2f2; 
+}
+
+    .container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; 
+}
+
+    .container .table {
+        margin-left: 0;
+        justify-content: left;
+        text-align: left;
+        width: 100%;
+        height: 100%;
+        background-color: #E9E9E8;
+        border: none;
+        
+    }
+    .container .table th {
+       position: sticky;
+       top: 0;
+       z-index: 10;
+       border: none;
+       font-size: 1.6rem;
+       text-align: center;
+       font-weight: 500;
+       background-color: white;
+    }
+    .container .table td {
+       line-height: 3;
+       border: none;
+       text-align: center;
+       font-size: 1.6rem;
+    }
+    .container .table tbody {
+        border-top: none;
+    }
+    .container .table thead {
+        border-bottom: none;
+        background-color: white;
+    }
+
+    .small-width {
+        width: 80px;
+    }
+</style>
+
+<header class="top-row" style="z-index:11;">
+    <div class="col-12">
+        <AuthorizeView>
+            <Authorized>
+            
+            </Authorized>
+            <NotAuthorized>
+                @code {
+        private bool isRedirecting = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+                    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                    var user = authState.User;
+
+                    
+                    if (!user.Identity.IsAuthenticated && !isRedirecting)
+                    {
+                        isRedirecting = true;
+                        NavigationManager.NavigateTo("/login", true); 
+                    }
+        }
+                }
+
+                <p>Redirecionando para a página de login...</p>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</header>
+
+
+@if (Products_History == null || !Products_History.Any())
+{
+    <p>Ainda não foram produzidos produtos</p>
+}
+else {
+<h2>Histórico de produção</h2>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Identificador</th>
+                <th>Nome</th>
+                <th>Peso</th>
+                <th>Custo total</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach (var product in Products_History)
+                {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.nome</td>
+                    <td>@(product.peso) kg</td>
+                    <td>@(product.custo) €</td>
+                    <td>@product.stock</td>
+                </tr>
+                }
+        </tbody>
+    </table>
+ </div>
+}
+
+
+
+@if (ProductStatistics == null || !ProductStatistics.Any())
+    {
+        <p>Ainda não existem produtos</p>
+    }
+    else
+    {
+ <h2>Estatísticas</h2>
+<div class="container">
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Total produzido</th>
+                    <th>Tempo médio de produção</th>
+                    <th>Custo total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in ProductStatistics)
+                {
+                    <tr>
+                        <td>@product.nome</td>
+                        <td>@product.stock</td>
+                        <td>@(product.peso)s</td> <!-- Tempo médio em minutos -->
+                        <td>@(product.custo)€</td>
+                    </tr>
+                }
+            </tbody>
+    </table>
+ </div>
+}
+
+
+@code {
+    [Inject]
+    private PaginaInicialMethods PaginaInicialMethods { get; set; } = new PaginaInicialMethods();
+    private List<Product> Products_History;
+    private List<Product> ProductStatistics;
+
+    protected override void OnInitialized()
+    {
+        Products_History = PaginaInicialMethods.LoadProducts(context);
+        ProductStatistics = PaginaInicialMethods.StatisticsForProducts(context);
+    }
+
+}
+
+			
+				

@@ -1,0 +1,102 @@
+﻿@page "/components/delete"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<style>
+    .modal {
+    left: 27%;
+    }
+    .row {
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    padding-left: 26%;
+    }
+    .row .form-control:focus {
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 1.8rem;
+    padding-left: 2%;
+    }
+
+
+</style>
+
+<PageTitle>Remover componente</PageTitle>
+
+<div>
+    <h1>De certeza que pretende remover este componente?</h1>
+    <hr />
+    @if (component is null)
+    {
+        <p><em>A carregar...</em></p>
+    }
+    else {
+        <div class="container" style="background-color: #E9E9E8;
+        border: 3px solid #4a4a4a;height : 75vh; padding :2%; text-align:center;justify-content:center;">
+            <dl class="row">
+                <dt class="col-sm-2">Nome</dt>
+                <dd class="col-sm-10">@component.nome</dd>
+                <dt class="col-sm-2">Descrição</dt>
+                <dd class="col-sm-10">@component.descricao</dd>
+                <dt class="col-sm-2">Peso</dt>
+                <dd class="col-sm-10">@component.peso</dd>
+                <dt class="col-sm-2">Tipo</dt>
+                <dd class="col-sm-10">@component.tipo</dd>    
+                <dt class="col-sm-2">Custo</dt>
+                <dd class="col-sm-10">@component.custo</dd>
+                <dt class="col-sm-2">Stock</dt>
+                <dd class="col-sm-10">@component.stock</dd>
+                <dt class="col-sm-2">Tempo</dt>
+                <dd class="col-sm-10">@component.tempo</dd>
+            </dl>
+            <EditForm method="post" Model="component" OnValidSubmit="DeleteComponent" FormName="delete" Enhance>
+                <div style="margin-bottom: 35%;text-align: center; width: 100%;">
+                    <button type="submit" class="btn btn-danger" style="background-color: black; color: white; width: 21%; height: 20%; font-size: 1.5rem; border-radius: 8px;"
+                    onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                    onmouseout="this.style.backgroundColor='black'; this.style.color='white';">
+                        Remover
+                    </button>
+                    <a href="/components" style="display: inline-block;">Voltar</a>
+                </div>
+            </EditForm>
+        </div>
+    }
+</div>
+
+@code {
+    private Component? component;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        component = await context.Component.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (component is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private async Task DeleteComponent()
+    {
+        using var context = DbFactory.CreateDbContext();
+        //context.Component.Remove(component!);
+        var componente = await context.Component.FirstOrDefaultAsync(m => m.Id == Id);
+        componente.visible = 0;
+		context.Component.Update(componente);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/components");
+    }
+}

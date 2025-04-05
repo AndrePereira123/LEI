@@ -1,0 +1,290 @@
+﻿@page "/components"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Data
+@using CadeirasLusitanas.Components.Pages.GestaoComponentes
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+
+<PageTitle>Catálogo de Componentes</PageTitle>
+
+<style>
+    .container {
+    margin-left: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    justify-content: center;
+    height: 76vh;
+    overflow-y: auto;
+    padding-top: 0;
+    }
+
+    .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    }
+
+    .container::-webkit-scrollbar {
+    width: 8px; 
+    height: 8px; 
+    }
+
+    .container::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px; 
+    border: 2px solid #f2f2f2; 
+    }
+
+    .container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; 
+    }
+
+    .container .table {
+    margin-left: 0;
+    padding-top:0;
+    justify-content: left;
+    text-align: left;
+    width: 100%;
+    background-color: #E9E9E8;
+    border: none;
+    }
+
+    .container .table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border: none;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 500;
+    background-color: white;
+    }
+
+    .container .table td {
+    line-height: 3;
+    border: none;
+    text-align: center;
+    font-size: 1.6rem;
+    }
+
+    .container .table tbody {
+    border-top: none;
+    }
+
+    .container .table thead {
+    border-bottom: none;
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 2rem;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    }
+
+    .small-width {
+    width: 10%;
+    text-align: center;
+    justify-content: center;
+    }
+
+    .normal-width {
+    text-align:center;
+    justify-content: center;
+    }
+
+    .container .table .btn-adicionar {
+    width: 70px;
+    height: 70px; 
+    background-color: black; 
+    color: white; 
+    font-size: 2rem; 
+    border-radius: 5px; 
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    border: none; 
+    cursor: pointer; 
+    }
+
+    .container .table .btn-adicionar:hover {
+    background-color: lightgreen; 
+    }
+
+    .actions-container {
+    padding-left: 10%;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    flex-grow: 0;
+    }
+    .remover {
+        font-weight: 700;
+        font-size: 1.1rem;
+    padding-left : 10px;
+    }
+
+    .remover:hover{
+    color: red;
+    }
+
+    .editar {
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding-left: 10px;
+    }
+
+        .editar:hover {
+            color: green;
+        }
+
+    .btn_descrição {
+    border: 0;
+    color: gray; 
+    background-color: #E9E9E8;
+    margin:auto; 
+    display: block;
+    font-size: 0.9rem;
+    text-decoration:underline;
+    }
+    .btn_descrição:hover{
+    color: red;
+    }
+
+    .btn-close {
+        position: fixed;
+        top: 40%; 
+        right: 40%; 
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+
+
+<h1>Catálogo de Componentes</h1>
+
+
+@if(!components.Any() || components == null){
+    <p>Nenhum componente existe no catálogo</p>
+}
+else
+{
+    <div class="container">
+        @if (isPopupVisible)
+        {
+            <div class="popup-overlay">
+                <div actions-container style=" border: 2px solid #4a4a4a;background-color:lightgray;min-width: 20%;min-height:20%;word-wrap: break-word;white-space: pre-wrap;max-width: 20%;">
+                    @descricao
+                    <button class="btn-close" @onclick="ClosePopup"></button>
+                </div>
+            </div>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="small-width">Identificador</th>
+                    <th>Nome</th>
+                    <th class="small-width">Peso</th>
+                    <th>Tipo</th>
+                    <th>Custo</th>
+                    <th>Stock</th>
+                    <th>Tempo (seg)</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var component in context.Component)
+                {
+					if (component.visible == 1)
+					{
+                        <tr>
+                            <td>@component.Id</td>
+                            <td>
+                                <div style="font-size: 1.4rem; margin-top:10px; line-height: 1.2;justify-content:center;">
+                                    @component.nome
+                                    <button class="btn_descrição" @onclick="() => ShowPopup(component.descricao)">Ver descrição</button>
+                                </div>
+                            </td>
+                            <td>@($"{component.peso}kg")</td>
+                            <td>@component.tipo</td>
+                            <td>@($"{component.custo}€")</td>
+                            <td>@component.stock</td>
+                            <td>@($"{component.tempo}")</td>
+                            <td>
+                                <div class="actions-container" style="padding-top: 13%;">
+                                    <a href="@($"components/edit?id={component.Id}")" class="editar">Editar</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="actions-container">
+                                    <button class="btn btn-adicionar" @onclick="() => NavigateToPopupQuantidade(component.Id)">+</button>
+                                    <a href="@($"components/delete?id={component.Id}")" class="remover">Remover</a>
+                                </div>
+                            </td>
+                        </tr>
+					}
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+
+
+@code {
+    private CadeirasLusitanasContext context = default!;
+
+    private List<Component> components = new();
+
+    private string descricao;
+
+    private bool isPopupVisible = false;
+
+    private void ShowPopup(string d)
+    {
+        descricao = d;
+        isPopupVisible = true; // Show the popup
+    }
+
+    private void ClosePopup()
+    {
+        isPopupVisible = false; // Hide the popup
+    }
+
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+        components = context.Component.ToList();
+    }
+
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+
+    private void NavigateToPopupQuantidade(int id)
+    {
+        navigationManager.NavigateTo($"/abastecer-componente/{id}");
+    }
+
+
+}

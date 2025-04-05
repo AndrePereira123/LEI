@@ -1,0 +1,204 @@
+﻿@page "/diminuir-produtos"
+@rendermode InteractiveServer
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Authorization
+@using CadeirasLusitanas.Data
+@using CadeirasLusitanas.Models.ViewModels
+@attribute [StreamRendering]
+@attribute [Authorize(Roles = "ADMIN,USER")]
+@inject CadeirasLusitanasContext dbcontext
+@inject CadeirasLusitanas.Services.GestaoStockProdutos gesStock
+@inject NavigationManager navigationManager
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+
+<style>
+    .contair {
+        position: fixed;
+    }
+
+    .mb-3 .form-control {
+        border: 3px solid #4a4a4a; /* Cinza escuro */
+        background-color: #E9E9E8;
+        padding: 1%;
+        width: 100%;
+        font-size: 1.5rem; /* Texto maior */
+    }
+
+        .mb-3 .form-control:focus {
+            background-color: white;
+        }
+
+    h1 {
+        font-weight: 800;
+        font-size: 1.6rem;
+        padding-bottom: 1%;
+        padding-left: 2%;
+    }
+
+    .actions-container {
+        padding-left: 10%;
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        flex-grow: 0;
+    }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .btn-close {
+        position: fixed;
+        top: 40%; /* Positioning from the top */
+        right: 40%; /* Positioning from the right */
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+</style>
+
+<PageTitle>Diminui stock produto</PageTitle>
+
+<h1>Diminuir stock de produto</h1>
+
+@if (showModal)
+{
+    <div class="popup-overlay">
+        <div actions-container style=" border: 2px solid #4a4a4a;background-color:lightgray;min-width: 20%;min-height:20%;justify-content: center;text-align:left;">
+            <p>@(new MarkupString(modalMessage))</p>
+            <button class="btn-close" @onclick="OnCancel"></button>
+            @if (confirmavel)
+            {
+                <button type="button" class="btn btn-primary" style="margin-left:40%;margin-top:10%;background-color:black;" @onclick="OnConfirm">Confirmar</button>
+            }
+        </div>
+    </div>
+}
+
+<div class="container" style="background-color: #E9E9E8;height : 75vh; padding :2%; text-align:center;">
+    <EditForm Model="@Model" OnValidSubmit="DiminuiQuantidade" FormName="quantidadeForm">
+        <DataAnnotationsValidator />
+        <div class="mb-3">
+            <label>Identificador:</label>
+            <InputNumber @bind-Value="productId" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Quantidade a diminuir:</label>
+            <InputNumber @bind-Value="Model.quantidade" class="form-control" />
+            <ValidationMessage For="() => Model.quantidade" />
+        </div>
+
+        <div class="mb-3 text-danger">
+            @errorMessage
+        </div>
+
+        <button type="button" class="btn btn-primary" style="margin-top:25%;background-color:black;width: 21%; font-size: 1.5rem;" @onclick="() => ShowModal(aviso_de_produto(productId),OnConfirm)">Confirmar</button>
+    </EditForm>
+
+    @if (errorMessage != null)
+    {
+        <span class="text-danger">@errorMessage</span>
+    }
+
+</div>
+
+@code {
+    private bool showModal = false;
+    private string modalMessage = "";
+    private Action onConfirmAction;
+    private bool confirmavel = true;
+
+    public void ShowModal(string message, Action onConfirm)
+    {
+        modalMessage = message;
+        onConfirmAction = onConfirm;
+        showModal = true;
+    }
+
+    private void OnConfirm()
+    {
+        DiminuiQuantidade();
+        showModal = false;
+    }
+
+    private void OnCancel()
+    {
+        showModal = false;
+    }
+
+    private string aviso_de_produto(int id_produto)
+    {
+        string aviso;
+        dbcontext = DbFactory.CreateDbContext();
+        var produto = dbcontext.Product.Find(id_produto);
+
+        if (produto == null)
+        {
+            aviso = "O produto não existe.(id-" + id_produto + ")";
+            confirmavel = false;
+        }
+        else if (produto.visible == 0)
+        {
+            aviso = "O produto não existe.(id-" + id_produto + ")";
+            confirmavel = false;
+        }
+        else if (produto.stock < Model.quantidade)
+        {
+            aviso = "O produto tem stock inferior ao valor a remover.";
+            confirmavel = false;
+        }
+        else if (Model.quantidade <= 0)
+        {
+            aviso = "A quantidade inserida deve ser maior que 0.";
+            confirmavel = false;
+        }
+        else
+        {
+            aviso = "O produto " + produto.nome + " tera o stock reduzido por " + Model.quantidade + ".<br />Stock atual = " + produto.stock + ".<br />Stock final = " + (produto.stock - Model.quantidade);
+            confirmavel = true;
+        }
+
+        return aviso;
+    }
+
+    public int productId { get; set; }
+
+
+    [SupplyParameterFromForm]
+    public AbastecerComponenteViewModel Model { get; set; } = new();
+
+    private string? errorMessage;
+
+    public async Task DiminuiQuantidade()
+    {
+        if (Model.quantidade <= 0)
+        {
+            errorMessage = "A quantidade inserida deve ser maior do que 0";
+            return;
+        }
+
+		using var context = DbFactory.CreateDbContext();
+
+		var condition = await gesStock.diminuiStock(productId, Model.quantidade, context);
+        if (!condition)
+        {
+            errorMessage = "O identificador inserido não está atribuido a qualquer produto";
+            return;
+        }
+
+        navigationManager.NavigateTo("/products");
+    }
+
+}

@@ -1,0 +1,274 @@
+﻿@page "/linhaDeMontagem"
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Services
+@using CadeirasLusitanas.Data
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.DependencyInjection
+@inject CadeirasLusitanas.Services.CriarInstanciaProduto criarInstanciaProduto
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+@inject CadeirasLusitanas.Data.CadeirasLusitanasContext context
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject Microsoft.Extensions.DependencyInjection.IServiceScopeFactory IServiceScopeFactory
+
+<style>
+    .linha-montagem-container {
+    display: flex; /* Use flexbox for horizontal layout */
+    flex-direction: row-reverse;
+    gap: 20px; /* Space between the boxes */
+    justify-content: space-around; /* Adjust the spacing between items */
+    padding: 20px; /* Add padding around the container */
+    background-color: #E9E9E8;
+    font-size: 1.2rem;
+    }
+
+    .caixa_fase {
+    width: 20%;
+    height: 100%;
+    }
+
+    .caixa_espera {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    width: 100%; /* Set the width of the container */
+    gap: 20px; /* Space between the boxes */
+    padding: 30px;
+    background-color: #f4f4f4; /* Light gray background */
+    }
+
+    .caixa {
+    flex: 0 0 auto; /* Ensure boxes don't shrink or grow */
+    width: 150px; /* Width of each box */
+    height: 120px; /* Height of each box */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc; /* Box background color */
+    }
+
+    .componentes-lista {
+    list-style-type: none; /* Remove default bullets */
+    padding: 0;
+    margin: 10px 0;
+    text-align: left;
+    font-size: 1.2rem;
+    margin-bottom: 25%;
+    }
+
+    .componentes-lista li {
+    display: flex;
+    justify-content: space-between; /* Align text and checkmark */
+    font-size: 14px;
+    }
+
+
+    .tempo-info p {
+    font-size: 1.1rem;
+    }
+
+    .progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: #e0e0e0; /* Light gray for the bar background */
+    border: 3px solid black;
+    box-sizing: border-box; /* Ensures the border is included in the element's total width and height */
+    position: relative; /* Ensures `.progress` can be positioned correctly inside */
+    }
+
+    .progress {
+    height: 100%;
+    background-color: #39b322; /* Green for progress */
+    width: 0%; /* Dynamically set this value based on progress */
+    position: absolute; /* Aligns the progress to the start of the bar */
+    top: 0;
+    left: 0;
+    border-radius: 0px;
+    border: 0px;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 1.6rem;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    }
+</style>
+
+<PageTitle>Linha de Montagem</PageTitle>
+
+<h1>Linha de Montagem</h1>
+<div class="linha-montagem-container">
+
+    @foreach (var produto in LinhaDeMontagemMethods.Fases)
+    {
+        <div class="caixa_fase">
+            @if (produto != null)
+            {
+                <h4>Identificador: @produto.Id  </h4>
+                <p>@context.Product.Find(produto.ProductID).nome (@produto.ProductID)</p>
+
+                <br>
+                <p>Componentes:</p>
+                <ul class="componentes-lista">
+                    @{              
+                        var product = (context.Product.Include(p => p.Components).FirstOrDefault(p => p.Id == produto.ProductID));
+                        var componentes = product.Components;
+                    }
+                    @foreach (var componente in componentes)
+                    {
+                        <li style="padding-left: 10%">
+                            @if (componente.tipo == "RODA")
+                            {
+                                <span>@componente.nome - Nº de rodas: @product.numeroRodas</span>
+                            } else {
+                                @componente.nome
+                            }
+                            @if ((componente.tipo == "RODA") && produto.Progresso >= 15)
+                            {
+                                <span style="color: blue; font-weight: 800;">✔</span>
+                            }
+                            else if ((componente.tipo == "PISTÃO") && produto.Progresso >= 30)
+                            {
+                                <span style="color: blue; font-weight: 800;">✔</span>
+                            }
+                            else if ((componente.tipo == "ALMOFADA")&& produto.Progresso >= 55)
+                            {
+                                <span style="color: blue; font-weight: 800;">✔</span>
+                            }
+                            else if ((componente.tipo == "ENCOSTO")&& produto.Progresso >= 80)
+                            {
+                                <span style="color: blue; font-weight: 800;">✔</span>
+                            }
+                            else if (produto.Progresso >= 90)
+                            {
+                                <span style="color: blue; font-weight: 800;">✔</span>
+                            }
+                        </li>
+                    }
+                </ul>
+
+
+                <div class="tempo-info">
+                    <p>Tempo: @(TimeSpan.FromSeconds(produto.Tempo).ToString(@"mm\:ss"))</p>
+                    <p>Tempo médio:@(TimeSpan.FromSeconds((LinhaDeMontagemMethods.MediaTProduçao(produto.ProductID,context))).ToString(@"mm\:ss"))</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress" style = "width : @produto.Progresso%"></div>
+                </div>
+            }
+            else
+            {
+                <h4>Vazio</h4>
+            }
+        </div>
+    }
+</div>
+
+<h1 style="position:fixed;top:70%;font:bold;font-size:1.6rem;">
+    Fila de espera
+</h1>
+<div class="caixa_espera" style="position:fixed;top:76%;">
+    @if (LinhaDeMontagemMethods.ProdutosEmEspera.Any())
+    {
+        var groupedProducts = new List<(string ProductName, int Quantity)>();
+        string? lastProductName = null;
+        int count = 0;
+
+        foreach (var produto in LinhaDeMontagemMethods.ProdutosEmEspera)
+        {
+            var currentProductName = context.Product.Find(produto.ProductID)?.nome ?? "Produto desconhecido";
+
+            if (currentProductName == lastProductName)
+            {
+                count++;
+            }
+            else
+            {
+                if (lastProductName != null)
+                {
+                    groupedProducts.Add((lastProductName, count));
+                }
+
+                lastProductName = currentProductName;
+                count = 1;
+            }
+        }
+
+        if (lastProductName != null)
+        {
+            groupedProducts.Add((lastProductName, count));
+        }
+
+        foreach (var group in groupedProducts)
+        {
+            <div class="caixa">
+                <p>Produto: @group.ProductName</p>
+                <p>Quantidade: @group.Quantity</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Nenhum produto em espera</p>
+    }
+</div>
+
+
+
+@code {
+    private static bool Iniciado = false;
+    private string? email;
+    private string? errorMessage;
+    private Timer? timer;
+
+    Random random = new Random();
+
+    [Inject]
+    private LinhaDeMontagemMethods LinhaDeMontagemMethods { get; set; } = new LinhaDeMontagemMethods();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Iniciado == false)
+        {
+            Iniciado = true;
+            _ = Task.Run(() => ProcessaFila());
+            _ = Task.Run(() => ProcessaLinhaDeMontagem(2));
+            _ = Task.Run(() => ProcessaLinhaDeMontagem(4));
+            _ = Task.Run(() => ProcessaLinhaDeMontagem(6));
+        }
+
+    }
+
+    public void InsereNaLinhaDeEsperaAux(int id, string email){
+        LinhaDeMontagemMethods.InsereNaLinhaDeEspera(id, email);
+    }
+
+
+
+    public async Task ProcessaFila()
+    {
+        using (var scope = IServiceScopeFactory.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<CadeirasLusitanasContext>();
+            await LinhaDeMontagemMethods.ProcessarFila(context);
+        }
+    }
+
+
+    public async Task ProcessaLinhaDeMontagem(int fase)
+    {
+        using (var scope = IServiceScopeFactory.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<CadeirasLusitanasContext>();
+            await LinhaDeMontagemMethods.ProcessarFasesAsync(context, fase);
+        }
+    }
+
+ 
+}

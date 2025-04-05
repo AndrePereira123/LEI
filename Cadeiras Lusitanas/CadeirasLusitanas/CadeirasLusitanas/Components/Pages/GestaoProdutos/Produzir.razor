@@ -1,0 +1,163 @@
+﻿@page "/produzir"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Services
+@attribute [StreamRendering]
+@attribute [Authorize(Roles = "ADMIN,USER")]
+@inject CadeirasLusitanas.Data.CadeirasLusitanasContext context
+@inject NavigationManager NavigationManager
+@using CadeirasLusitanas.Models.Entities
+@inject LinhaDeMontagem linhaDeMontagem
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 75vh;
+        background-color: #E9E9E8;
+        border: 3px solid #4a4a4a;
+        padding: 2%;
+        text-align: center;
+    }
+
+    .mb-3 {
+        margin-bottom: 1.5rem;
+        width: 60%;
+    }
+
+    .form-control {
+        border: 3px solid #4a4a4a;
+        background-color: #E9E9E8;
+        padding: 1%;
+        width: 100%;
+        font-size: 1.5rem;
+        border-radius: 5px;
+    }
+
+    .form-control:focus {
+        background-color: white;
+        border-color: #000;
+        outline: none;
+    }
+
+    h1 {
+        font-weight: 800;
+        font-size: 1.6rem;
+        padding-bottom: 1%;
+        padding-left: 2%;
+    }
+
+    .btn-primary {
+        background-color: black;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0.5rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: green;
+    }
+
+    .error-message {
+        color: red;
+        margin-top: 1rem;
+        font-weight: bold;
+    }
+</style>
+
+<PageTitle>Produzir produto</PageTitle>
+
+<h1>Produção de Produto</h1>
+
+<div class="container">
+    <div class="mb-3">
+        <label for="productId">Identificador:</label>
+        <InputNumber id="productId" @bind-Value="productId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label for="quantidade">Quantidade a produzir:</label>
+        <InputNumber id="quantidade" @bind-Value="quantidade" class="form-control" />
+    </div>
+
+    <button type="button" class="btn-primary" @onclick="ProduzirProduto">Iniciar Produção</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="error-message">
+            <strong>Erro:</strong> @errorMessage
+        </div>
+    }
+</div>
+
+@code {
+    Random random = new Random();
+    private string? errorMessage;
+    private int productId;
+    private int quantidade;
+
+    private async Task ProduzirProduto()
+    {
+        errorMessage = null;
+        var product = await context.Product
+          .Include(p => p.Components)  
+          .FirstOrDefaultAsync(p => p.Id == productId);
+
+        if (product == null)
+        {
+            errorMessage = "Produto não encontrado";
+            return;
+        }
+        if (product.visible == 0)
+        {
+            errorMessage = "Produto não encontrado";
+            return;
+        }
+
+        if (quantidade <= 0)
+        {
+            errorMessage = "Introduza uma quantidade válida";
+            return;
+        }
+
+        if (product.Components.Any(c => 
+            (c.tipo != "RODA" && (c.stock - quantidade) < 0) ||
+             c.tipo == "RODA" && (c.stock - quantidade * product.numeroRodas) < 0))
+        {
+            errorMessage = "Componentes em falta";
+            return;
+        }
+
+
+        foreach (var component in product.Components)
+        {
+            if (component.tipo != "RODA")
+            {
+                component.stock -= quantidade;
+            } else {
+                component.stock -= quantidade * product.numeroRodas;
+            }
+        }
+
+        await context.SaveChangesAsync();
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        string? email = user.Identity?.Name;
+
+        for (int i = 0; i < quantidade; i++)
+        {
+            linhaDeMontagem.InsereNaLinhaDeEsperaAux(productId, email);
+        }
+
+        NavigationManager.NavigateTo("/linhaDeMontagem");
+    }
+}

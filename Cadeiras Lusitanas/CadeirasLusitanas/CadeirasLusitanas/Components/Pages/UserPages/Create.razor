@@ -1,0 +1,161 @@
+﻿@page "/users/create"
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [StreamRendering]
+@attribute [Authorize(Roles = "ADMIN")]
+
+<style> 
+    .mb-3 .form-control {
+        border: 3px solid #4a4a4a; /* Cinza escuro */
+        background-color: #E9E9E8;
+        padding : 1%;
+        width: 100%;
+        font-size: 1.5rem; /* Texto maior */
+    }
+
+    .mb-3 .form-control:focus{
+        background-color: white;
+    }
+    h1 {
+      font-weight: 800;
+      font-size: 1.7rem;
+      padding-bottom: 3%;
+      padding-left: 2%;
+    }
+</style>
+
+<PageTitle>Criar Utilizador</PageTitle>
+
+<h1>Criar novo Utilizador</h1>
+
+<div class="container" style="background-color: #E9E9E8;height : 75vh; padding :2%; text-align:center;">
+        <EditForm method="post" Model="User" OnSubmit="AddUser" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+                <InputText id="email" @bind-Value="User.email" class="form-control" placeholder="E-mail"/> 
+                <span class="text-danger">@EmailErrorMessage</span>
+            </div>
+
+            <div class="mb-3">
+                <InputText id="password" @bind-Value="User.password" class="form-control" placeholder="Palavra-passe" />
+                <span class="text-danger">@PasswordErrorMessage</span>
+            </div>
+
+            <div class="mb-3">
+                <InputSelect id="type" @bind-Value="User.type" class="form-control">
+                    <option value="">Selecione o tipo...</option>
+                    @foreach (var tipo in Enum.GetValues<Tipos>())
+                {
+                    <option value="@tipo">@tipo</option>
+                }
+            </InputSelect>
+            <span class="text-danger">@errorTypeMessage</span>
+
+
+        </div>
+        <div style="position:fixed; bottom: 13%;text-align: center; width: 100%;transform: translateX(-15%);">
+            <button type="submit" class="btn" style="background-color: black; color: white; width: 21%; height: 20%; font-size: 1.5rem; border-radius: 8px;">
+                Adicionar Utilizador
+            </button>
+            <a href="/users" style="display: inline-block;">Voltar</a>
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    [SupplyParameterFromForm]
+    private User User { get; set; } = new User{
+			email = "",
+			password = "",
+			type = ""
+    };
+
+    private string? errorMessage;
+    private string? errorTypeMessage;
+    private string? EmailErrorMessage;
+    private string? PasswordErrorMessage;
+
+
+    public enum Tipos
+    {
+        ADMIN,
+        USER
+    }
+
+    private void ValidateType(String str)
+    {
+        var value = str.ToUpper();
+
+        if(String.IsNullOrEmpty(value)){
+            errorTypeMessage = "Selecione algum tipo";
+            return;
+        }
+
+        if (!Enum.TryParse(typeof(Tipos), value, out var parsedValue) || !Enum.IsDefined(typeof(Tipos), parsedValue)){
+            errorTypeMessage = "O tipo selecionado não é válido.";
+            return;
+        }
+
+        errorTypeMessage = null;
+
+    }
+
+    private void ValidateEmail(String email) {
+
+        var regex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+
+        if (string.IsNullOrWhiteSpace(email) || !regex.IsMatch(email))
+        {
+            EmailErrorMessage = "O campo deve conter um endereço de e-mail válido.";
+        }
+        else if (email.Length >= 45)
+        {
+            EmailErrorMessage = "O email tem que ter tamanho inferior a 45 caracteres.";
+        }
+    }
+
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddUser()
+    {
+        using var context = DbFactory.CreateDbContext();
+
+        PasswordErrorMessage = null;
+
+
+        var userTeste = context.User.FirstOrDefaultAsync(u => u.email == User.email);
+
+        if (userTeste.Result != null){
+            errorMessage = "Já existe um utilizador registado com esse email";
+        }
+
+        if(string.IsNullOrEmpty(User.password)) {
+            PasswordErrorMessage = "Insira uma password.";
+        }
+        else if (User.password.Length >= 45)
+        {
+            PasswordErrorMessage = "A palavra-passe tem que ter tamanho inferior a 45 caracteres.";
+        }
+
+        EmailErrorMessage = null;
+
+        ValidateType(User.type);
+        ValidateEmail(User.email);
+
+
+        if (errorTypeMessage == null && EmailErrorMessage == null && PasswordErrorMessage == null && errorMessage == null){
+            context.User.Add(User);
+           await context.SaveChangesAsync();
+           NavigationManager.NavigateTo("/users");
+        }
+   
+
+    
+    }
+}

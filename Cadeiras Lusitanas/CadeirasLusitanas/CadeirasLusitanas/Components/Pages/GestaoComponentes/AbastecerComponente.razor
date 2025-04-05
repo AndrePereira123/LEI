@@ -1,0 +1,101 @@
+﻿@page "/abastecer-componente/{componentId:int}"
+
+@using CadeirasLusitanas.Models.ViewModels
+@using CadeirasLusitanas.Data
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Authentication
+@inject CadeirasLusitanasContext dbcontext
+@inject CadeirasLusitanas.Services.GestaoStockComponentes gesStock
+@inject NavigationManager navigationManager
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+
+
+<style>
+    .modal {
+    left: 27%;
+    }
+    .contair {
+    position: fixed;
+    }
+
+    .mb-3 .form-control {
+    border: 3px solid #4a4a4a; /* Cinza escuro */
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    }
+
+    .mb-3 .form-control:focus {
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 1.7rem;
+    padding-bottom: 3%;
+    padding-left: 2%;
+    }
+</style>
+
+<PageTitle>Abastecer componente</PageTitle>
+
+<div class="container" style="background-color: #E9E9E8;height : 75vh; padding :2%; text-align:center;">
+    <h5 class="modal-title">Insira a Quantidade</h5>
+    <div class="modal-body">
+        <EditForm Model="@Model" OnValidSubmit="SubmitQuantidade" FormName="quantidadeForm">
+            <DataAnnotationsValidator />
+            <div class="mb-3">
+                <InputNumber @bind-Value="Model.quantidade" class="form-control" />
+                <ValidationMessage For="() => Model.quantidade" />
+            </div>
+
+            <div class="mb-3 text-danger">
+                @errorMessage
+            </div>
+
+            <div style="position:fixed; bottom: 40%;text-align: center; width: 100%;transform: translateX(-15%);">
+                <button type="submit" class="btn" style="background-color: black; color: white; width: 21%; height: 20%; font-size: 1.5rem; border-radius: 8px;">
+                    Aumentar Stock
+                </button>
+                <a href="/components" style="display: inline-block;">Voltar</a>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+
+
+@code {
+
+    [Parameter]
+    public int componentId { get; set; }
+
+    private string? notificacao;
+
+    [SupplyParameterFromForm]
+    public AbastecerComponenteViewModel Model { get; set; } = new();
+
+    private string? errorMessage;
+
+    public async Task SubmitQuantidade()
+    {
+        if(Model.quantidade <= 0){
+            errorMessage = "A quantidade inserida deve ser maior do que 0";
+            return;
+        }
+
+        using var context = DbFactory.CreateDbContext();
+
+        await gesStock.aumentaStock(componentId, Model.quantidade, context);
+        navigationManager.NavigateTo("/components");
+    }
+
+
+}

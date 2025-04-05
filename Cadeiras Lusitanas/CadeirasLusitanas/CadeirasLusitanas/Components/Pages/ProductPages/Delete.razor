@@ -1,0 +1,105 @@
+﻿@page "/products/delete"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@using CadeirasLusitanas.Data
+@inject CadeirasLusitanasContext dbcontext
+@inject NavigationManager NavigationManager
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<PageTitle>Remover produto</PageTitle>
+
+<style>
+    .modal {
+    left: 27%;
+    }
+
+    .row {
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    padding-left: 26%;
+    }
+
+    .row .form-control:focus {
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 1.8rem;
+    padding-left: 2%;
+    }
+
+</style>
+
+<div>
+    <h1>De certeza que pretende remover este produto?</h1>
+    <hr />
+    @if (product is null)
+    {
+        <p><em>A carregar...</em></p>
+    }
+    else {
+        <div class="container" style="background-color: #E9E9E8;
+        border: 3px solid #4a4a4a;height : 75vh; padding :2%; text-align:center;justify-content:center;">
+            <dl class="row">
+                <dt class="col-sm-2">Nome</dt>
+                <dd class="col-sm-10">@product.nome</dd>
+                <dt class="col-sm-2">Descrição</dt>
+                <dd class="col-sm-10" style="word-wrap: break-word; white-space: pre-wrap;">@product.descricao</dd>
+
+                <dt class="col-sm-2">Peso</dt>
+                <dd class="col-sm-10">@product.peso</dd>
+                <dt class="col-sm-2">Custo</dt>
+                <dd class="col-sm-10">@product.custo</dd>
+                <dt class="col-sm-2">Stock</dt>
+                <dd class="col-sm-10">@product.stock</dd>
+            </dl>
+            <EditForm method="post" Model="product" OnValidSubmit="DeleteProduct" FormName="delete" Enhance>
+                <div style="margin-bottom: 35%;text-align: center; width: 100%;">
+                    <button type="submit" class="btn btn-danger" style="background-color: black; color: white; width: 21%; height: 20%; font-size: 1.5rem; border-radius: 8px;"
+                    onmouseover="this.style.backgroundColor='red'; this.style.color='white';"
+                    onmouseout="this.style.backgroundColor='black'; this.style.color='white';">
+                        Remover
+                    </button>
+                    <a href="/products" style="display: inline-block;">Voltar</a>
+                </div>
+            </EditForm>
+        </div>
+
+    }
+</div>
+
+@code {
+    private Product? product;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+
+        product = await context.Product.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (product is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private async Task DeleteProduct()
+    {
+    
+		using var context = DbFactory.CreateDbContext();
+        
+        var produto = await context.Product.FirstOrDefaultAsync(m => m.Id == Id);
+        produto.visible = 0;
+        context.Product.Update(produto);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/products");
+    }
+}

@@ -1,0 +1,237 @@
+﻿@page "/components/create"
+@using Microsoft.EntityFrameworkCore
+@using CadeirasLusitanas.Models.Entities
+@using System.Text.RegularExpressions;
+@inject IDbContextFactory<CadeirasLusitanas.Data.CadeirasLusitanasContext> DbFactory
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "ADMIN,USER")]
+
+<style>
+    .contair {
+    position: fixed;
+    }
+
+    .mb-3 .form-control {
+    border: 3px solid #4a4a4a; /* Cinza escuro */
+    background-color: #E9E9E8;
+    padding: 1%;
+    width: 100%;
+    font-size: 1.5rem; /* Texto maior */
+    }
+
+    .mb-3 .form-control:focus {
+    background-color: white;
+    }
+
+    h1 {
+    font-weight: 800;
+    font-size: 1.6rem;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    }
+</style>
+
+<PageTitle>Criar componente</PageTitle>
+
+<h1>Criar novo Componente</h1>
+
+<div class="container" style="background-color: #E9E9E8;height : 80vh; padding :2%; text-align:center;">
+    <EditForm Model="Component" OnValidSubmit="AddComponent" FormName="create" >
+        <ValidationSummary class="text-danger" role="alert" />
+        <div class="mb-3">
+            <InputText id="nome" @bind-Value="Component.nome" class="form-control" placeholder="Nome" />
+            <ValidationMessage For="() => Component.nome" class="text-danger" />
+            <span class="text-danger">@NomeErrorMessage</span>
+        </div>
+        <div class="mb-3">
+            <InputText id="descricao" @bind-Value="Component.descricao" class="form-control" placeholder="Descrição" />
+            <ValidationMessage For="() => Component.descricao" class="text-danger" />
+            <span class="text-danger">@DescricaoErrorMessage</span>
+        </div>
+        <div class="mb-3" style="width: 50%">
+            <label>Peso(kg):</label>
+            <InputNumber id="peso" @bind-Value="Component.peso" class="form-control" placeholder="Peso" />
+            <ValidationMessage For="() => Component.peso" class="text-danger" />
+            <span class="text-danger">@PesoErrorMessage</span>
+        </div>
+
+        <div class="mb-3" style="width: 50%">
+            <InputSelect id="tipo" @bind-Value="Component.tipo" class="form-control" placeholder="Tipo">
+                <option value="">Selecione o tipo...</option>
+                @foreach (var tipo in Enum.GetValues<Tipos>())
+                {
+                    <option value="@tipo">@tipo</option>
+                }
+            </InputSelect>
+            <span class="text-danger">@errorMessage</span>
+        </div>
+        <div class="mb-3" style="width: 50%">
+            <label>Custo(€):</label>
+            <InputNumber id="custo" @bind-Value="Component.custo" class="form-control" placeholder="Custo" />
+            <ValidationMessage For="() => Component.custo" class="text-danger" />
+            <span class="text-danger">@CustoErrorMessage</span>
+        </div>
+
+        <div class="mb-3" style="width: 50%">
+            <InputText id="tempo" @bind-Value="Component.tempo" class="form-control" placeholder="Tempo" /> 
+            <ValidationMessage For="() => Component.tempo" class="text-danger" />
+            <span class="text-danger">@TempoErrorMessage</span>
+        </div>
+
+
+        <div style="position:fixed; bottom: 6%;text-align: center; width: 100%;transform: translateX(-17%);">
+            <button type="submit" class="btn" style="background-color: black; color: white; width: 21%; height: 20%; font-size: 1.5rem; border-radius: 8px;">
+                Adicionar Componente
+            </button>
+        </div>
+    </EditForm>
+</div>
+
+
+
+
+@code {
+
+    public enum Tipos
+    {
+        RODA,
+        PISTÃO,
+        ENCOSTO,
+        BRAÇO_DIREITO,
+        BRAÇO_ESQUERDO,
+        ALMOFADA
+    }
+
+    public string? errorMessage;
+    public string? NomeErrorMessage;
+    public string? DescricaoErrorMessage;
+    public string? PesoErrorMessage;
+    public string? CustoErrorMessage;
+    public string? TempoErrorMessage;
+
+    private void ValidateType(String str)
+    {
+        var value = str.ToUpper();
+
+        if(String.IsNullOrEmpty(value)){
+            errorMessage = "Selecione algum tipo";
+            return;
+        }
+
+        if (!Enum.TryParse(typeof(Tipos), value, out var parsedValue) || !Enum.IsDefined(typeof(Tipos), parsedValue)){
+            errorMessage = "O tipo selecionado não é válido.";
+            return;
+        }
+
+        errorMessage = null;
+
+    }
+
+    private void ValidateTempo(string tempo)
+    {
+        var regex = new System.Text.RegularExpressions.Regex(@"^[1-9]\d*-[1-9]\d*$");
+
+        if (string.IsNullOrWhiteSpace(tempo) || !regex.IsMatch(tempo))
+        {
+            TempoErrorMessage = "O campo tempo deve estar num formato do tipo '15-20'.";
+            return;
+        }
+
+        if (tempo.Length > 10)
+        {
+            TempoErrorMessage = "O campo tempo deve ter no máximo 10 caracteres.";
+            return;
+        }
+
+        var parts = tempo.Split('-');
+        if (parts.Length == 2 && int.TryParse(parts[0], out int first) && int.TryParse(parts[1], out int second))
+        {
+            if (first >= second)
+            {
+                TempoErrorMessage = "O primeiro número deve ser menor que o segundo.";
+                return;
+            }
+        }
+    }
+
+
+    [SupplyParameterFromForm]
+    private Component Component { get; set; } = new Component {
+            nome = string.Empty,
+            descricao = string.Empty,
+            peso = 0f,
+            tipo = string.Empty,
+            custo = 0f,
+            stock = 0,
+            tempo = string.Empty
+    };
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddComponent()
+    {
+
+        NomeErrorMessage = null;
+        DescricaoErrorMessage = null;
+        PesoErrorMessage = null;
+        CustoErrorMessage = null;
+        TempoErrorMessage = null;
+
+
+        using var context = DbFactory.CreateDbContext();
+        ValidateType(Component.tipo);
+        ValidateTempo(Component.tempo);
+
+        if (string.IsNullOrEmpty(Component.nome)) {
+            NomeErrorMessage = "O nome é obrigatório.";
+        }
+        else if (Component.nome.Length >= 45)
+        {
+            NomeErrorMessage = "O nome tem que ter tamanho inferior a 45 caracteres.";
+        }
+
+        if (string.IsNullOrEmpty(Component.descricao)) {
+            DescricaoErrorMessage = "A descrição é obrigatória.";
+        }
+        else if (Component.descricao.Length >= 200)
+        {
+            DescricaoErrorMessage = "A descrição tem que ter tamanho inferior a 200 caracteres.";
+        }
+
+        if (Component.peso <= 0 ) {
+            PesoErrorMessage = "O peso tem que ser maior do que 0.";
+        }
+        if (Component.peso > 999)
+        {
+            PesoErrorMessage = "O peso tem que ser menor que 1000.";
+        }
+
+        if (Component.custo <= 0 ) {
+            CustoErrorMessage = "O custo tem que ser maior do que 0.";
+        }     
+
+        if (Component.custo > 999)
+        {
+            CustoErrorMessage = "O custo tem que ser menor que 1000.";
+        }
+
+        if (!string.IsNullOrEmpty(NomeErrorMessage) || !string.IsNullOrEmpty(DescricaoErrorMessage) || 
+        !string.IsNullOrEmpty(PesoErrorMessage) || !string.IsNullOrEmpty(CustoErrorMessage) || !string.IsNullOrEmpty(TempoErrorMessage))
+        {
+            return;
+        }
+
+        Component.visible = 1;
+
+
+        if(errorMessage == null){
+            context.Component.Add(Component);
+            await context.SaveChangesAsync();
+            NavigationManager.NavigateTo("/components");
+        }
+     
+    }
+
+
+
+}
