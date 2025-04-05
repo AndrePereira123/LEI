@@ -1,2 +1,4 @@
-# LEI
-Projetos desenvolvidos durante a minha licenciatura em engenharia informática na Universidade do Minho.
+# Projeto IA (Int. Aritificial) (3 ano 1 sem.)
+
+
+#### [Repositorio original](https://github.com/MarcoGoncalves123/IA-2024)
