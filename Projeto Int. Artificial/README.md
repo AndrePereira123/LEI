@@ -8,7 +8,7 @@ com o intuito de maximizar o custo/beneficio na distribuição de recursos num c
 
 O projeto pode ser executado através do ficheiro [Main.py](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/IA-2024/Main.py).
 
-### [Relatorio](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/Relat%C3%B3rio.pdf)
-#### [Grafo associado ao problema de procura](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/Diagrama%20do%20Grafo%20Utilizado.png)
+## [Relatorio](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/Relat%C3%B3rio.pdf)
+ - #### [Grafo associado ao problema de procura](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/Diagrama%20do%20Grafo%20Utilizado.png)
 
 #### [Repositorio original](https://github.com/MarcoGoncalves123/IA-2024)
