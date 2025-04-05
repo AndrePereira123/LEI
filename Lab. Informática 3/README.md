@@ -1,2 +1,5 @@
-# LEI
-Projetos desenvolvidos durante a minha licenciatura em engenharia informática na Universidade do Minho.
+# Projeto LI3 (2 ano 1 sem.)
+
+
+
+#### [Repositorio original](https://github.com/dium-li3/grupo-28)
