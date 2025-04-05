@@ -2,4 +2,4 @@
 
 
 
-#### [Repositorio original]([https://github.com/MarcoGoncalves123/CadeirasLusitanas](https://gitlab.com/uminho-di/li1/2223/projetos/2022li1g059))
+#### [Repositorio original](https://gitlab.com/uminho-di/li1/2223/projetos/2022li1g059)
