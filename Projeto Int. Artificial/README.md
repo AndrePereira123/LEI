@@ -1,7 +1,14 @@
-# Projeto IA (Int. Aritificial) (3 ano 1 sem.)
+# Projeto IA (Int. Artificial) (3 ano 1 sem.)
 
-Este projeto pode ser executado através do ficheiro ["Main.py"]()
 
-#### [Relatorio]()
+Para o projeto associado à UC de "Inteligência Artificial" da Licenciatura em Engenharia Informática (Uminho) 2024/2025 foi criado um algoritmo de procura em grafos 
+com o intuito de maximizar o custo/beneficio na distribuição de recursos num cenário de catástrofe ambiental.
 
-#### [Repositorio original](https://github.com/MarcoGoncalves123/IA-2024)
+
+
+O projeto pode ser executado através do ficheiro [Main.py](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/IA-2024/Main.py).
+
+## [Relatório](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/Relat%C3%B3rio.pdf)
+ - #### [Grafo associado ao problema de procura](https://github.com/AndrePereira123/LEI/blob/main/Projeto%20Int.%20Artificial/Diagrama%20do%20Grafo%20Utilizado.png)
+
+#### [Repositório original](https://github.com/MarcoGoncalves123/IA-2024)
