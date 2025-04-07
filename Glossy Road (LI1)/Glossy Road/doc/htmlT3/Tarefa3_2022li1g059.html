@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Tarefa3_2022li1g059</title><link href="linuwial.css" rel="stylesheet" type="text/css" title="Linuwial" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { processClass: "mathjax", ignoreClass: ".*" } });</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><span class="caption empty">&nbsp;</span><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul></div><div id="content"><div id="module-header"><table class="info"><tr><th valign="top">Copyright</th><td>Andr&#233; Filipe Soares Pereira  &lt;a104275@alunos.uminho.pt&gt;<br />Leonardo Gomes Alves &lt;a104093@alunos.uminho.pt&gt;</td></tr><tr><th>Safe Haskell</th><td>Safe-Inferred</td></tr></table><p class="caption">Tarefa3_2022li1g059</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>M&#243;dulo para a realiza&#231;&#227;o da Tarefa 3 do projeto de LI1 em 2022/23.</p></div></div><div id="synopsis"><details id="syn"><summary>Synopsis</summary><ul class="details-toggle" data-details-id="syn"><li class="src short"><a href="#v:animaJogo">animaJogo</a> :: Int -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a></li><li class="src short"><a href="#v:animaLinha">animaLinha</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])</li><li class="src short"><a href="#v:animaJogador">animaJogador</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; <a href="LI12223.html#t:Jogada" title="LI12223">Jogada</a> -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a></li><li class="src short"><a href="#v:animaTartaruga">animaTartaruga</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; <a href="LI12223.html#t:Jogada" title="LI12223">Jogada</a> -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a></li><li class="src short"><a href="#v:atropelamento">atropelamento</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; Int -&gt; (Bool, <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a>)</li><li class="src short"><a href="#v:moverObstaculos">moverObstaculos</a> :: [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])]</li><li class="src short"><a href="#v:move">move</a> :: Int -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]</li><li class="src short"><a href="#v:moverJogador">moverJogador</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Jogada" title="LI12223">Jogada</a> -&gt; <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a></li><li class="src short"><a href="#v:seTronco">seTronco</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; Int -&gt; (<a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a>, Int)</li><li class="src short"><a href="#v:rioJogador">rioJogador</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool</li><li class="src short"><a href="#v:verLimites">verLimites</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; Bool</li><li class="src short"><a href="#v:verificarArvore">verificarArvore</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; Bool</li><li class="src short"><a href="#v:isTree">isTree</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool</li><li class="src short"><a href="#v:isCar">isCar</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool</li></ul></details></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a id="v:animaJogo" class="def">animaJogo</a> :: Int -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> <a href="#v:animaJogo" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o principal &quot;animaJogo&quot; calcula todos os movimentos que ser&#227;o realizados ap&#243;s um per&#237;odo de tempo.
+Assim, para esta funcao, t&#234;m que ser considerados os limites do mapa e se o jogador est&#225; num tronco pois, em caso afirmativo, isso implica ajustar tamb&#233;m 
+as suas coordenadas.</p><p>No primeiro caso da funcao &#233; comparado o &quot;n&quot; &#224; &quot;vel&quot; , uma vez que a unica forma de estes valores alguma vez corresponderem &#233; caso o jogador esteja 
+num rio, pois a fun&#231;&#227;o seTronco devolve uma velocidade 0 caso esta condicoes n&#227;o se verifiquem, neste caso ser&#225; atualizado todo o mapa e tamb&#233;m a 
+posi&#231;&#227;o do jogador.</p><p>Em qualquer outro caso apenas se atualiza todos os obst&#225;culos sem necessidade de alterar a posi&#231;&#227;o do jogador. </p><h2>Fun&#231;&#227;o principal:</h2><pre>animaJogo :: Int -&gt; Jogo -&gt; Jogo
+animaJogo n (Jogo m@(Jogador (x,y)) (Mapa l ((terr,(h:t)):t2)))                                                  
+      | n == vel = (Jogo posinput (Mapa l movob ))                                                                                   
+      | otherwise = (Jogo m (Mapa l movob ))                            
+                                                                            
+   where posinput   =      fst (seTronco m ((terr,(h:t)):t2) 0)
+         vel        = abs (snd (seTronco m ((terr,(h:t)):t2) 0))                              
+         movob = map (animaLinha n) mapaoriginal                        
+         mapaoriginal = ((terr,(h:t)):t2)
+
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogo 1 (Jogo (Jogador (0,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Rio (-2),[Nenhum,Nenhum,Tronco])]))
+</code></strong>Jogo (Jogador (1,0)) (Mapa 3 [(Rio 1,[Tronco,Tronco,Nenhum]),(Rio (-2),[Nenhum,Nenhum,Tronco])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogo 1 (Jogo (Jogador (1,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Rio (-1),[Tronco,Tronco,Nenhum])]))
+</code></strong>Jogo (Jogador (0,1)) (Mapa 3 [(Rio 1,[Tronco,Tronco,Nenhum]),(Rio (-1),[Tronco,Nenhum,Tronco])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogo 2 (Jogo (Jogador (1,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Rio (-2),[Tronco,Tronco,Nenhum])]))
+</code></strong>Jogo (Jogador (0,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Rio (-2),[Tronco,Nenhum,Tronco])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogo 1 (Jogo (Jogador (2,0)) (Mapa 3 [(Rio (-1),[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Nenhum])]))
+</code></strong>Jogo (Jogador (1,0)) (Mapa 3 [(Rio (-1),[Nenhum,Tronco,Tronco]),(Relva,[Arvore,Nenhum,Nenhum])])
+</pre></div></div><div class="top"><p class="src"><a id="v:animaLinha" class="def">animaLinha</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) <a href="#v:animaLinha" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o animaLinha tem o objetivo de fazer com que uma dada linha seja atualizada conforme a sua velocidade, basicamente faz com que os obst&#225;culos de um rio ou estrada se movimentem conforme 
+   se a sua velocidade &#233; positiva (para a direita) ou se &#233; negativa (para a esquerda).</p><p>Realizamos esta funcao limitada a mover os obstaculos 1 unidade de cada vez de forma a poder usufruir dela recursivamente na &quot;reageTempoGloss&quot; e assim tornar o jogo mais fluido.</p><h2>Fun&#231;&#227;o principal:</h2><pre>animaLinha :: Int -&gt; (Terreno,[Obstaculo]) -&gt; (Terreno,[Obstaculo])
+animaLinha x (Rio y,obs)      | x == abs y &amp;&amp; y &lt; 0 = (Rio y, move (-1) obs)
+                              | x == abs y &amp;&amp; y &gt; 0 = (Rio y, move 1 obs)
+
+animaLinha x (Estrada y,obs)  | x == abs y &amp;&amp; y &lt; 0 = (Estrada y, move (-1) obs)
+                              | x == abs y &amp;&amp; y &gt; 0 = (Estrada y, move 1 obs)
+
+animaLinha _ l = l
+</pre><h3>Exemplos de utiliza&#231;&#227;o:</h3><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaLinha 1 (Rio 1, [Tronco,Nenhum,Nenhum,Tronco,Tronco])
+</code></strong>(Rio 1,[Tronco,Tronco,Nenhum,Nenhum,Tronco])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaLinha 1 (Estrada (-1), [Carro,Carro,Nenhum,Nenhum,Carro,Nenhum])
+</code></strong>(Estrada (-1),[Carro,Nenhum,Nenhum,Carro,Nenhum,Carro])
+</pre></div></div><div class="top"><p class="src"><a id="v:animaJogador" class="def">animaJogador</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; <a href="LI12223.html#t:Jogada" title="LI12223">Jogada</a> -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> <a href="#v:animaJogador" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o animaJogador tem o objetivo de animar o jogador consoante vai jogando e, verifica:</p><p>1- Se o jogador tentar se mover para dentro de uma &#225;rvore, a sua posi&#231;&#227;o ser&#225; a mesma;</p><p>2- Caso o jogador esteja dentro do rio, a sua posi&#231;&#227;o mant&#233;m-se e n&#227;o pode ser mudada;</p><p>3- Verifica ainda se o jogador &#233; atropelado por um carro, caso for verdade, o jogador perde.</p><h2>Fun&#231;&#227;o principal:</h2><pre>animaJogador :: Jogo -&gt; Jogada -&gt; Jogo 
+animaJogador i<code>(Jogo m</code>(Jogador (x,y)) (Mapa l ((terr,(h:t)):t2))) jogada                                               
+            | verLimites postesterio mapaoriginal == False = i
+            | (cairRio m (Mapa l ((terr,(h:t)):t2))) = (Jogo m (Mapa l ((terr,(h:t)):t2)))                                          
+            | atrop = jogoinicial                                                                                         
+            | otherwise = (Jogo postesterio (Mapa l movob ))   
+
+    where postesterio = (moverJogador (Jogador (x,y)) jogada)                                     
+          movob = ((terr,(h:t)):t2)                             
+          mapaoriginal = ((terr,(h:t)):t2)
+          (atrop,jogoinicial) = (atropelamento (Jogo postesterio (Mapa l ((terr,(h:t)):t2)))) 0 
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>atropelamento :: Jogo -&gt; Int -&gt; (Bool,Jogo) 
+atropelamento (Jogo (Jogador (x,y)) (Mapa l ((Estrada v,(h:t)):t2))) n |atropelado (Jogador (x,y)) (Mapa l ((Estrada v,(h:t)):t2)) = (True,jogosaved)
+                                                                       |v &gt; 1 = atropelamento (Jogo (Jogador (x,y)) (Mapa l ((Estrada (v-1),(last (h:t) : init (h:t))):t2))) (n+1)
+                                                                       |v &lt; 1 = atropelamento (Jogo (Jogador (x,y)) (Mapa l ((Estrada (v+1),(t ++ [h])):t2))) (n-1)
+                                                                       |otherwise = (False,jogosaved)  
+                                                                  where jogosaved =  (Jogo (Jogador (x,y)) (Mapa l ((Estrada (v+n),(h:t)):t2)))
+atropelamento (Jogo (Jogador (x,y)) (Mapa l ((terr,(h:t)):t2))) n = (False,jogogenerico) 
+                                                                  where jogogenerico = (Jogo (Jogador (x,y)) (Mapa l ((terr,(h:t)):t2)))
+</pre><h4>Exemplos de utiliza&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogador (Jogo (Jogador (0,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])) (Move Direita)
+</code></strong>Jogo (Jogador (1,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogador (Jogo (Jogador (1,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])) (Move Esquerda)
+</code></strong>Jogo (Jogador (1,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogador (Jogo (Jogador (1,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Nenhum])])) (Move Direita)
+</code></strong>Jogo (Jogador (2,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Nenhum])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaJogador (Jogo (Jogador (2,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Nenhum])])) (Move Baixo)
+</code></strong>Jogo (Jogador (2,1)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Nenhum])])
+</pre></div></div><div class="top"><p class="src"><a id="v:animaTartaruga" class="def">animaTartaruga</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; <a href="LI12223.html#t:Jogada" title="LI12223">Jogada</a> -&gt; <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> <a href="#v:animaTartaruga" class="selflink">#</a></p><div class="doc"><p>Temos a fun&#231;&#227;o animaTartaruga, que foi basicamente uma mudan&#231;a no nosso jogo, pois permitimos a tartaruga ser capaz de passar pelo rio sem precisar de saltar por cima dos troncos pois, como &#233; uma tartaruga,
+ &#233; capaz de nadar.</p><p>A fun&#231;&#227;o trabalha da mesma maneira que a fun&#231;&#227;o animaJogador por&#233;m a &#250;nica coisa que retiramos foi a parte de verificar se caiu no rio.</p><h2>Fun&#231;&#227;o principal:</h2><pre>animaTartaruga :: Jogo -&gt; Jogada -&gt; Jogo 
+animaTartaruga i<code>(Jogo m</code>(Jogador (x,y)) (Mapa l ((terr,(h:t)):t2))) jogada                                                  
+              | verLimites postesterio mapaoriginal == False = i
+              | atrop = jogoinicial                                                                                        
+              | otherwise = (Jogo postesterio (Mapa l movob ))   
+
+       where postesterio = (moverJogador (Jogador (x,y)) jogada)                                     
+             movob = ((terr,(h:t)):t2)                             
+             mapaoriginal = ((terr,(h:t)):t2)
+             (atrop,jogoinicial) = (atropelamento (Jogo postesterio (Mapa l ((terr,(h:t)):t2)))) 0 
+</pre><h3>Exemplos de utiliza&#231;&#227;o:</h3><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaTartaruga (Jogo (Jogador (0,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])) (Move Direita)
+</code></strong>Jogo (Jogador (1,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>animaTartaruga (Jogo (Jogador (2,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])) (Move Esquerda)
+</code></strong>Jogo (Jogador (1,0)) (Mapa 3 [(Rio 1,[Tronco,Nenhum,Tronco]),(Relva,[Arvore,Nenhum,Arvore])])
+</pre></div></div><div class="top"><p class="src"><a id="v:atropelamento" class="def">atropelamento</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; Int -&gt; (Bool, <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a>) <a href="#v:atropelamento" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:moverObstaculos" class="def">moverObstaculos</a> :: [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] <a href="#v:moverObstaculos" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o moverObstaculos tem o objetivo de mover os obst&#225;culos de um dado terreno, conforme as suas velocidades.</p><p>Desta forma cri&#225;mos uma fun&#231;&#227;o auxiliar denomeada por move que faz exatamente isso. Por exemplo caso a velocidade for 1, 
+o objeto desloca-se uma unidade para a direita e, caso for -1, desloca-se uma unidade para a esquerda, e da mesma forma funciona com 
+velocidades maiores.</p><h2>Fun&#231;&#227;o principal:</h2><pre>moverObstaculos :: [(Terreno,[Obstaculo])] -&gt; [(Terreno,[Obstaculo])]
+moverObstaculos [] = []
+moverObstaculos ((Relva,(h:t)):t2) =  (Relva,(h:t)) : moverObstaculos t2
+
+moverObstaculos ((Estrada v,(h:t)):t2) =  
+     (Estrada v,(move v (h:t))) : moverObstaculos t2
+
+moverObstaculos ((Rio v,(h:t)):t2) = 
+    (Rio v, (move v (h:t))) : moverObstaculos t2
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>move :: Int -&gt; [Obstaculo] -&gt; [Obstaculo]
+move 0 (h:t) = (h:t)
+move v (h:t) |v &gt;= 1 = move (v-1) (last (h:t) : init (h:t))
+             |otherwise = move (v+1) ( t ++ [h])
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverObstaculos [(Estrada (-1), [Nenhum,Carro,Carro])]
+</code></strong>[(Estrada (-1),[Carro,Carro,Nenhum])]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverObstaculos [(Estrada 1, [Nenhum,Carro,Carro])]
+</code></strong>[(Estrada 1,[Carro,Nenhum,Carro])]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverObstaculos [(Rio 2, [Nenhum,Tronco,Tronco])]
+</code></strong>[(Estrada 2,[Tronco,Tronco,Nenhum])]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverObstaculos [(Estrada (-1), [Nenhum,Carro,Carro]), (Rio 1, [Tronco,Nenhum,Nenhum]), (Relva, [Nenhum,Nenhum,Arvore])]
+</code></strong>[(Estrada (-1),[Carro,Carro,Nenhum]),(Rio 1,[Nenhum,Tronco,Nenhum]),(Relva,[Nenhum,Nenhum,Arvore])]
+</pre></div></div><div class="top"><p class="src"><a id="v:move" class="def">move</a> :: Int -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] <a href="#v:move" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:moverJogador" class="def">moverJogador</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Jogada" title="LI12223">Jogada</a> -&gt; <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> <a href="#v:moverJogador" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o denomeada por moverJogador tem como objetivo mover um jogador, dado a sua posi&#231;&#227;o e a jogada que ir&#225; efetuar.</p><p>Desta forma, caso o jogador se deslocar para cima, a sua posi&#231;&#227;o ir&#225; mudar, e como os pr&#243;ximos terrenos s&#227;o sempre adicionados &#224;
+cabe&#231;a da lista, assume valor -1, e para baixo assume valor 1.</p><h2>Fun&#231;&#227;o principal:</h2><pre>moverJogador (Jogador (i1,i2)) Parado = Jogador (i1,i2)
+moverJogador (Jogador (i1,i2)) (Move dir) 
+      |dir == Cima  = Jogador (i1,i2-1)
+      |dir == Baixo  = Jogador (i1,i2+1)
+      |dir == Direita  = Jogador (i1+1,i2)
+      |dir == Esquerda = Jogador (i1-1,i2)
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverJogador (Jogador (0,0)) (Move Cima)
+</code></strong>Jogador (0,-1)
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverJogador (Jogador (0,0)) (Move Baixo)
+</code></strong>Jogador (0,1)
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverJogador (Jogador (0,0)) (Move Direita)
+</code></strong>Jogador (1,0)
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>moverJogador (Jogador (0,0)) (Move Esquerda)
+</code></strong>Jogador (-1,0)
+</pre></div></div><div class="top"><p class="src"><a id="v:seTronco" class="def">seTronco</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; Int -&gt; (<a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a>, Int) <a href="#v:seTronco" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o seTronco, verifica se um jogador est&#225; num tronco e, caso seja afirmativo, desloca o jogador uma unidade na dire&#231;&#227;o desse tronco, ou seja conforme a dire&#231;&#227;o do rio.</p><p>Para tal cri&#225;mos uma fun&#231;&#227;o auxiliar chamada rioJogador que verifica se o jogador est&#225; no rio em cima de um tronco.</p><p>Esta fun&#231;&#227;o tenta verificar na linha em que se encontra o jogador; para encontrar esta linha recorremos a uma forma de recursividade, verificando linha a linha at&#233; alcan&#231;ar aquela 
+em que est&#225; o jogador, ou seja, exclu&#237;ndo &quot;linhas&quot; e ajustando o valor de y at&#233; este deter o valor de 0 onde a cabe&#231;a da lista de &quot;linhas&quot; do mapa (lista[Terreno,[Obstaculo]])
+corresponder&#225; &#224; linha correta.</p><p>Para conservar a vari&#225;vel y original bem como poder extrai-la do resultado da fun&#231;&#227;o, torn&#225;mos o resultado da aplica&#231;&#227;o desta num tuplo e recorremos 
+a uma vari&#225;vel do tipo <a href="Int.html">Int</a> de nome n que conserva esta coordenada.  </p><h2>Fun&#231;&#227;o principal:</h2><pre>seTronco :: Jogador -&gt; [(Terreno,[Obstaculo])] -&gt; Int -&gt; (Jogador,Int)
+seTronco   (Jogador (x,0)) (m<code>(Rio v,(h:t)):t2)  n   |rioJogador x m &amp;&amp; v &lt; 0  = ((Jogador (x - 1 ,n)),v) 
+                                                     |rioJogador x m           = ((Jogador (x + 1 ,n)),v) 
+                                                     |otherwise                = (Jogador (x,n),0)
+seTronco j</code>(Jogador (x,y)) ((terreno1,(h:t)):t2) n   |y &gt; 0                    = seTronco (Jogador (x,y-1)) t2 (n+1)
+                                                     |otherwise                = (Jogador (x,n),0)
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>rioJogador :: Int -&gt; (Terreno,[Obstaculo]) -&gt; Bool                                  
+rioJogador x (_,obs) | x <a href="0">|| x</a> 12 = True
+                     | otherwise = ((!!) (obs) x == Tronco)      
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>seTronco (Jogador (1,0)) [(Rio (-1), [Nenhum,Tronco,Tronco])] (0)
+</code></strong>(Jogador (0,0),-1)
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>seTronco (Jogador (1,0)) [(Rio 1, [Tronco,Tronco,Nenhum])] (0)
+</code></strong>(Jogador (2,0),1)
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>seTronco (Jogador (1,2)) [(Rio (-1), [Tronco,Nenhum,Tronco])] (0)
+</code></strong>(Jogador (1,2),-1)
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>seTronco (Jogador (1,2)) [(Rio (-1), [Nenhum,Tronco,Nenhum])] (0)
+</code></strong>(Jogador (0,2),-1)
+</pre></div></div><div class="top"><p class="src"><a id="v:rioJogador" class="def">rioJogador</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool <a href="#v:rioJogador" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:verLimites" class="def">verLimites</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; Bool <a href="#v:verLimites" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o verLimites verifica se o jogador est&#225; dentro dos limites do jogo e, para tal cri&#225;mos tamb&#233;m uma fun&#231;&#227;o auxiliar
+que verifica se a posi&#231;&#227;o do jogador &#233; v&#225;lida, isto &#233;, se o jogador estiver dentro de um carro, a posi&#231;&#227;o &#233; inv&#225;lida, e assim como se estiver dentro de uma &#225;rvore.
+    Definimos tamb&#233;m as fun&#231;&#227;os isTree e isCar que, dada uma coordenada x, verifica se existe algum obst&#225;culo nessa posi&#231;&#227;o</p><p>A nossa fun&#231;&#227;o verifica a altura e a largura do mapa, comparando-as entre o n&#250;mero de terrenos e o comprimento da lista de obst&#225;culos, respetivamente.</p><h2>Fun&#231;&#227;o principal:</h2><pre>verLimites :: Jogador -&gt; [(Terreno,[Obstaculo])] -&gt; Bool                     
+verLimites posmov<code>(Jogador (x,y)) layout</code>((terr,(h:t)):t2)
+     | y <a href="=">(-1) || y</a>= numerolinhas = False
+     | x+1 &gt; comprimento  || x &lt; 0 = False
+     | not(verificarArvore posmov layout) = False
+     | otherwise = True
+     where numerolinhas = length layout
+           comprimento = length (h:t)
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>verificarArvore :: Jogador -&gt; [(Terreno,[Obstaculo])] -&gt; Bool
+verificarArvore (Jogador (x,0)) (m<code>(Relva,obs):t2) = not (isTree x m)
+verificarArvore (Jogador (x,0)) (m</code>(Estrada _,obs):t2) = not (isCar x m)
+verificarArvore (Jogador (x,y)) ((terreno1,(h:t)):t2) | y &gt; 0 = verificarArvore (Jogador (x,y-1)) t2
+                                                      |otherwise = True
+</pre><h4>Fun&#231;&#245;es auxiliares:</h4><pre>isTree :: Int -&gt; (Terreno,[Obstaculo]) -&gt; Bool
+isTree x (Relva,obs) = ((!!) obs x == Arvore) 
+isTree _ _ = False 
+</pre><pre>isCar :: Int -&gt; (Terreno,[Obstaculo]) -&gt; Bool
+isCar x (Estrada _ ,obs) = ((!!) obs x == Carro) 
+isCar _ _ = False
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verLimites (Jogador (1,2)) [(Rio 1, [Tronco,Tronco,Nenhum,Nenhum]), (Relva, [Nenhum,Arvore,Nenhum])]
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verLimites (Jogador (1,3)) [(Rio 1, [Tronco,Tronco,Nenhum,Nenhum]), (Relva, [Nenhum,Arvore,Nenhum])]
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verLimites (Jogador (4,3)) [(Rio 1, [Tronco,Tronco,Nenhum,Nenhum]), (Relva, [Nenhum,Arvore,Nenhum])]
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verLimites (Jogador ((-1),1)) [(Rio 1, [Tronco,Tronco,Nenhum,Nenhum]), (Relva, [Nenhum,Arvore,Nenhum])]
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verLimites (Jogador (1,2)) [(Rio 1, [Tronco,Tronco,Nenhum]),(Relva, [Arvore,Nenhum,Nenhum]), (Estrada 2, [Carro,Nenhum,Nenhum])]
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verLimites (Jogador (1,0)) [(Relva, [Arvore,Arvore,Nenhum]), (Estrada 1, [Carro,Nenhum,Nenhum])]
+</code></strong>False
+</pre></div></div><div class="top"><p class="src"><a id="v:verificarArvore" class="def">verificarArvore</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; Bool <a href="#v:verificarArvore" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:isTree" class="def">isTree</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool <a href="#v:isTree" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:isCar" class="def">isCar</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool <a href="#v:isCar" class="selflink">#</a></p></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.26.0</p></div></body></html>

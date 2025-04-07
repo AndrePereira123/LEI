@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Tarefa2_2022li1g059</title><link href="linuwial.css" rel="stylesheet" type="text/css" title="Linuwial" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { processClass: "mathjax", ignoreClass: ".*" } });</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><span class="caption empty">&nbsp;</span><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul></div><div id="content"><div id="module-header"><table class="info"><tr><th valign="top">Copyright</th><td>Andr&#233; Filipe Soares Pereira  &lt;a104275@alunos.uminho.pt&gt;<br />Leonardo Gomes Alves &lt;a104093@alunos.uminho.pt&gt;</td></tr><tr><th>Safe Haskell</th><td>Safe-Inferred</td></tr></table><p class="caption">Tarefa2_2022li1g059</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>M&#243;dulo para a realiza&#231;&#227;o da Tarefa 2 do projeto de LI1 em 2022/23.</p></div></div><div id="synopsis"><details id="syn"><summary>Synopsis</summary><ul class="details-toggle" data-details-id="syn"><li class="src short"><a href="#v:randomIntsL">randomIntsL</a> :: Int -&gt; Int -&gt; [Int]</li><li class="src short"><a href="#v:estendeMapa">estendeMapa</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Int -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a></li><li class="src short"><a href="#v:velocidadeTerrenos">velocidadeTerrenos</a> :: [<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>] -&gt; Int -&gt; Int -&gt; <a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a></li><li class="src short"><a href="#v:terrenos">terrenos</a> :: [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; [<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>]</li><li class="src short"><a href="#v:obstaculos">obstaculos</a> :: Int -&gt; Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]</li><li class="src short"><a href="#v:proximosTerrenosValidos">proximosTerrenosValidos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; [<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>]</li><li class="src short"><a href="#v:proximosObstaculosValidos">proximosObstaculosValidos</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]</li></ul></details></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a id="v:randomIntsL" class="def">randomIntsL</a> :: Int -&gt; Int -&gt; [Int] <a href="#v:randomIntsL" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:estendeMapa" class="def">estendeMapa</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Int -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> <a href="#v:estendeMapa" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o principal estendeMapa cria a proxima linha de um mapa valido bem como onde cada obstaculo que apresenta movimento (Troncos e Carros) vai estar apos uma a&#231;&#227;o
+do jogador que sera tamb&#233;m calculada  </p><ol><li>Para determinar um proximo terreno a adicionar ao mapa a fun&#231;&#227;o &quot;proximosTerrenosValidos&quot; determina uma lista dos terrenos possiveis e a fun&#231;&#227;o &quot;velocidadeTerrenos&quot; seleciona 
+semi aleatoriamente um deles atraves da seed inicial &quot;i&quot; e da fun&#231;&#227;o pre definida do <a href="System-Random.html">System.Random</a> &quot;randomIntsL&quot; ; tamb&#233;m temos a fun&#231;&#227;o terrenos que cria uma lista apenas 
+com os terrenos da lista de terrenos e obstaculos inicial de forma a comparar mais facil os mesmos e garantir as dire&#231;&#245;es opostas de rios seguidos. </li><li>No que toca aos obstaculos a fun&#231;&#227;o do mesmo nome aplica a fun&#231;&#227;o &quot;proximosObstaculosValidos&quot; de forma a construir uma lista completa dos mesmos dependendo do terreno determinado
+anteriormente ; tamb&#233;m usufrui de uma semi aleatoriadade pela seed e &quot;randomIntsL&quot;.</li></ol><h3>Fun&#231;&#227;o principal:</h3><pre>estendeMapa :: Mapa -&gt; Int -&gt; Mapa                                     
+estendeMapa (Mapa l ((terr, (h:t)):t2)) i =
+       Mapa l ((terreno, obstaculos i l (p, [])) : k2 )
+       where m = (Mapa l ((terr, (h:t)):t2))                                        
+             k = (terr, (h:t))                                                      
+             k2 = ((terr, (h:t)):t2)                                                
+             k3 = length ((proximosTerrenosValidos) m )
+             k4 = (head (randomIntsL i 1)) * l
+             p = (!!) (proximosTerrenosValidos (Mapa l ((terr, (h:t)):t2))) (mod k4 k3)
+             terreno = velocidadeTerrenos (((!!) ((proximosTerrenosValidos) m ) (mod k4 k3)): (terrenos k2 )) i l
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>velocidadeTerrenos :: [Terreno] -&gt; Int -&gt; Int -&gt; Terreno
+velocidadeTerrenos (Rio v:Rio v2:t) i l = Rio ((mod((-v2) * (head (randomIntsL i 1))) l) - v2)              
+velocidadeTerrenos (Rio v:t) i l =  Rio ((mod (head (randomIntsL i 1)) l) -1)                             
+velocidadeTerrenos (Estrada v:t) i l = Estrada ((mod (head (randomIntsL i 1)) l) -1)
+velocidadeTerrenos (Relva :t) i l = Relva 
+</pre><h3>Fun&#231;&#227;o auxiliar2:</h3><pre>terrenos :: [(Terreno, [Obstaculo])] -&gt; [Terreno]
+terrenos [] = [] 
+terrenos ((terr, (h:t)):t2) = terr : terrenos t2   
+</pre><h3>Fun&#231;&#227;o auxiliar3:</h3><pre>obstaculos i l (p,obs) | obs == [] = obstaculos i l (p,[((!!) (proximosObstaculosValidos l (p,[])) (mod (k4) 2))])
+                       | length obs &lt; l = obstaculos ((mod (k4) 100)) l (p,(((!!) (proximosObstaculosValidos l (p,obs)) (mod (k4) 2)) : obs))
+                       |otherwise = obs
+                       where k4 = (head (randomIntsL i 1))
+</pre><h3>Fun&#231;&#227;o randomIntsL:</h3><pre>randomIntsL :: Int -&gt; Int -&gt; [Int]
+randomIntsL seed len = take len $ randoms (mkStdGen seed)
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>estendeMapa (Mapa 3 [(Relva, [Arvore,Nenhum,Nenhum])]) 3
+</code></strong>Mapa 3 [(Rio 2,[Tronco,Nenhum,Nenhum]),(Relva,[Arvore,Nenhum,Nenhum])]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>estendeMapa (Mapa 3 [(Rio (-2), [Tronco,Nenhum,Nenhum]), (Rio 1, [Nenhum,Tronco,Tronco]), (Rio (-3), [Tronco,Tronco,Nenhum])]) 72
+</code></strong>Mapa 3 [(Estrada 1,[Carro,Carro,Nenhum]),(Rio (-2),[Tronco,Nenhum,Nenhum]),(Rio 1,[Nenhum,Tronco,Tronco]),(Rio (-3),[Tronco,Tronco,Nenhum])]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>estendeMapa (Mapa 5 [(Rio (-1), [Tronco,Nenhum,Nenhum,Tronco,Tronco]), (Rio 2, [Tronco,Tronco,Nenhum,Tronco,Nenhum]), (Estrada (-1), [Carro,Nenhum,Carro,Carro,Nenhum]), (Relva, [Arvore,Nenhum,Nenhum,Arvore,Nenhum])]) 14
+</code></strong>Mapa 5 [(Estrada (-1),[Nenhum,Carro,Carro,Carro,Nenhum]),(Rio (-1),[Tronco,Nenhum,Nenhum,Tronco,Tronco]),(Rio 2,[Tronco,Tronco,Nenhum,Tronco,Nenhum]),(Estrada (-1),[Carro,Nenhum,Carro,Carro,Nenhum]),(Relva,[Arvore,Nenhum,Nenhum,Arvore,Nenhum])]
+</pre></div></div><div class="top"><p class="src"><a id="v:velocidadeTerrenos" class="def">velocidadeTerrenos</a> :: [<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>] -&gt; Int -&gt; Int -&gt; <a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a> <a href="#v:velocidadeTerrenos" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:terrenos" class="def">terrenos</a> :: [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; [<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>] <a href="#v:terrenos" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:obstaculos" class="def">obstaculos</a> :: Int -&gt; Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] <a href="#v:obstaculos" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:proximosTerrenosValidos" class="def">proximosTerrenosValidos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; [<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>] <a href="#v:proximosTerrenosValidos" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o denomeada por proximosTerrenosValidos t&#234;m a fun&#231;&#227;o de verificar quais os pr&#243;ximos terrenos v&#225;lidos de um mapa, tendo em conta
+os terrenos j&#225; l&#225; existentes. </p><p>Para tal, a fun&#231;&#227;o definida trabalha com o comprimento da lista em que analisa os primeiros 4 ou 5 elementos de certa listas de terrenos, 
+visto que os terrenos v&#225;lidos s&#227;o inseridos na cabe&#231;a da lista,
+e de seguida compara-as com por exemplo uma lista unicamente compostas por <a href="Rio.html">Rio</a>. Nesta fun&#231;&#227;o utiliz&#225;mos tamb&#233;m a fun&#231;&#227;o isTerreno
+que foi definida na tarefa anterior.</p><h2>Fun&#231;&#227;o principal:</h2><pre>proximosTerrenosValidos (Mapa l ((Rio _, _):t)) | take 3 (isTerreno t) == (replicate 3 1) = [Relva, Estrada 0]                      --4 rios
+                                                | otherwise = [Relva, Rio 0, Estrada 0 , Relva]
+
+proximosTerrenosValidos (Mapa l j<code>((Estrada _,_):t)) | take 4 (isTerreno t) == (replicate 4 2) = [Relva, Rio 0,Relva]                      --5 estradas 
+                                                     | otherwise = [Relva, Rio 0, Estrada 0 , Relva]
+
+proximosTerrenosValidos (Mapa l j</code>((Relva,_):t)) | take 4 (isTerreno t) == (replicate 4 3) = [Relva, Rio 0,Estrada 0]                      --5 relvas 
+                                                 | otherwise = [Relva, Rio 0, Estrada 0 , Relva]
+proximosTerrenosValidos _ = [Rio 0, Estrada 0 , Relva]
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>isTerreno ((Rio _,b):t) = 1 : isTerreno t
+isTerreno ((Estrada _,b):t) = 2 : isTerreno t
+isTerreno ((Relva,b):t) = 3 : isTerreno t
+isTerreno [] = []
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosTerrenosValidos (Mapa 2 [(Rio 1, [Nenhum,Tronco]), (Rio (-1), [Nenhum,Tronco]), (Rio 2, [Tronco,Nenhum])])
+</code></strong>[Relva,Rio 0,Estrada 0,Relva]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosTerrenosValidos (Mapa 3 [(Estrada 1, [Carro,Carro,Nenhum]), (Estrada 2, [Nenhum,Carro,Nenhum]), (Estrada (-2), [Carro,Carro,Nenhum]), (Estrada (-1), [Nenhum,Carro,Carro]), (Estrada 1, [Carro,Carro, Nenhum])])
+</code></strong>[Relva,Rio 0,Relva]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosTerrenosValidos (Mapa 3 [(Estrada 2, [Carro,Carro,Nenhum]), (Relva, [Nenhum,Nenhum,Arvore]), (Rio (-1), [Nenhum,Nenhum,Tronco]), (Rio 2, [Nenhum,Tronco,Tronco]), (Rio 3, [Tronco,Tronco,Nenhum]), (Rio (-1), [Tronco,Nenhum,Nenhum])])
+</code></strong>[Relva,Rio 0,Estrada 0,Relva]
+</pre></div></div><div class="top"><p class="src"><a id="v:proximosObstaculosValidos" class="def">proximosObstaculosValidos</a> :: Int -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] <a href="#v:proximosObstaculosValidos" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o definida por proximosObstaculosValidos tem o objetivo de verificar quais os pr&#243;ximos obst&#225;culos v&#225;lidos num certo terreno,
+dada a largura do mapa, que corresponde tamb&#233;m ao comprimento da lista de obst&#225;culos. </p><p>Desta forma, a fun&#231;&#227;o verifica qual o comprimento da lista de obst&#225;culos e depois compara tanto como os primeiros, como os &#250;ltimos elementos
+da lista, e tamb&#233;m os que est&#227;o no meio da lista, para verificar se por exemplo existem 5 troncos seguidos e, caso tiverem, o resultado
+ter&#225; que ser obrigatoriamente o obst&#225;culo <a href="Nenhum.html">Nenhum</a>. </p><p>Desta forma, a fun&#231;&#227;o analisa tamb&#233;m para os outros terrenos.</p><h2>Fun&#231;&#227;o principal:</h2><pre>proximosObstaculosValidos n (Rio _, []) = [Tronco,Nenhum]
+proximosObstaculosValidos n j<code>(Rio _, (h:t)) | length (h:t) == n = []
+                                             | length (h:t) &gt; 5 &amp;&amp; (last (h:t)) /= Nenhum = proximosObstaculosValidos n (Rio 0, u:(init (h:t)))
+                                             | last (h:t) == Nenhum &amp;&amp; take 5 (h:t) == (replicate 5 Tronco) = [Nenhum,Nenhum]
+                                             | otherwise = [Nenhum,Tronco,Tronco]
+                                             where u = last (h:t)
+
+proximosObstaculosValidos n (Estrada _, []) = [Carro,Nenhum]
+proximosObstaculosValidos n j</code>(Estrada _, (h:t)) | length (h:t) == n = []                                                                                
+                                                 | length (h:t) &gt; 3 &amp;&amp; (last (h:t)) /= Nenhum = proximosObstaculosValidos n (Estrada 0, u:(init (h:t)))
+                                                 | last (h:t) == Nenhum &amp;&amp; take 3 (h:t) == (replicate 3 Carro) = [Nenhum,Nenhum]
+                                                 | otherwise = [Nenhum,Carro,Nenhum]
+                                                 where u = last (h:t)
+
+proximosObstaculosValidos n (Relva, []) = [Nenhum,Arvore]
+proximosObstaculosValidos n j@(Relva, (h:t)) | (length (h:t)) == n = [] 
+                                             | elem Nenhum (h:t) == False = [Nenhum,Nenhum]
+                                             | otherwise = [Nenhum,Arvore,Nenhum]
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosObstaculosValidos 5 (Rio 2, [Tronco,Tronco,Nenhum,Tronco,Tronco])
+</code></strong>[]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosObstaculosValidos 10 (Relva, [Nenhum,Arvore,Nenhum,Nenhum,Arvore,Arvore,Arvore,Nenhum])
+</code></strong>[Nenhum,Arvore,Nenhum]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosObstaculosValidos 9 (Rio 2, [Tronco,Tronco,Tronco,Nenhum,Nenhum,Tronco,Tronco])
+</code></strong>[Nenhum,Nenhum]
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>proximosObstaculosValidos 5 (Rio 2, [Nenhum,Tronco,Nenhum,Nenhum])
+</code></strong>[Nenhum,Tronco,Tronco]
+</pre></div></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.26.0</p></div></body></html>

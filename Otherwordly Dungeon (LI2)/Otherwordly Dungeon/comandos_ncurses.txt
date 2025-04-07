@@ -1,0 +1,153 @@
+
+initscr();  //Inicializa a janela
+
+
+endwin();  //Fecha a janela		
+
+raw() //
+
+cbreak() //
+
+echo() // ativa o echo
+
+noecho() // desativa o echo
+
+keypad() // lê keys 
+
+halfdelay() // quando ativa, cada vez que ouver um input o programa espera 'X'/10 
+            // segundos pelo input. Caso não haja input dentro desse tempo ele retorna ERR
+
+
+
+move(row,col);  // move o cursor para a linha row e para a coluna col 
+
+
+/*-------------------------Input-------------------------*/
+
+getch() //Estas funções recebem um input de apenas um caracter. Importante ter noção que se não usarmos cbreak(), então o curses não vai ler inputs continuos e vai ler após um newLine ou um EOF.
+	//noecho() os caracters que são intruduzidos  não irão aparecer no ecrã 
+
+scanw() //recebe um input 
+
+mvscanw() //
+
+wscanw() //
+
+vwscanw() //
+
+getyx() // recebe a posição atual do cursor 
+
+getmaxyx(stdscr,row,col); // recebe o número de linhas e colunas máximo numa janela
+                                    
+/*-------------------------Output-------------------------*/
+
+printw("Hi There !!!"); // dá print no local onde o cursor se encontra
+
+mvprintw(y, x, string); //Move o cursor para (y,x) e dá o print lá
+
+wprintw(win, string);  //dá print na janela win no local atual do cursor
+                          
+mvwprintw(win, y, x, string); //desloca-se para (y,x) relativamente à janela win e depois dá print
+
+vprintf() //pode ser usada pra imprimir um número de variáveis que varia
+
+vwprintw()  
+
+addch() // Dá print a um único caracter com certos atributos 
+
+mvaddch(row,col,ch) //move o cursor para a linha row e para a coluna col  e dps dá print a um único caracter com certos atributos 
+
+waddch() // Funciona como o addch mas numa dada janela
+
+mvwaddch() //Funciona como o waddch mas primeiro move o cursor
+
+addstr() // Printa strings  
+
+tbm existe o mvaddstr e etc...
+
+refresh(); //Após o print é necessário dar refresh na janela
+
+/*-------------------------Atributos-------------------------*/
+
+attron() e attrset() // Estas funções são usadas para ligar atributos. A diferença entre elas é que o attrset() muda os atributos de toda a janela enquanto o attron apenas liga os que lhe foram dados
+		     // Assim o attrset muda por completo todos os atributos que a janela tinha anteriormente  
+
+attroff() //Desliga um dado atributo
+
+standend() //Desliga todos os atributos 
+
+attr_get() //Recebe os atributos atuais e cor de uma janela. This is useful in scanning areas of screen. 
+	   //Say we wanted to do some complex update on screen and we are not sure what attribute each character is associated with.
+ 	   //Then this function can be used with either attrset or attron to produce the desired effect.
+
+
+//Para cada uma das funções acima podemos adicionar o w como prefixo para mexer apenas numa dada janela
+
+8.6. chgat() // Podemos ligar atributos sem mexer o cursor. Muda todos os atributos a partir da posição atual do cursor.Se lhe dermos -1 ele dá update aré ao final da linha. Se queremos mudar desde onde estamos ate ao final da linha podemos fazer:
+
+    chgat(-1, A_REVERSE, 0, NULL);
+
+//Útil pra mudar atributos que já estão em jogo
+
+start_color();	//Liga a função de cor 
+
+
+Outras : wchgat(), mvchgat(), wchgat(); 
+
+    A_NORMAL        Normal display (no highlight)
+    A_STANDOUT      Best highlighting mode of the terminal.
+    A_UNDERLINE     Underlining
+    A_REVERSE       Reverse video
+    A_BLINK         Blinking
+    A_DIM           Half bright
+    A_BOLD          Extra bright or bold
+    A_PROTECT       Protected mode
+    A_INVIS         Invisible or blank mode
+    A_ALTCHARSET    Alternate character set
+    A_CHARTEXT      Bit-mask to extract a character
+    COLOR_PAIR(n)   Color-pair number n 
+
+    attron(A_REVERSE | A_BLINK); // O / permite dar mix a atributos
+    
+/*-------------------------Janelas-------------------------*/
+
+
+
+		    ///NÃO DOCUMENTEI///
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

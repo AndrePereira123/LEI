@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Tarefa1_2022li1g059</title><link href="linuwial.css" rel="stylesheet" type="text/css" title="Linuwial" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { processClass: "mathjax", ignoreClass: ".*" } });</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><span class="caption empty">&nbsp;</span><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul></div><div id="content"><div id="module-header"><table class="info"><tr><th valign="top">Copyright</th><td>Andr&#233; Filipe Soares Pereira  &lt;a104275@alunos.uminho.pt&gt;<br />Leonardo Gomes Alves &lt;a104093@alunos.uminho.pt&gt;</td></tr><tr><th>Safe Haskell</th><td>Safe-Inferred</td></tr></table><p class="caption">Tarefa1_2022li1g059</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>M&#243;dulo para a realiza&#231;&#227;o da Tarefa 1 do projeto de LI1 em 2022/23.</p></div></div><div id="synopsis"><details id="syn"><summary>Synopsis</summary><ul class="details-toggle" data-details-id="syn"><li class="src short"><a href="#v:mapaValido">mapaValido</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:compatibilidadeObstaculos">compatibilidadeObstaculos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:obscaux">obscaux</a> :: (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool</li><li class="src short"><a href="#v:direcoesRios">direcoesRios</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:troncos">troncos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:carros">carros</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:check">check</a> :: Int -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] -&gt; Bool</li><li class="src short"><a href="#v:verificaObstaculos">verificaObstaculos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:verificaLargura">verificaLargura</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:verificaContiguidade">verificaContiguidade</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:isTerreno">isTerreno</a> :: [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; [Int]</li></ul></details></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a id="v:mapaValido" class="def">mapaValido</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:mapaValido" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o mapaValido recebe um mapa e, ap&#243;s aplicadas as fun&#231;&#245;es auxiliares, diz-nos se o mapa &#233; v&#225;lido ou n&#227;o.
+    T&#234;m ainda o seu caso de paragem, caso o mapa seja vazio.</p><h2>Fun&#231;&#227;o principal:</h2><pre>mapaValido (Mapa l []) = False
+mapaValido (Mapa l t) 
+  | compatibilidadeObstaculos (Mapa l t) &amp;&amp; direcoesRios (Mapa l t) &amp;&amp; troncos (Mapa l t) &amp;&amp; carros (Mapa l t)
+  &amp;&amp; verificaObstaculos (Mapa l t) &amp;&amp; verificaLargura (Mapa l t) &amp;&amp; verificaContiguidade (Mapa l t) = True 
+  |otherwise = False 
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o: </h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>mapaValido (Mapa 4 [(Rio 1, [Tronco,Tronco,Tronco,Nenhum]), (Rio (-2), [Nenhum,Tronco,Tronco,Tronco]), (Estrada 3, [Carro,Carro,Nenhum,Carro])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>mapaValido (Mapa 2 [(Rio 1, [Tronco,Tronco,Tronco,Nenhum]), (Rio (-2), [Nenhum,Tronco,Tronco,Tronco]), (Estrada 3, [Carro,Carro,Nenhum,Carro])])
+</code></strong>False
+</pre></div></div><div class="top"><p class="src"><a id="v:compatibilidadeObstaculos" class="def">compatibilidadeObstaculos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:compatibilidadeObstaculos" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o compatibilidadeObstaculos corresponde &#224; fun&#231;&#227;o definida no ponto 1 e, verifica se um certo obst&#225;culo dado numa lista de obst&#225;culos, pertence ao seu terreno associado.</p><p>Para tal utiliz&#225;mos uma fun&#231;&#227;o auxiliar que verifica se um obst&#225;culo pertence ao seu terreno, nesta fun&#231;&#227;o utiliz&#225;mos a fun&#231;&#227;o &quot;elem&quot;.</p><h2>Fun&#231;&#227;o principal:</h2><pre>compatibilidadeObstaculos :: Mapa -&gt; Bool
+compatibilidadeObstaculos (Mapa l ((tr, (h:t)):t2)) 
+            |length ((tr, (h:t)):t2) == 1 = obscaux (tr,(h:t)) 
+            |obscaux (tr,(h:t)) == False = False 
+            |otherwise = compatibilidadeObstaculos (Mapa l t2)
+</pre><h3>Fun&#231;&#227;o auxiliar: </h3><pre>obscaux :: (Terreno, [Obstaculo]) -&gt; Bool
+obscaux (tr,[]) = True 
+obscaux ((Rio _),(h:t)) = not $ elem Carro (h:t)  || elem Arvore (h:t) 
+obscaux ((Estrada _),(h:t)) = not $ elem Tronco (h:t) || elem Arvore (h:t) 
+obscaux ((Relva),(h:t)) = not $ elem Tronco (h:t) || elem Carro (h:t) 
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>compatibilidadeObstaculos (Mapa 3 [(Rio 3, [Tronco,Tronco,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>compatibilidadeObstaculos (Mapa 4 [(Rio 4, [Tronco,Tronco]), (Relva, [Arvore,Arvore,Nenhum,Nenhum]), (Estrada 2, [Carro,Nenhum,Carro,Carro])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>compatibilidadeObstaculos (Mapa 3 [(Relva, [Arvore,Arvore,Nenhum]), (Rio (-3), [Carro,Arvore,Nenhum])])
+</code></strong>False
+</pre></div></div><div class="top"><p class="src"><a id="v:obscaux" class="def">obscaux</a> :: (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; Bool <a href="#v:obscaux" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:direcoesRios" class="def">direcoesRios</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:direcoesRios" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o direcoesRios &#233; definida com o objetivo de verificar se, quando existem dois ou mais rios consecutivos, eles t&#234;m dire&#231;&#245;es opostas.</p><p>Para tal, caso a multiplica&#231;&#227;o de ambas as velocidades dos rios for negativa, as dire&#231;&#245;es ser&#227;o opostas, pois um n&#250;mero negativo a multiplicar por um positivo d&#225; um negativo.</p><p>Desta forma definimos a seguinte fun&#231;&#227;o:</p><h2>Fun&#231;&#227;o principal:</h2><pre>direcoesRios (Mapa l [(tr,l1)]) = True 
+direcoesRios (Mapa l   ((Rio a,l1):((Rio b,l2):t))) 
+   |(a*b) &lt; 0 = direcoesRios (Mapa l ((Rio b,l2):t))
+direcoesRios (Mapa l (h:t)) = direcoesRios (Mapa l t) 
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>direcoesRios (Mapa 3 [(Rio 3, [Tronco,Tronco,Nenhum]), (Rio (-2), [Nenhum,Tronco,Tronco])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>direcoesRios (Mapa 3 [(Rio (-3), [Tronco,Tronco,Nenhum]), (Rio 2, [Nenhum,Tronco,Tronco]), (Rio 4, [Tronco,Tronco,Nenhum])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>direcoesRios (Mapa 3 [(Rio (-3), [Tronco,Tronco,Nenhum]), (Rio 2, [Nenhum,Tronco,Tronco]), (Rio (-4), [Tronco,Tronco,Nenhum]), (Rio 3, [Tronco,Nenhum,Tronco])])
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:troncos" class="def">troncos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:troncos" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o denomeada por troncos que definimos, tem como objetivo verificar se, os troncos, t&#234;m no m&#225;ximo 5 unidades de comprimento e, para tal, utiliz&#225;mos uma fun&#231;&#227;o
+auxiliar a qual se chama check. </p><p>Com esta fun&#231;&#227;o, somos capazes de verificar se, o comprimento da lista de obst&#225;culos &#233; maior do que 5.</p><h2>Fun&#231;&#227;o principal:</h2><pre>troncos :: Mapa -&gt; Bool
+troncos (Mapa l []) = True 
+troncos (Mapa l ((Rio _,[]):t)) = troncos (Mapa l t)
+troncos (Mapa l ((Rio _,(a:b)):t)) = if check (length (a:b)) (a:b) then troncos (Mapa l (t))
+                                     else False 
+troncos (Mapa l ((_,_):t)) = troncos (Mapa l t)
+</pre><h3>Fun&#231;&#227;o auxiliar: </h3><pre>check :: Int -&gt; [Obstaculo] -&gt; Bool
+check 0 (h:t) = True 
+check a (h:t) | take 6 (h:t) == (replicate 6 Tronco) = False
+              | take 4 (h:t) == (replicate 4 Carro) = False 
+              |otherwise = check (a-1) (t ++ [h]) 
+</pre><h4>Exemplos da utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>troncos (Mapa 10 [(Rio 1, [Tronco,Tronco,Tronco,Tronco,Nenhum,Tronco])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>troncos (Mapa 10 [(Rio 1, [Tronco,Tronco,Tronco,Tronco,Nenhum,Tronco,Tronco])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>troncos (Mapa 10 [(Rio 1, [Tronco,Tronco,Tronco,Tronco,Nenhum,Tronco]), (Rio (-3), [Tronco,Tronco,Tronco,Tronco,Tronco,Nenhum]), (Rio (-4), [Tronco,Tronco,Tronco,Tronco,Tronco,Nenhum,Tronco,Nenhum,Tronco,Nenhum])])
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:carros" class="def">carros</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:carros" class="selflink">#</a></p><div class="doc"><p>Esta fun&#231;&#227;o, denomeada por carros, consiste em verificar que os carros tem uma largura m&#225;xima de 3 unidades de comprimento, para tal, 
+assim como na al&#237;nea anterior, utiliz&#225;mos a fun&#231;&#227;o check e, o procedimento da fun&#231;&#227;o principal &#233; o mesmo, apenas fazemos altera&#231;&#245;es m&#237;nimas ao c&#243;digo.</p><h2>Fun&#231;&#227;o principal:</h2><pre>carros (Mapa l []) = True 
+carros (Mapa l ((Estrada _,[]):t)) = carros (Mapa l t)
+carros (Mapa l ((Estrada _,(a:b)):t)) = if check (length (a:b)) (a:b) then carros (Mapa l (t))
+                                        else False 
+carros (Mapa l ((_,_):t)) = carros (Mapa l t)
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>check :: Int -&gt; [Obstaculo] -&gt; Bool
+check 0 (h:t) = True 
+check a (h:t) | take 6 (h:t) == (replicate 6 Tronco) = False
+              | take 4 (h:t) == (replicate 4 Carro) = False 
+              |otherwise = check (a-1) (t ++ [h])
+</pre><h4>Exemplos da utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>carros (Mapa 6 [(Estrada 4, [Carro,Carro,Nenhum,Carro,Carro,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>carros (Mapa 6 [(Estrada 3, [Carro,Carro,Carro,Nenhum,Nenhum,Nenhum]), (Estrada (-4), [Carro,Carro,Carro,Nenhum,Nenhum,Carro])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>carros (Mapa 6 [(Estrada 4, [Carro,Carro,Carro,Nenhum,Nenhum,Nenhum]), (Estrada (-4), [Carro,Carro,Carro,Nenhum,Nenhum,Nenhum]), (Estrada 2, [Carro,Carro,Nenhum,Carro,Carro,Nenhum])])
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:check" class="def">check</a> :: Int -&gt; [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>] -&gt; Bool <a href="#v:check" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:verificaObstaculos" class="def">verificaObstaculos</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:verificaObstaculos" class="selflink">#</a></p><div class="doc"><p>Esta fun&#231;&#227;o denomeada por verificaObstaculos tem o objetivo de verificar se num certo mapa, os terrenos t&#234;m pelo menos um objecto
+que se <a href="Nenhum.html">Nenhum</a>, isto &#233;, n&#227;o &#233; composta por exclusivamente obst&#225;culos v&#225;lidos (Tronco,Carro,Arvore). </p><p>Para tal fiz&#233;mos uma simples fun&#231;&#227;o
+que verifica se o <a href="Nenhum.html">Nenhum</a> pertence &#224;s listas de obst&#225;culos.</p><h2>Fun&#231;&#227;o principal:</h2><pre>verificaObstaculos :: Mapa -&gt; Bool
+verificaObstaculos (Mapa l []) = True
+verificaObstaculos (Mapa l [(Rio v,obs)]) = if Nenhum <code>elem</code> obs &amp;&amp; Tronco <code>elem</code> obs then True else False 
+verificaObstaculos (Mapa l [(tr,l1)]) = if Nenhum <code>elem</code> l1 then True else False
+verificaObstaculos (Mapa l ((Rio v,obs):t)) | Nenhum <code>elem</code> obs &amp;&amp; Tronco <code>elem</code> obs = verificaObstaculos (Mapa l t)
+                                            | otherwise = False
+verificaObstaculos (Mapa l ((_,obs):t)) | Nenhum <code>elem</code> obs = verificaObstaculos (Mapa l t)
+                                        | otherwise = False
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaObstaculos (Mapa 4 [(Rio 3, [Tronco,Tronco,Tronco,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaObstaculos (Mapa 4 [(Rio 3, [Tronco,Tronco,Tronco,Nenhum]), (Relva, [Nenhum,Arvore,Arvore,Arvore]), (Estrada (-3), [Carro,Carro,Carro,Carro])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaObstaculos (Mapa 4 [(Rio 3, [Tronco,Tronco,Tronco,Nenhum]), (Relva, [Nenhum,Arvore,Arvore,Arvore]), (Estrada 2, [Nenhum,Nenhum,Carro,Carro])])
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:verificaLargura" class="def">verificaLargura</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:verificaLargura" class="selflink">#</a></p><div class="doc"><p>Esta fun&#231;&#227;o chamada de verificaLargura tem o objetivo de verificar se, o comprimento da lista de obst&#225;culos de cada linha, corresponde
+com a largura do mapa dada no in&#237;cio. Desta forma fiz&#233;mos uma simples fun&#231;&#227;o que compara a largura do mapa e o comprimento da lista de
+obst&#225;culos.</p><h2>Fun&#231;&#227;o principal:</h2><pre>verificaLargura :: Mapa -&gt; Bool
+verificaLargura (Mapa l []) = True
+verificaLargura (Mapa l [(tr,l1)]) = if l == length l1 then True else False
+verificaLargura (Mapa l ((_,obs):t)) | l == length obs = verificaLargura (Mapa l t)
+                                     | otherwise = False
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaLargura (Mapa 4 [(Rio 3, [Tronco,Tronco,Tronco,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaLargura (Mapa 3 [(Relva, [Arvore,Arvore,Arvore]), (Rio 3, [Tronco, Nenhum, Nenhum]), (Estrada (-2), [Nenhum,Carro])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaLargura (Mapa 4 [(Relva, [Arvore,Nenhum,Arvore,Arvore]), (Rio (-1), [Tronco,Tronco,Tronco,Nenhum]), (Estrada 4, [Carro,Nenhum,Nenhum,Nenhum])])
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:verificaContiguidade" class="def">verificaContiguidade</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:verificaContiguidade" class="selflink">#</a></p><div class="doc"><p>Esta fun&#231;&#227;o denomeada por verificaContiguidade tem o objetivo de verificar que, n&#227;o existem mais do que 4 rios, nem 5 estradas ou relvas
+consecutivas, para tal, cri&#225;mos uma fun&#231;&#227;o auxiliar que, verifica o tipo de terreno, e cria uma lista com os n&#250;meros correspondentes
+ao tipo de terreno (Rio = 1; Estrada = 2; Relva = 3). </p><p>De seguida compar&#225;mos essa lista criada e, caso for constitu&#237;da por por exemplo &quot;cinco uns&quot;, d&#225; falso, pois n&#227;o podem existem 5 rios
+consecutivos; caso for verdadeiro, a fun&#231;&#227;o analisa as restantes linhas.</p><h2>Fun&#231;&#227;o principal:</h2><pre>verificaContiguidade :: Mapa -&gt; Bool
+verificaContiguidade (Mapa l []) = True
+verificaContiguidade (Mapa l j@((a,b):t)) | length j &lt;= 4 = True
+                                          | isTerreno (take 5 j) == (replicate 5 1) = False
+                                          | isTerreno (take 6 j) == (replicate 6 2) = False
+                                          | isTerreno (take 6 j) == (replicate 6 3) = False
+                                          | otherwise = verificaContiguidade (Mapa l t)
+</pre><h3>Fun&#231;&#227;o auxiliar:</h3><pre>isTerreno :: [(Terreno,[Obstaculo])] -&gt; [Int] 
+isTerreno ((Rio _,b):t) = 1 : isTerreno t
+isTerreno ((Estrada _,b):t) = 2 : isTerreno t
+isTerreno ((Relva,b):t) = 3 : isTerreno t
+isTerreno [] = []
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaContiguidade (Mapa 3 [(Rio 2, [Tronco,Tronco,Nenhum]),(Rio 3, [Tronco,Nenhum,Tronco]), (Rio (-1), [Nenhum,Nenhum,Tronco]), (Rio 1, [Tronco,Tronco,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaContiguidade (Mapa 3 [(Rio 2, [Tronco,Tronco,Nenhum]),(Rio 3, [Tronco,Nenhum,Tronco]), (Rio (-1), [Nenhum,Nenhum,Tronco]), (Rio 1, [Tronco,Tronco,Nenhum]), (Rio (-2), [Nenhum,Tronco,Tronco])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>verificaContiguidade (Mapa 2 [(Rio 1, [Tronco,Nenhum]), (Rio (-1), [Nenhum,Tronco]), (Rio 3, [Tronco,Nenhum]), (Estrada 3, [Carro,Nenhum])])
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:isTerreno" class="def">isTerreno</a> :: [(<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>])] -&gt; [Int] <a href="#v:isTerreno" class="selflink">#</a></p></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.26.0</p></div></body></html>

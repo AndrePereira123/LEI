@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Tarefa6_2022li1g059</title><link href="linuwial.css" rel="stylesheet" type="text/css" title="Linuwial" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { processClass: "mathjax", ignoreClass: ".*" } });</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><span class="caption empty">&nbsp;</span><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul></div><div id="content"><div id="module-header"><table class="info"><tr><th valign="top">Copyright</th><td>Andr&#233; Filipe Soares Pereira  &lt;a104275@alunos.uminho.pt&gt;<br />Leonardo Gomes Alves &lt;a104093@alunos.uminho.pt&gt;</td></tr><tr><th>Safe Haskell</th><td>Safe-Inferred</td></tr></table><p class="caption">Tarefa6_2022li1g059</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>M&#243;dulo para a realiza&#231;&#227;o da Tarefa 6 do projeto de LI1 em 2022/23.</p></div></div><div id="synopsis"><details id="syn"><summary>Synopsis</summary><ul class="details-toggle" data-details-id="syn"><li class="src short"><span class="keyword">data</span> <a href="#t:Estado">Estado</a><ul class="subs"><li>= <a href="#v:Menu">Menu</a></li><li>| <a href="#v:Play">Play</a></li><li>| <a href="#v:Pause">Pause</a></li></ul></li><li class="src short"><span class="keyword">data</span> <a href="#t:Skin">Skin</a><ul class="subs"><li>= <a href="#v:S">S</a> Int</li><li>| <a href="#v:T">T</a> Int</li><li>| <a href="#v:E">E</a> Int</li></ul></li><li class="src short"><span class="keyword">type</span> <a href="#t:Skins">Skins</a> = [(<a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>, Picture)]</li><li class="src short"><span class="keyword">type</span> <a href="#t:Texturasobs">Texturasobs</a> = [(<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>, Picture)]</li><li class="src short"><span class="keyword">type</span> <a href="#t:GlossState">GlossState</a> = (<a href="Tarefa6_2022li1g059.html#t:Estado" title="Tarefa6_2022li1g059">Estado</a>, Int, <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a>, <a href="Tarefa6_2022li1g059.html#t:Skins" title="Tarefa6_2022li1g059">Skins</a>, <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>, <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a>)</li><li class="src short"><a href="#v:intToFloat">intToFloat</a> :: Int -&gt; Float</li><li class="src short"><a href="#v:estadoInicial">estadoInicial</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a></li><li class="src short"><a href="#v:mapainicial">mapainicial</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a></li><li class="src short"><a href="#v:estadoGlossInicial">estadoGlossInicial</a> :: Int -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skins" title="Tarefa6_2022li1g059">Skins</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a></li><li class="src short"><a href="#v:desenhaEstadoGloss">desenhaEstadoGloss</a> :: <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; Picture</li><li class="src short"><a href="#v:scoref">scoref</a> :: Int -&gt; [Picture]</li><li class="src short"><a href="#v:desenhaJogador">desenhaJogador</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skins" title="Tarefa6_2022li1g059">Skins</a> -&gt; Picture</li><li class="src short"><a href="#v:desenhaMapa">desenhaMapa</a> :: Float -&gt; Float -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; [Picture]</li><li class="src short"><a href="#v:desenhaLinha">desenhaLinha</a> :: Float -&gt; Float -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; [Picture]</li><li class="src short"><a href="#v:desenhaBloco">desenhaBloco</a> :: <a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a> -&gt; <a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; Picture</li><li class="src short"><a href="#v:aplicarKey">aplicarKey</a> :: Event -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a></li><li class="src short"><a href="#v:reageEventoGloss">reageEventoGloss</a> :: Event -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a></li><li class="src short"><a href="#v:reageTempoGloss">reageTempoGloss</a> :: Float -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a></li></ul></details></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><span class="keyword">data</span> <a id="t:Estado" class="def">Estado</a> <a href="#t:Estado" class="selflink">#</a></p><div class="doc"><p>A Tarefa 6, corresponde &#224; &#250;ltima tarefa do trabalho e, essencialmente trata-se da parte gr&#225;fica.</p><h2>Data de Estado:</h2><pre>data Estado = Menu 
+      |Play 
+      |Pause
+      deriving Show
+</pre></div><div class="subs constructors"><p class="caption">Constructors</p><table><tr><td class="src"><a id="v:Menu" class="def">Menu</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:Play" class="def">Play</a></td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:Pause" class="def">Pause</a></td><td class="doc empty">&nbsp;</td></tr></table></div><div class="subs instances"><h4 class="instances details-toggle-control details-toggle" data-details-id="i:Estado">Instances</h4><details id="i:Estado" open="open"><summary class="hide-when-js-enabled">Instances details</summary><table><tr><td class="src clearfix"><span class="inst-left"><span class="instance details-toggle-control details-toggle" data-details-id="i:id:Estado:Show:1"></span> Show <a href="Tarefa6_2022li1g059.html#t:Estado" title="Tarefa6_2022li1g059">Estado</a></span> <a href="#t:Estado" class="selflink">#</a></td><td class="doc empty">&nbsp;</td></tr><tr><td colspan="2"><details id="i:id:Estado:Show:1"><summary class="hide-when-js-enabled">Instance details</summary><p>Defined in <a href="Tarefa6_2022li1g059.html">Tarefa6_2022li1g059</a></p> <div class="subs methods"><p class="caption">Methods</p><p class="src"><a href="#v:showsPrec">showsPrec</a> :: Int -&gt; <a href="Tarefa6_2022li1g059.html#t:Estado" title="Tarefa6_2022li1g059">Estado</a> -&gt; ShowS</p><p class="src"><a href="#v:show">show</a> :: <a href="Tarefa6_2022li1g059.html#t:Estado" title="Tarefa6_2022li1g059">Estado</a> -&gt; String</p><p class="src"><a href="#v:showList">showList</a> :: [<a href="Tarefa6_2022li1g059.html#t:Estado" title="Tarefa6_2022li1g059">Estado</a>] -&gt; ShowS</p></div></details></td></tr></table></details></div></div><div class="top"><p class="src"><span class="keyword">data</span> <a id="t:Skin" class="def">Skin</a> <a href="#t:Skin" class="selflink">#</a></p><div class="doc"><h2>Data das skins:</h2><p>S corresponde &#224; skin da galinha, T corresponde &#224; skin da tartaruga e E ao elefante.
+<code>
+data Skin   = S Int
+             |T Int
+             |E Int
+            deriving (Show,Read,Eq)
+</code></p></div><div class="subs constructors"><p class="caption">Constructors</p><table><tr><td class="src"><a id="v:S" class="def">S</a> Int</td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:T" class="def">T</a> Int</td><td class="doc empty">&nbsp;</td></tr><tr><td class="src"><a id="v:E" class="def">E</a> Int</td><td class="doc empty">&nbsp;</td></tr></table></div><div class="subs instances"><h4 class="instances details-toggle-control details-toggle" data-details-id="i:Skin">Instances</h4><details id="i:Skin" open="open"><summary class="hide-when-js-enabled">Instances details</summary><table><tr><td class="src clearfix"><span class="inst-left"><span class="instance details-toggle-control details-toggle" data-details-id="i:id:Skin:Read:1"></span> Read <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a></span> <a href="#t:Skin" class="selflink">#</a></td><td class="doc empty">&nbsp;</td></tr><tr><td colspan="2"><details id="i:id:Skin:Read:1"><summary class="hide-when-js-enabled">Instance details</summary><p>Defined in <a href="Tarefa6_2022li1g059.html">Tarefa6_2022li1g059</a></p> <div class="subs methods"><p class="caption">Methods</p><p class="src"><a href="#v:readsPrec">readsPrec</a> :: Int -&gt; ReadS <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a></p><p class="src"><a href="#v:readList">readList</a> :: ReadS [<a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>]</p><p class="src"><a href="#v:readPrec">readPrec</a> :: ReadPrec <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a></p><p class="src"><a href="#v:readListPrec">readListPrec</a> :: ReadPrec [<a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>]</p></div></details></td></tr><tr><td class="src clearfix"><span class="inst-left"><span class="instance details-toggle-control details-toggle" data-details-id="i:id:Skin:Show:2"></span> Show <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a></span> <a href="#t:Skin" class="selflink">#</a></td><td class="doc empty">&nbsp;</td></tr><tr><td colspan="2"><details id="i:id:Skin:Show:2"><summary class="hide-when-js-enabled">Instance details</summary><p>Defined in <a href="Tarefa6_2022li1g059.html">Tarefa6_2022li1g059</a></p> <div class="subs methods"><p class="caption">Methods</p><p class="src"><a href="#v:showsPrec">showsPrec</a> :: Int -&gt; <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; ShowS</p><p class="src"><a href="#v:show">show</a> :: <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; String</p><p class="src"><a href="#v:showList">showList</a> :: [<a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>] -&gt; ShowS</p></div></details></td></tr><tr><td class="src clearfix"><span class="inst-left"><span class="instance details-toggle-control details-toggle" data-details-id="i:id:Skin:Eq:3"></span> Eq <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a></span> <a href="#t:Skin" class="selflink">#</a></td><td class="doc empty">&nbsp;</td></tr><tr><td colspan="2"><details id="i:id:Skin:Eq:3"><summary class="hide-when-js-enabled">Instance details</summary><p>Defined in <a href="Tarefa6_2022li1g059.html">Tarefa6_2022li1g059</a></p> <div class="subs methods"><p class="caption">Methods</p><p class="src"><a href="#v:-61--61-">(==)</a> :: <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; Bool</p><p class="src"><a href="#v:-47--61-">(/=)</a> :: <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; Bool</p></div></details></td></tr></table></details></div></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:Skins" class="def">Skins</a> = [(<a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>, Picture)] <a href="#t:Skins" class="selflink">#</a></p><div class="doc"><p>Tipo das skins:
+A cada skin corresponde a sua picture.
+<code>
+type Skins = [(Skin,Picture)]
+</code></p></div></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:Texturasobs" class="def">Texturasobs</a> = [(<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>, Picture)] <a href="#t:Texturasobs" class="selflink">#</a></p><div class="doc"><p>Tipo das texturas dos obst&#225;culos:
+A cada obst&#225;culo corresponde a sua picture.
+<code>
+type Texturasobs = [(Obstaculo,Picture)]
+</code></p></div></div><div class="top"><p class="src"><span class="keyword">type</span> <a id="t:GlossState" class="def">GlossState</a> = (<a href="Tarefa6_2022li1g059.html#t:Estado" title="Tarefa6_2022li1g059">Estado</a>, Int, <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a>, <a href="Tarefa6_2022li1g059.html#t:Skins" title="Tarefa6_2022li1g059">Skins</a>, <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a>, <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a>) <a href="#t:GlossState" class="selflink">#</a></p><div class="doc"><p>Tipo do GlossState:
+O Estado corresponde ao estado do jogo, o par&#226;metro Int corresponde ao tempo, Texturasobs corresponde &#224;s texturas dos obst&#225;culos, skins corresponde
+&#224;s v&#225;rias skins, skin corresponde &#224; skin que ser&#225; utilizada, e o Jogo corresponde ao mapa e o jogador.
+<code>
+type GlossState = (Estado,Int,Texturasobs,Skins,Skin,Jogo)
+</code></p></div></div><div class="top"><p class="src"><a id="v:intToFloat" class="def">intToFloat</a> :: Int -&gt; Float <a href="#v:intToFloat" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o intToFloat transforma uma valor inteiro num float, ser&#225; utilizada mais tarde como fun&#231;&#227;o auxiliar.</p><pre>intToFloat :: Int -&gt; Float
+intToFloat n = fromInteger (toInteger n)
+</pre></div></div><div class="top"><p class="src"><a id="v:estadoInicial" class="def">estadoInicial</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> <a href="#v:estadoInicial" class="selflink">#</a></p><div class="doc"><p>Definimos uma fun&#231;&#227;o chamada mapainicial que, como o nome diz, corresponde precisamente ao mapa inicial de todos os jogos que se poder&#227;o jogar. Definimos tamb&#233;m uma fun&#231;&#227;o chamada
+estadoInicial, que corresponde &#224; posi&#231;&#227;o inicial do jogo e ao mapa inicial.</p><pre>mapainicial = (Mapa 13 [(Estrada (-2), [Nenhum,Nenhum,Carro,Nenhum,Carro,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Carro,Carro,Carro]),
+                        (Relva,[Arvore,Arvore,Nenhum,Arvore,Nenhum,Arvore,Nenhum,Nenhum,Arvore,Nenhum,Nenhum,Arvore,Nenhum]),
+                        (Rio 2,[Tronco,Tronco,Nenhum,Nenhum,Tronco,Tronco,Nenhum,Tronco,Nenhum,Nenhum,Tronco,Nenhum,Nenhum]),
+                        (Estrada 2, [Nenhum,Nenhum,Carro,Nenhum,Carro,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Carro,Carro,Carro]),
+                        (Relva,[Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum]),
+                        (Relva,[Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum]),
+                        (Relva,[Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum]),
+                        (Relva,[Arvore,Arvore,Arvore,Nenhum,Nenhum,Nenhum,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore]),
+                        (Relva,[Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore,Arvore]),
+                        (Rio 1,[Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum]),
+                        (Rio (-1),[Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum]),
+                        (Rio 1,[Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum,Nenhum])])
+</pre><pre>estadoInicial = (Jogo (Jogador (6,6)) mapainicial)
+</pre></div></div><div class="top"><p class="src"><a id="v:mapainicial" class="def">mapainicial</a> :: <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> <a href="#v:mapainicial" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:estadoGlossInicial" class="def">estadoGlossInicial</a> :: Int -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skins" title="Tarefa6_2022li1g059">Skins</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> <a href="#v:estadoGlossInicial" class="selflink">#</a></p><div class="doc"><p>Nesta parte desenvolvemos o menu do jogo, e a partir daqui come&#231;amos a usar o Gloss. O que decidimos fazer foi, utilizando imagens, construir um simples menu em que tem a op&#231;&#227;o de jogar, 
+escolher a skin, sair do jogo e um c&#237;rculo em volta da skin selecionada. Utiliz&#225;mos bastante o fromJust lookup que nos auxilia em ir buscar as imagens que s&#227;o correspondentes a cada parte do men&#250;. </p><p>&#201; de real&#231;ar que, o tipo GlossState &#233; definido por 
+(Estado,[Event],Int,Texturasobs,Skins,Skin,Jogo), onde o Estado corresponde ao estado do programa: Menu (corresponde ao menu), Play (corresponde a quando est&#225;mos a jogar), Pause (corresponde ao ecr&#227; de quando perdemos).</p><p>Assim, utilizando as posi&#231;&#245;es do jogador no Menu, somos capazes associar cada posi&#231;&#227;o a cada imagem.</p><p>Definimos tamb&#233;m o construtor do Play, o qual &#233; feito pelo mapa, pelo jogador e a sua respetiva skin e pelo score, o qual mostra a pontua&#231;&#227;o do jogador.</p><p>Temos ainda o Pause, que corresponde ao ecr&#227; que surge quando morremos e, mostra ainda a pontua&#231;&#227;o do jogador nessa jogada.</p><p>Definimos tamb&#233;m o estadoGlossInicial, que corresponde precisamente ao in&#237;cio do nosso programa, e &#233; de real&#231;ar que, por default, a skin a utilizar &#233; a da galinha.</p><h2>Fun&#231;&#227;o do ecr&#227; inicial:</h2><pre>estadoGlossInicial :: Int -&gt; Texturasobs -&gt; Skins -&gt; GlossState
+estadoGlossInicial n tex skins = (Menu,n,tex,skins,S 1, estadoInicial)
+</pre><h2>Fun&#231;&#227;o que desenha o menu:</h2><pre>desenhaEstadoGloss :: GlossState -&gt; Picture
+desenhaEstadoGloss (Menu,n,tex,skins,skin,(Jogo (Jogador (6,6)) mapa))  = translate 0 0 $ fromJust (lookup Nenhum (drop 8 tex)) -- botao play
+desenhaEstadoGloss (Menu,n,tex,skins,skin,(Jogo (Jogador (6,7)) mapa))  = translate 0 0 $ fromJust (lookup Nenhum (drop 9 tex)) -- botao menu
+desenhaEstadoGloss (Menu,n,tex,skins,skin,(Jogo (Jogador (6,8)) mapa))  = translate 0 0 $ fromJust (lookup Nenhum (drop 10 tex)) -- botao quit
+desenhaEstadoGloss (Menu,n,tex,skins,skin,(Jogo (Jogador (7,7)) mapa))  = if skin == (S 1) 
+                                                                               then pictures [(translate 0 0 $ fromJust (lookup Nenhum (drop 11 tex))),  -- skin galinha
+                                                                                              ( translate (-460) 20 $ ThickCircle 190 4)]
+                                                                               else (translate 0 0 $ fromJust (lookup Nenhum (drop 11 tex)))
+desenhaEstadoGloss (Menu,n,tex,skins,skin,(Jogo (Jogador (7,8)) mapa))  = if skin == (T 1) 
+                                                                               then pictures [(translate 0 0 $ fromJust (lookup Nenhum (drop 12 tex))),  -- skin galinha
+                                                                                              ( translate (-460) 20 $ ThickCircle 190 4)]
+                                                                               else (translate 0 0 $ fromJust (lookup Nenhum (drop 12 tex)))
+desenhaEstadoGloss (Menu,n,tex,skins,skin,(Jogo (Jogador (7,6)) mapa))  = if skin == (E 1) 
+                                                                               then pictures [(translate 0 0 $ fromJust (lookup Nenhum (drop 14 tex))),  -- skin galinha
+                                                                                              ( translate (-460) 20 $ ThickCircle 190 4)]
+                                                                               else (translate 0 0 $ fromJust (lookup Nenhum (drop 14 tex)))
+desenhaEstadoGloss (Pause,n,tex,skins,skin,(Jogo (Jogador (x,y)) mapa)) = pictures ([ (translate (0) 0 $ scale 1.5 1 $ (fromJust (lookup Nenhum $ drop 7 tex))),
+                                                                                     (translate (500) 0 $ scale 1.5 1 $ (fromJust (lookup Nenhum $ drop 3 tex))),
+                                                                                     (translate 300 (-300) $ scale 0.8 0.8 $ (fromJust (lookup Nenhum $ drop 13 tex)))] 
+                                                                                      ++ [(translate (-250) 150 $  pictures $ score)])
+                                                                                      where score = scoref n
+desenhaEstadoGloss (Play,n,tex,skins,skin,(Jogo (Jogador (x,y)) mapa)) = Pictures ((layout)++[(jogador)]++[(translate (-50) 50 $  pictures $ score)]) 
+                                                               where layout = desenhaMapa (-600) (450) mapa tex
+                                                                     jogador = desenhaJogador (Jogador (x,y)) skin skins
+                                                                     score = scoref n
+</pre></div></div><div class="top"><p class="src"><a id="v:desenhaEstadoGloss" class="def">desenhaEstadoGloss</a> :: <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; Picture <a href="#v:desenhaEstadoGloss" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:scoref" class="def">scoref</a> :: Int -&gt; [Picture] <a href="#v:scoref" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o scoref tem o objetivo de mostrar a pontua&#231;&#227;o do jogador, a qual &#233; baseada em conforme o tempo passa, a sua pontua&#231;&#227;o aumenta em 1 de 1 em 1 segundo.
+    Para tal, definimos uma fun&#231;&#227;o que nos apresenta o valor no ecr&#227;.
+==Fun&#231;&#227;o principal:
+<code>
+scoref :: Int -&gt; [Picture]
+scoref n = [(translate 550 (-500) k),(translate 551 (-500) k),(translate 552 (-500) k),(translate 553 (-500) k),(translate 554 (-500) k),(translate 555 (-500) k),
+            (translate 550 (-501) k),(translate 551 (-501) k),(translate 552 (-501) k),(translate 553 (-501) k),(translate 554 (-501) k),(translate 555 (-501) k),
+            (translate 550 (-502) k),(translate 551 (-502) k),(translate 552 (-502) k),(translate 553 (-502) k),(translate 554 (-502) k),(translate 555 (-502) k)]
+            where k = Text $ show $ div n 60
+</code></p></div></div><div class="top"><p class="src"><a id="v:desenhaJogador" class="def">desenhaJogador</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skin" title="Tarefa6_2022li1g059">Skin</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Skins" title="Tarefa6_2022li1g059">Skins</a> -&gt; Picture <a href="#v:desenhaJogador" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o desenhaJogador tem como objetivo transformar o jogador numa Picture, desta forma transform&#225;mos as coordenadas do jogador em coordenadas no plano do Gloss e,
+ associ&#225;mos essas coordenadas &#224; skin do jogador.</p><h2>Fun&#231;&#227;o principal:</h2><pre>desenhaJogador :: Jogador -&gt; Skin -&gt; Skins -&gt; Picture
+desenhaJogador (Jogador (x,y)) skin skins = translate x2 y2 (fromJust (lookup skin skins)) 
+                                                where x2 = (intToFloat x)    *100 -600
+                                                      y2 = (intToFloat (-y)) *100 +450
+ </pre></div></div><div class="top"><p class="src"><a id="v:desenhaMapa" class="def">desenhaMapa</a> :: Float -&gt; Float -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; [Picture] <a href="#v:desenhaMapa" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o desenhaMapa tem como objetivo desenhar o mapa mas, primeiramente temos que ser capazes de definir o bloco, de cada linha, e a pr&#243;pria linha para posteriormente definirmos o mapa.</p><p>Desta forma definimos a fun&#231;&#227;o desenhaBloco que desenha o bloco conforme o seu tipo, por exemplo quando &#233; relva, vai buscar a imagem associada a esse tipo de terreno utilizando o drop nas texturas e 
+    converte-a para Picture, fazemos o mesmo processo para os restantes terrenos e obst&#225;culos, dando apenas rotate no carro por causa de aspetos gr&#225;ficos.</p><p>De seguida definimos a fun&#231;&#227;o desenhaLinha que desenha cada linha, juntando todos os blocos pertencentes &#224;s linhas e us&#225;mos assim a fun&#231;&#227;o desenhaBloco.</p><p>Por fim, utiliz&#225;mos a fun&#231;&#227;o desenhaMapa que o que faz &#233; juntar as Pictures correspondentes de cada linha e forma assim um mapa.</p><h2>Fun&#231;&#227;o desenhaBloco:</h2><pre>desenhaBloco :: Terreno -&gt; Obstaculo -&gt; Texturasobs -&gt; Picture
+desenhaBloco Relva       h tex = fromJust (lookup h tex) 
+desenhaBloco (Estrada v) h tex = if v &gt; 0 then fromJust (lookup h (drop 1 tex)) 
+                                        else rotate 180 (fromJust (lookup h (drop 1 tex))) 
+desenhaBloco (Rio _)     h tex = fromJust (lookup h (drop 2 tex))
+</pre><h2>Fun&#231;&#227;o desenhaLinha:</h2><pre>desenhaLinha :: Float -&gt; Float -&gt; (Terreno,[Obstaculo])  -&gt; Texturasobs-&gt;  [Picture]
+desenhaLinha x y (terr,[h])      tex  = [(translate x 0 (desenhaBloco terr h tex))]
+desenhaLinha x y (terr,(h:h2:t)) tex  = (translate x 0 (desenhaBloco terr h tex)) : resto
+                                      where resto = desenhaLinha (x+100) y (terr,(h2:t)) tex
+</pre><h2>Fun&#231;&#227;o desenhaMapa: </h2><pre>desenhaBloco :: Terreno -&gt; Obstaculo -&gt; Texturasobs -&gt; Picture
+desenhaMapa _ _ (Mapa l []) _  = []
+desenhaMapa x y (Mapa l k) tex = (translate 0 y (Pictures linha)) : resto
+                               where ((terr,(h:t)):t2) = k
+                                     resto = desenhaMapa x (y-100) (Mapa l t2) tex
+                                     linha = desenhaLinha x y (terr,(h:t)) tex
+</pre></div></div><div class="top"><p class="src"><a id="v:desenhaLinha" class="def">desenhaLinha</a> :: Float -&gt; Float -&gt; (<a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a>, [<a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a>]) -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; [Picture] <a href="#v:desenhaLinha" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:desenhaBloco" class="def">desenhaBloco</a> :: <a href="LI12223.html#t:Terreno" title="LI12223">Terreno</a> -&gt; <a href="LI12223.html#t:Obstaculo" title="LI12223">Obstaculo</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:Texturasobs" title="Tarefa6_2022li1g059">Texturasobs</a> -&gt; Picture <a href="#v:desenhaBloco" class="selflink">#</a></p></div><div class="top"><p class="src"><a id="v:aplicarKey" class="def">aplicarKey</a> :: Event -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> <a href="#v:aplicarKey" class="selflink">#</a></p><div class="doc"><p>Nesta parte fizemos o movimento das teclas, o que &#233; essencial para o nosso jogo funcionar.
+    Para tal us&#225;mos as teclas: seta para cima, seta para baixo, seta para a esquerda, seta para a direita e W,S,A,D associadas respetivamente &#224;s anteriores. Estas teclas servem para nos movimentar-mos
+    no programa em si.</p><p>Definimos tamb&#233;m a tecla Enter, que serve para entrar por exemplo no Menu e no Jogo e a tecla <a href="R.html">R</a> que serve para voltar ao menu inicial.</p><p>Tivemos tamb&#233;m que definir casos especiais, por exemplo quando clic&#225;mos na tecla para baixo no menu inicial ele volta para a primeira op&#231;&#227;o e assim vice-versa.</p><p>&#201; de real&#231;ar tamb&#233;m que, tiv&#233;mos que por os casos para cada skin, por exemplo quando o personagem anda para a esquerda a skin vira tamb&#233;m para a esquerda e associ&#225;mos isso a cada skin que o nosso jogo tem.</p><h2>Fun&#231;&#227;o principal:</h2><pre>aplicarKey :: Event -&gt; GlossState -&gt; GlossState
+
+CASO EM QUE CLIC&#193;MOS NA SETA PARA BAIXO NA ULTIMA OP&#199;&#195;O E VOLTA &#192; PRIMEIRA OP&#199;&#195;O:
+
+aplicarKey (EventKey (SpecialKey KeyDown) Down _ _) j<code>(Menu,a,b,c,d,j2</code>(Jogo (Jogador (x,y)) mapaks)) 
+                  = if  y == 8  then  (Menu,1,b,c,d,(Jogo (Jogador (x,6)) mapaks)) else (Menu,1,b,c,d,(Jogo (Jogador (x,y+1)) mapaks))
+
+cASO EM QUE CLIC&#193;MOS NA SETA PARA CIMA  NA PRIMEIRA OP&#199;&#195;O E VOLTA &#192; PRIMEIRA OP&#199;&#195;O:
+
+aplicarKey (EventKey (SpecialKey KeyUp) Down _ _) j<code>(Menu,keys,a,b,c,d,j2</code>(Jogo (Jogador (x,y)) mapaks)) 
+                  = if  y == 6  then  (Menu,1,b,c,d,(Jogo (Jogador (x,8)) mapaks)) else (Menu,[],1,b,c,d,(Jogo (Jogador (x,y-1)) mapaks))
+
+CASOS EM QUE CLICAMOS PARA ENTRAR NO MENU DE ESCOLHA DA SKIN:
+
+aplicarKey (EventKey (SpecialKey KeyEnter) Down _ _) j<code>(Menu,a,b,c,d,j2</code>(Jogo (Jogador (6,7)) mapaks)) = (Menu,1,b,c,d,(Jogo (Jogador (7,7)) mapaks))
+aplicarKey (EventKey (SpecialKey KeyRight) Down _ _) j<code>(Menu,a,b,c,d,j2</code>(Jogo (Jogador (6,7)) mapaks)) = (Menu,1,b,c,d,(Jogo (Jogador (7,7)) mapaks))
+
+CASO PARA VOLTAR ATR&#193;S NO MENU DE SELE&#199;&#195;O DE SKIN:
+
+aplicarKey (EventKey (SpecialKey KeyLeft) Down _ _) j<code>(Menu,a,b,c,d,j2</code>(Jogo(Jogador (7,y)) mapaks)) = (Menu,1,b,c,d,(Jogo (Jogador(6,7)) mapaks))
+
+CASO PARA FECHAR O JOGO:
+
+aplicarKey (EventKey (SpecialKey KeyEnter) Down _ _) (Menu,a,b,c,d,(Jogo(Jogador (6,8)) mapaks)) = error &quot;&quot; 
+
+CASO EM QUE SELECIONAMOS A SKIN E FICA ASSIM DEFINIDA PARA O RESTO DO JOGO.
+
+aplicarKey (EventKey (SpecialKey KeyEnter) Down _ _) (Menu,a,b,c,d,(Jogo(Jogador (7,y)) mapaks)) | y == 6 = (Menu,1,b,c,ef,(Jogo (Jogador(7,6)) mapaks))
+                                                                                                 | y == 7 = (Menu,1,b,c,ga,(Jogo (Jogador(7,7)) mapaks))
+                                                                                                 | otherwise = (Menu,1,b,c,ta,(Jogo (Jogador(7,8)) mapaks))
+                                                                                                      where ga = S 1
+                                                                                                            ta = T 1
+                                                                                                            ef = E 1
+
+
+OS SEGUINTES CASOS S&#195;O REFERENTES &#192; PARTE DA MOVIMENTA&#199;&#195;O DO JOGO EM QUE UTILIZAMOS O CASE PARA ASSOCIAR AS SKINS AO MOVIMENTO DAS TECLAS:
+
+aplicarKey (EventKey (SpecialKey KeyUp) Down _ _) j<code>(Play,a,b,c,skin,j2</code>(Jogo (Jogador (x,y)) mapaks)) 
+                  = case skin of
+                         S _ -&gt; (Play,a,b,c,S 1,animaJogador j2 (Move Cima)) 
+                         T _ -&gt; (Play,a,b,c,T 1,animaTartaruga j2 (Move Cima))
+                         E _ -&gt; (Play,a,b,c,E 1,animaJogador j2 (Move Cima))
+
+aplicarKey (EventKey (SpecialKey KeyDown) Down _ _) j<code>(Play,a,b,c,skin,j2</code>(Jogo (Jogador (x,y)) mapaks))
+                  = case skin of
+                        S  _ -&gt; (Play,a,b,c,S 2,animaJogador j2 (Move Baixo))
+                        T  _ -&gt; (Play,a,b,c,T 2,animaTartaruga j2 (Move Baixo))
+                        E  _ -&gt; (Play,a,b,c,E 2,animaJogador j2 (Move Baixo))s 
+                       
+aplicarKey (EventKey (SpecialKey KeyLeft) Down _ _)  j<code>(Play,a,b,c,skin,j2</code>(Jogo (Jogador (x,y)) mapaks)) 
+                  = case skin of
+                        S _ -&gt; (Play,a,b,c,S 3,animaJogador j2 (Move Esquerda))
+                        T _ -&gt; (Play,a,b,c,T 3,animaTartaruga j2 (Move Esquerda))
+                        E _ -&gt; (Play,a,b,c,E 3,animaJogador j2 (Move Esquerda))
+                    
+aplicarKey (EventKey (SpecialKey KeyRight) Down _ _) j<code>(Play,a,b,c,skin,j2</code>(Jogo (Jogador (x,y)) mapaks)) 
+                  = case skin of 
+                        S _ -&gt; (Play,a,b,c,S 4,animaJogador j2 (Move Direita))
+                        T _ -&gt; (Play,a,b,c,T 4,animaTartaruga j2 (Move Direita))
+                        E _ -&gt; (Play,a,b,c,E 4,animaJogador j2 (Move Direita)) 
+                       
+CASO PARA ENTRAR NA PARTE DE JOGAR:                       
+
+aplicarKey (EventKey (SpecialKey KeyEnter) Down _ _) j<code>(Menu,a,b,c,d,j2</code>(Jogo (Jogador (6,6)) mapaks)) 
+                  = (Play,1,b,c,d,estadoInicial)
+            
+CASO PARA VOLTAR AO MENU INICIAL QUANDO MORREMOS:
+
+aplicarKey (EventKey (SpecialKey KeyEnter) Down _ _) j<code>(Pause,a,b,c,d,j2</code>(Jogo (Jogador (x,y)) mapaks)) 
+                  = (Menu,1,b,c,d,estadoInicial)
+
+CASO PARA VOLTAR AO MENU INICIAL EM QUALQUER PARTE DO PROGRAMA UTILIZANDO A TECLA <a href="R.html">R</a>:
+
+aplicarKey (EventKey (Char <code>r</code>) Down _ _) (est,a,b,c,d,(Jogo (Jogador(x,y)) mapaks)) 
+                  = case d of 
+                        S _  -&gt; (Menu,1,b,c,S 1,(Jogo (Jogador (6,6)) mapaks)) 
+                        T _ -&gt; (Menu,1,b,c,T 1,(Jogo (Jogador (6,6)) mapaks))
+                        E _ -&gt; (Menu,1,b,c,T 1,(Jogo (Jogador (6,6)) mapaks))
+
+CASOS QUE ASSOCIAM AS TECLAS WASD &#192;S SETAS:
+
+aplicarKey (EventKey (Char <code>w</code>) Down a b) j = aplicarKey (EventKey (SpecialKey KeyUp) Down a b) j
+aplicarKey (EventKey (Char <code>s</code>) Down a b) j = aplicarKey (EventKey (SpecialKey KeyDown) Down a b) j
+aplicarKey (EventKey (Char <code>a</code>) Down a b) j = aplicarKey (EventKey (SpecialKey KeyLeft) Down a b) j
+aplicarKey (EventKey (Char <code>d</code>) Down a b) j = aplicarKey (EventKey (SpecialKey KeyRight) Down a b) j
+aplicarKey _ s = s
+</pre></div></div><div class="top"><p class="src"><a id="v:reageEventoGloss" class="def">reageEventoGloss</a> :: Event -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> <a href="#v:reageEventoGloss" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o reageEventoGloss o que faz &#233; basicamente aplicar um Event, no caso pressionar uma tecla, e aplica a tecla ao jogo, fazendo as fun&#231;&#245;es de aplicarKey funcionarem.</p><h2>Fun&#231;&#227;o principal:</h2><pre>reageEventoGloss :: Event -&gt; GlossState -&gt; GlossState
+reageEventoGloss ev (e,n,tex,skins,skin,(Jogo (Jogador (x,y)) mapaks)) = aplicarKey ev (e,n,tex,skins,skin,(Jogo (Jogador (x,y)) mapaks))
+</pre></div></div><div class="top"><p class="src"><a id="v:reageTempoGloss" class="def">reageTempoGloss</a> :: Float -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> -&gt; <a href="Tarefa6_2022li1g059.html#t:GlossState" title="Tarefa6_2022li1g059">GlossState</a> <a href="#v:reageTempoGloss" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o reageTempoGloss tem como objetivo fazer com que a parte gr&#225;fica atualize consoante o tempo vai passando, e desta forma, fizemos com que uma linha nova apare&#231;a aproximadamente de 2 em 2 segundos (corresponde ao mod do n 119).</p><p>De forma a randomizar o mapa, adicion&#225;mos novamente v&#225;rios mod ao n que corresponde ao tempo que vai aumentando conforme vamos jogando e, vai assim randomizando usando a fun&#231;&#227;o animaJogo que foi previamente
+    definida na Tarefa 3.</p><p>Temos ainda definidos os casos de quando o jogador vai para fora do mapa ou &#233; atropelado, o jogador perde e vai para o menu de Pause, ecr&#226; de morte.</p><h2>Fun&#231;&#227;o principal:</h2><pre>reageTempoGloss :: Float -&gt; GlossState -&gt; GlossState
+reageTempoGloss temp (Play,n,tex,skins,o<code>(T _),j</code>(Jogo tar<code>(Jogador (x,y)) ma</code>(Mapa l ((terr,(h:t)):t2)))) | foraMapa   tar ma || atropelado tar ma   = (Pause,n,tex,skins,o,j)
+                                                                                                           | (mod n 119) == 0 = (e,n+1,tex,skins,o, jogdes)
+                                                                                                           | (mod n 60)  == 0 = (e,n+1,tex,skins,o, animaJogo 1 (animaJogo 3 (animaJogo 2 (quatro))))
+                                                                                                           | (mod n 30)  == 0 = (e,n+1,tex,skins,o, animaJogo 2 (um) )
+                                                                                                           | (mod n 20)  == 0 = (e,n+1,tex,skins,o, animaJogo 3 j )
+                                                                                                           | (mod n 15)  == 0 = (e,n+1,tex,skins,o, animaJogo 4 j )
+                                                                                                           | otherwise = (e,n+1,tex,skins,o,j)
+                                                                                                                   where jogdes = deslizaJogo n j
+                                                                                                                         e = Play 
+                                                                                                                         um = animaJogo 1 j        
+                                                                                                                         quatro = animaJogo 4 j 
+
+reageTempoGloss temp (Play,n,tex,skins,skin,j<code>(Jogo (Jogador (x,y)) (Mapa l ((terr,(h:t)):t2))))| jogoTerminou j   = (Pause,n,tex,skins,skin,j)
+                                                                                                | (mod n 119) == 0 = (e,n+1,tex,skins,skin, jogdes)
+                                                                                                | (mod n 60)  == 0 = (e,n+1,tex,skins,skin, animaJogo 1 (animaJogo 3 (animaJogo 2 (quatro))))
+                                                                                                | (mod n 30)  == 0 = (e,n+1,tex,skins,skin, animaJogo 2 (um) )
+                                                                                                | (mod n 20)  == 0 = (e,n+1,tex,skins,skin, animaJogo 3 j )
+                                                                                                | (mod n 15)  == 0 = (e,n+1,tex,skins,skin, animaJogo 4 j )
+                                                                                                | otherwise = (e,n+1,tex,skins,skin,j)
+                                                                                                      where jogdes = deslizaJogo n j
+                                                                                                            e = Play 
+                                                                                                            um = animaJogo 1 j        
+                                                                                                            quatro = animaJogo 4 j       
+
+reageTempoGloss temp f</code>(e,n,tex,skins,skin,j@(Jogo (Jogador (x,y)) (Mapa l ((terr,(h:t)):t2)))) = f 
+</pre></div></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.26.0</p></div></body></html>

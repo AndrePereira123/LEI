@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Tarefa4_2022li1g059</title><link href="linuwial.css" rel="stylesheet" type="text/css" title="Linuwial" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { processClass: "mathjax", ignoreClass: ".*" } });</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><span class="caption empty">&nbsp;</span><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul></div><div id="content"><div id="module-header"><table class="info"><tr><th valign="top">Copyright</th><td>Andr&#233; Filipe Soares Pereira  &lt;a104275@alunos.uminho.pt&gt;<br />Leonardo Gomes Alves &lt;a104093@alunos.uminho.pt&gt;</td></tr><tr><th>Safe Haskell</th><td>Safe-Inferred</td></tr></table><p class="caption">Tarefa4_2022li1g059</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>M&#243;dulo para a realiza&#231;&#227;o da Tarefa 4 do projeto de LI1 em 2022/23.</p></div></div><div id="synopsis"><details id="syn"><summary>Synopsis</summary><ul class="details-toggle" data-details-id="syn"><li class="src short"><a href="#v:jogoTerminou">jogoTerminou</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; Bool</li><li class="src short"><a href="#v:foraMapa">foraMapa</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:cairRio">cairRio</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li><li class="src short"><a href="#v:atropelado">atropelado</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool</li></ul></details></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a id="v:jogoTerminou" class="def">jogoTerminou</a> :: <a href="LI12223.html#t:Jogo" title="LI12223">Jogo</a> -&gt; Bool <a href="#v:jogoTerminou" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o jogoTerminou tem o objetivo de, como o nome diz, verificar se o jogo terminou. </p><p>Para tal us&#225;mos v&#225;rias fun&#231;&#245;es auxiliares, que nos especificam em que casos o jogador perde.</p><h2>Fun&#231;&#227;o principal:</h2><pre>jogoTerminou (Jogo jogador<code>(Jogador (x,y)) mapa</code>(Mapa l ((terr,(h:t)):t2)))
+  | foraMapa jogador mapa = True                                                   
+  | cairRio jogador mapa = True
+  | atropelado jogador mapa = True 
+  |otherwise = False 
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (1,0)) (Mapa 3 [(Rio 1, [Tronco,Nenhum,Tronco])]))
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (0,0)) (Mapa 3 [(Estrada 1, [Carro,Nenhum,Nenhum])]))
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (2,0)) (Mapa 3 [(Rio 1, [Tronco,Nenhum,Tronco])]))
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (1,0)) (Mapa 3 [(Estrada 1, [Carro,Nenhum,Nenhum])]))
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (0,2)) (Mapa 3 [(Relva, [Arvore,Nenhum,Nenhum]), (Rio 1, [Tronco,Nenhum,Nenhum]), (Estrada (-2), [Carro,Nenhum,Nenhum])]))
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (1,3)) (Mapa 3 [(Relva, [Arvore,Nenhum,Nenhum]), (Rio 1, [Tronco,Nenhum,Nenhum]), (Estrada (-2), [Carro,Nenhum,Nenhum]), (Rio (-1), [Nenhum,Tronco,Nenhum])]))
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>jogoTerminou (Jogo (Jogador (0,4)) (Mapa 3 [(Relva, [Arvore,Nenhum,Nenhum]), (Rio 1, [Tronco,Nenhum,Nenhum]), (Estrada (-2), [Carro,Nenhum,Nenhum]), (Rio (-1), [Nenhum,Tronco,Nenhum]), (Estrada 1, [Carro,Nenhum,Nenhum])]))
+</code></strong>True
+</pre></div></div><div class="top"><p class="src"><a id="v:foraMapa" class="def">foraMapa</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:foraMapa" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o foraMapa verifica se um jogador est&#225; fora dos limites do mapa por exemplo, se um jogador acompanha o tronco para fora do mapa, 
+o jogador morre.</p><h2>Fun&#231;&#227;o principal:</h2><pre>foraMapa :: Jogador -&gt; Mapa -&gt; Bool
+foraMapa (Jogador (x,y)) (Mapa l ((terr,(h:t)):t2))
+     |x<a href="0">|| x</a> 12  = True
+     |y<a href="0">|| y</a> 9 = True
+     |otherwise = False
+       where numerolinhas = length ((terr,(h:t)):t2)
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>foraMapa (Jogador (1,0)) (Mapa 3 [(Rio 1, [Nenhum,Tronco,Tronco]), (Estrada (-1), [Carro,Nenhum,Nenhum]),(Relva, [Nenhum,Nenhum,Arvore])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>foraMapa (Jogador ((-1),2)) (Mapa 3 [(Rio 1, [Nenhum,Tronco,Tronco]), (Estrada (-1), [Carro,Nenhum,Nenhum]),(Relva, [Nenhum,Nenhum,Arvore])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>foraMapa (Jogador (1,3)) (Mapa 3 [(Estrada 1, [Nenhum,Tronco,Tronco]), (Estrada (-1), [Carro,Nenhum,Nenhum]),(Relva, [Nenhum,Nenhum,Arvore])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>foraMapa (Jogador (2,4)) (Mapa 4 [(Relva,[Arvore,Arvore,Nenhum,Nenhum]), (Estrada 1, [Carro,Carro,Carro,Nenhum]), (Rio (-1), [Tronco,Nenhum,Nenhum,Nenhum]), (Relva, [Nenhum,Arvore,Nenhum,Nenhum]), (Estrada (-1), [Carro,Nenhum,Nenhum,Carro])])
+</code></strong>False
+</pre></div></div><div class="top"><p class="src"><a id="v:cairRio" class="def">cairRio</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:cairRio" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o cairRio verifica se um jogador cai no rio e, caso cair, o jogador perde. </p><p>Para tal, esta fun&#231;&#227;o analisa quando o terreno &#233; <a href="Nenhum.html">Nenhum</a> na posi&#231;&#227;o dada do jogador.</p><h2>Fun&#231;&#227;o principal:</h2><pre>cairRio :: Jogador -&gt; Mapa -&gt; Bool
+cairRio jogador<code>(Jogador (x,y)) mapa</code>(Mapa l ((terr,(h:t)):t2))
+   | y /= 0 = cairRio (Jogador (x,y-1)) (Mapa l (t2))
+   |isTerreno [(terr,h:t)] == [1] &amp;&amp; (!!) (h:t) x == Nenhum = True
+   |otherwise = False
+</pre><h4>Exemplo de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>cairRio (Jogador (2,0)) (Mapa 3 [(Rio 1, [Tronco,Tronco,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>cairRio (Jogador (0,1)) (Mapa 3 [(Rio 1, [Tronco,Tronco,Nenhum]), (Rio (-2), [Tronco,Nenhum,Nenhum])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>cairRio (Jogador (1,1)) (Mapa 3 [(Rio 1, [Tronco,Tronco,Nenhum]), (Rio (-2), [Tronco,Nenhum,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>cairRio (Jogador (2,2)) (Mapa 3 [(Rio 1, [Tronco,Tronco,Nenhum]), (Relva, [Arvore,Nenhum,Nenhum]), (Rio (-1), [Nenhum,Tronco,Tronco]), (Estrada 1, [Carro,Carro,Nenhum])])
+</code></strong>False
+</pre></div></div><div class="top"><p class="src"><a id="v:atropelado" class="def">atropelado</a> :: <a href="LI12223.html#t:Jogador" title="LI12223">Jogador</a> -&gt; <a href="LI12223.html#t:Mapa" title="LI12223">Mapa</a> -&gt; Bool <a href="#v:atropelado" class="selflink">#</a></p><div class="doc"><p>A fun&#231;&#227;o atropelado tem o objetivo de verificar se o jogador &#233; atropelado por um carro e, como tal &#233; parecida com a fun&#231;&#227;o anterior, 
+cairRio.</p><p>Desta forma, a fun&#231;&#227;o analisa se a posi&#231;&#227;o do Jogador coincide com a posi&#231;&#227;o do carro.</p><h2>Fun&#231;&#227;o principal:</h2><pre>atropelado :: Jogador -&gt; Mapa -&gt; Bool
+atropelado (Jogador (x,y)) (Mapa l ((terr,(h:t)):t2))
+   | y /= 0 = atropelado (Jogador (x,y-1)) (Mapa l (t2))
+   |(!!) (h:t) x == Carro = True
+   |otherwise = False
+</pre><h4>Exemplos de utiliza&#231;&#227;o da fun&#231;&#227;o:</h4><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>atropelado (Jogador (1,3)) (Mapa 3 [(Rio 1, [Tronco,Tronco,Nenhum]), (Relva, [Arvore,Nenhum,Nenhum]), (Rio (-1), [Nenhum,Tronco,Tronco]), (Estrada 1, [Carro,Carro,Nenhum])])
+</code></strong>True
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>atropelado (Jogador (0,0)) (Mapa 3 [(Estrada 1, [Nenhum,Carro,Nenhum])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>atropelado (Jogador (2,3)) (Mapa 3 [(Estrada 1, [Nenhum,Carro,Nenhum]), (Relva, [Arvore,Nenhum,Nenhum]), (Rio (-1), [Tronco,Nenhum,Tronco]), (Estrada 2, [Carro,Carro,Nenhum])])
+</code></strong>False
+</pre><pre class="screen"><code class="prompt">&gt;&gt;&gt; </code><strong class="userinput"><code>atropelado (Jogador (0,3)) (Mapa 3 [(Estrada 1, [Nenhum,Carro,Nenhum]), (Relva, [Arvore,Nenhum,Nenhum]), (Rio (-1), [Tronco,Nenhum,Tronco]), (Estrada 2, [Carro,Carro,Nenhum])])
+</code></strong>True
+</pre></div></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.26.0</p></div></body></html>
