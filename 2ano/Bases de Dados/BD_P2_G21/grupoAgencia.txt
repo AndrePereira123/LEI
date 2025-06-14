@@ -1,0 +1,61 @@
+group: agencia
+
+cliente = {id nome sexo email
+    1 Carlos M "carlos@hotmail.com"
+    4 Marco M "marco@hotmail.com"
+    5 Poppey M "pop@hotmail.com"
+}
+
+tecnico = {id nome email telefone
+    453 Malaquias "malac@hotmail.com" 687234014
+    234 Aurelia "aurelia@gmail.com" 987654321
+    342 Jacob "jaco@gmailcom" 964123745
+}
+
+denuncia = {id descricao data cliente idTecnico caso
+    1 mataram_o_meu_pai 20242002 4 453 1
+    2 roubaram_a_minha_carrinha 20241802 1 234 2
+    3 "a minha filha desapareceu" 20231902 5 342 3
+}
+
+caso = {id estado inicio fim codigoPostal morada categoria localidade
+    1 A 20-02-2024 null 4730123 "Rua de Bacelos" homicidio Arcozelo
+    2 A 18-02-2024 null 4730345 rua_da_fonte roubo Amares
+    3 F 19-02-2024 25022024 4730668 penedos_altos desaparecimento Turiz
+}
+
+detetive = {id nome cargo email telefone localidade
+    1 "Leia" C "iamyoursister@gmail.com" 123456789 "Vila Verde"
+    2 "Luke SkyWalker" C "imnotyourson@hotmai.com" 654987123 Braga
+    3 "ObiWan" F "obiwan@gmail.com" 354786345 Arcozelo
+}
+
+casoTemDetetive = {idDetetive idCaso
+	1 3
+	2 1
+	1 2
+	3 1
+	3 2
+	3 3
+}    
+ 
+vitima = {id nome data descricao sexo codPostal morada localidade email casoId
+    1 "Qui Gon Jinn" 19561203 "é alto, e foi esfaqueado" M 4730245 "Rua de Bacelos" Arcozelo null 1
+		2 Carlos null "carrinha branca, Ford, sem espelho da esquerda" M 4730123 rua_da_fonte Amares carloshotmailcom 2
+		3 "Padmé" null "cabelo encaracolado, porte pequeno" F null penedos_altos Turiz null 3
+}
+
+suspeito = {id nome data descricao sexo registoCriminal codPostal morada localidade email
+    1 Anakin 12-03-1950 "anda vestido de preto e tem pele queimada" M "homicidio" null null null "lukeaimyourfather@hotmail.com"
+		2 null null "um vulto" null null null null null null
+		3 "Palpatine" null "pele enrugada, é capanga do Anakin" M "homicidio e roubo" 5673123 "Praça da Repúblca" "Vila Verde" null
+		4 "Mafarrico" null "nariz ponteagudo e usa uma boina" M "roubo" null null null null
+}
+
+casoTemSuspeito = {idCaso idSuspeito
+	1 1 
+	1 3
+	3 2
+	2 4
+	1 4
+}
