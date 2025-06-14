@@ -1,0 +1,5 @@
+Caso se utilize um NONCE fixo, mensagens idênticas terão cifras idênticas, e visto 
+que este é utilizado para que se possa usar apenas uma chave, passamos a ter 
+um algoritmo determínistico e vulnerável a brute-force e análise de padrões
+
+

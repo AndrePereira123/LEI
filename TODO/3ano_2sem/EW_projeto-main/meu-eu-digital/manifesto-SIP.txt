@@ -1,0 +1,42 @@
+
+// Exemplo de manifesto 
+    - deve estar na pasta SIP junto com a pasta "data"
+    - submetidoPor,dataSubmissao são preenchidos automaticamente
+
+{
+    "produtor": "andre.pereira",
+    "submetidoPor": "",
+    "dataCriacao": "2025-05-24",
+    "dataSubmissao": "",
+    "items": [
+        {
+            "ficheiro": "SIP/data/tubarao/tubarao.jpg",
+            "metadados": "SIP/data/tubarao/tubarao.json"
+        }
+    ]
+}
+
+
+// Metadados de um ficheiro de imagem 
+    - deve estar junto as ficheiros na pasta "data" 
+    - submetidoPor,dataSubmissao são preenchidos automaticamente
+    - comentarios serao sempre inicializados como lista vazia independente de input
+{
+    "titulo": "Metadados teste",
+    "tipoRecurso": "paisagem",
+    "dataCriacao": "2025-05-24",
+    "dataSubmissao": "",
+    "produtor": "user2",
+    "submetidoPor": "",
+    "visibilidade": "publico",
+    "descricao": "Descrição do ficheiro de imagem",
+    "classificadores": ["Música", "Fotografia"],
+    "ficheiros": [
+        {
+            "nomeOriginal": "foto.jpg",
+            "caminho": "/foto.jpg"
+        }
+    ],
+    "comentarios": [
+    ]
+}

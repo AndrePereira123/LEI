@@ -1,0 +1,63 @@
+
+2. Arquitetura Geral do Sistema
+Diagrama (se possível) da arquitetura cliente-servidor.
+Explicação de como o sistema é dividido: cliente, servidor, keystores, certificados, sistema de ficheiros local.
+Descrição dos fluxos principais:
+Autenticação e identificação do utilizador.
+Estabelecimento da conexão segura.
+Armazenamento e recuperação de ficheiros.
+
+
+3. Gestão de Utilizadores e Certificados
+Como os utilizadores são identificados através dos certificados X.509.
+Explicação dos atributos usados (PSEUDONYM, CN, OU) e sua extração.
+Certificação e confiança: papel da autoridade certificadora (VAULT_CA).
+
+4. Segurança
+Confidencialidade: como é garantida (por exemplo, encriptação do conteúdo dos ficheiros no lado do cliente, chaves simétricas encriptadas com a chave pública dos destinatários, etc.).
+Integridade: mecanismos usados (hashes, HMACs, assinaturas digitais).
+Autenticidade: uso dos certificados, verificação pelo servidor.
+Canal seguro: TLS ou sockets sobre camada encriptada (mencionar como foi implementado).
+Acesso e controlo de permissões: como é gerido o acesso por utilizador e grupo, permissões R e W.
+
+5. Funcionamento dos Comandos
+Descrição funcional dos comandos suportados pela aplicação cliente.
+Casos particulares e regras associadas (por exemplo: só donos de grupos podem adicionar membros).
+Casos de erro tratados e como são reportados ao utilizador.
+
+6. Formato das Mensagens (Protocolo)
+Como é feita a comunicação entre cliente e servidor: que formato é usado (ex. JSON).
+
+Como são estruturadas as mensagens (campos típicos, exemplo de uma mensagem de pedido e resposta).
+
+Eventual uso de codificação binária (ex. BSON) ou melhorias neste ponto.
+
+7. Armazenamento Local
+Como são guardados os ficheiros no lado do servidor.
+
+Organização do sistema de ficheiros (por utilizador? por grupo?).
+
+Estrutura usada para manter meta-informação (ex. permissões, donos, nomes originais dos ficheiros).
+
+8. Testes e Validação
+Estratégia de testes utilizada (ex. testes manuais, scripts).
+
+Exemplos de cenários de teste (partilha, revogação de acesso, criação e remoção de grupos).
+
+Eventuais limitações detetadas ou casos não tratados.
+
+
+9. Possíveis Melhorias e Trabalho Futuro
+Funcionalidades extra que poderiam ser incluídas (ex. sistema de logs, expiração de acessos, quotas).
+
+Melhorias de segurança possíveis (ex. proteção da keystore com password, melhor gestão de sessões, autenticação multi-fator).
+
+Outras ideias (ex. interface gráfica, exportação/importação de cofres).
+
+
+10. Conclusão
+Reflexão final sobre o trabalho desenvolvido.
+
+Principais dificuldades encontradas.
+
+O que foi aprendido e o que poderia ter sido feito melhor.

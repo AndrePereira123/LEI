@@ -1,0 +1,568 @@
+//- _post.pug - Partial para exibição de um post individual
+//- Parâmetros esperados: item, showControls (booleano)
+
+.contedor-de-1-post.user-item(
+  data-visibility=item.visibilidade
+  data-categories=item.classificadores ? item.classificadores.join(',') : ''
+  data-id=item._id
+)
+  .w3-row
+    .w3-col.s10
+      h2.w3-text-yellow= item.titulo
+      
+      //- Nome do autor e data abaixo do título
+      .w3-margin-top
+        if homepage
+          p.w3-text-light-grey.w3-margin-bottom-small
+            strong 
+                a.user-link.w3-text-white(
+                  href=`/user/${item.submetidoPor.username}`
+                  title=`Ver perfil de ${item.submetidoPor.username}`                  
+                )= item.submetidoPor.username
+        
+        p.small.w3-text-grey.w3-margin-0
+          script.
+            document.write(formatPortugueseDateTime('#{item.dataSubmissao}'));
+    
+    .w3-col.s2.w3-right-align
+      //- Visibility toggle button
+      if showVisibility
+        .w3-margin-bottom
+          button.visibility-toggle.w3-btn.w3-round(
+            class=item.visibilidade === 'publico' ? 'w3-green' : 'w3-orange'
+            data-item-id=item._id
+            data-current-visibility=item.visibilidade
+            onclick=`toggleVisibility('${item._id}', '${item.visibilidade}')`
+            title=`Clique para mudar para ${item.visibilidade === 'publico' ? 'privado' : 'público'}`
+            style="display: block; width: 100%;"
+          )
+            if item.visibilidade === 'publico'
+              | 🌍 Público
+            else
+              | 🔒 Privado
+
+      if showDelete
+        //- Delete button
+        .w3-margin-bottom
+          button.w3-btn.w3-red.w3-round(
+            onclick=`deleteItem('${item._id}', '${item.titulo}')`
+            title="Eliminar post"
+            style="margin-bottom: 5px; display: block; width: 100%;"
+          ) 🗑️ Eliminar
+
+      if showSIP
+        //- Export button
+        .w3-margin-bottom
+          button.w3-btn.w3-blue.w3-round(
+            onclick=`exportItemAsSIP('${item._id}', '${item.titulo}')`
+            title="Exportar como SIP"
+            style="margin-bottom: 5px; display: block; width: 100%;"
+          ) 📦 Exportar SIP
+  
+  //- Descrição do item se existir
+  if item.descricao
+    .w3-margin-top
+      p.w3-text-light-grey= item.descricao 
+
+  //- Display files if they exist
+  if item.ficheiros && item.ficheiros.length > 0
+    .w3-margin-top
+      each ficheiro in item.ficheiros        
+        .w3-margin-bottom.w3-padding.w3-border.w3-border-grey.w3-center 
+          if ficheiro.nomeOriginal
+            p.w3-text-light-grey.w3-center 
+              strong= ficheiro.nomeOriginal
+          
+          //- Check if file has a path/link
+          if ficheiro.caminho
+            - const isImage = ficheiro.nomeOriginal && /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(ficheiro.nomeOriginal)
+            
+            if isImage
+              .w3-margin-top
+                img.w3-border.w3-round(
+                  src=ficheiro.caminho,
+                  alt=ficheiro.nomeOriginal,
+                  style="max-width: 100%; max-height: 300px; object-fit: contain;"
+                  loading="lazy"
+                )
+                .w3-margin-top
+                  a.w3-button.w3-blue.w3-small(
+                    href=ficheiro.caminho,
+                    target="_blank"
+                  ) 🔗 Ver em tamanho real
+            else
+              .w3-margin-top
+                a.w3-button.w3-green.w3-small(
+                  href=ficheiro.caminho,
+                  target="_blank"
+                ) 📄 Abrir ficheiro
+
+  //- Show classificadores
+  if item.classificadores && item.classificadores.length > 0
+    .w3-margin-bottom
+      each classificador in item.classificadores
+        span.w3-tag.w3-blue.w3-small.w3-margin-right= classificador
+
+  //- Show comments
+  if item.comentarios && item.comentarios.length > 0
+    .w3-margin-top
+      h4.w3-text-white 💬 Comentários (#{item.comentarios.length}):
+      
+      .comments-scrollable
+        each comentario in item.comentarios
+          .w3-margin-bottom.comentario
+            if comentario.autor
+              p.w3-text-white                            
+                strong
+                  if comentario.autor === "Deleted User"
+                    span.w3-text-red(
+                      title="Deleted User"
+                      style="color: #f44336 !important; font-weight: bold;"
+                    )= comentario.autor
+                  else
+                    a.user-link.w3-text-white(
+                      href=`/user/${comentario.autor}`
+                      title=`Ver perfil de ${comentario.autor}`
+                    )= comentario.autor                      
+              p.w3-text-light-grey= comentario.texto
+            if comentario.data
+              small.w3-text-grey
+                script.
+                  document.write(formatPortugueseDateTime('#{comentario.data}'));
+
+  else
+    .w3-margin-top
+      p.w3-text-grey 💬 Nenhum comentário ainda
+
+  if homepage
+    .w3-margin-top.w3-card.w3-dark-grey.w3-padding.w3-round-large
+      h5.w3-text-white ✍️ Adicionar Comentário:
+      .w3-row
+        .w3-col(style="width: 85%")
+          textarea.comment-input.w3-input.w3-border.w3-round(
+            id=`comment-${item._id}`
+            placeholder="Escreva o seu comentário..."
+            rows="3"
+            style="background-color: #2a2a2a; color: white; border-color: #555; resize: vertical;"
+          )
+        .w3-col(style="width: 15%; padding-left: 10px;")
+          button.w3-btn.w3-blue.w3-round.w3-block(
+            onclick=`addComment('${item._id}')`
+            style="height: 100%; padding: 10%; justify-content: center;allign-items: center;"
+          ) 💬 Comentar
+
+
+  script.
+    // Function to toggle visibility of an item
+    async function toggleVisibility(itemId, currentVisibility) {
+    const newVisibility = currentVisibility === 'publico' ? 'privado' : 'publico';
+    const button = document.querySelector(`[data-item-id="${itemId}"]`);
+    
+    const originalText = button.innerHTML;
+    button.innerHTML = '⏳ Alterando...';
+    button.disabled = true;
+    
+    try {
+        const response = await fetch(`${window.location.origin}/api/items/${itemId}/visibility`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${document.cookie.split('token=')[1]?.split(';')[0] || ''}`
+        },
+        body: JSON.stringify({ visibilidade: newVisibility })
+        });
+        
+        if (response.ok) {
+        const result = await response.json();
+        
+        // Update button appearance and data
+        button.setAttribute('data-current-visibility', newVisibility);
+        button.setAttribute('onclick', `toggleVisibility('${itemId}', '${newVisibility}')`);
+        button.setAttribute('title', `Clique para mudar para ${newVisibility === 'publico' ? 'privado' : 'público'}`);
+        
+        // Update button style and text
+        if (newVisibility === 'publico') {
+            button.className = 'visibility-toggle w3-btn w3-round w3-green';
+            button.innerHTML = '🌍 Público';
+        } else {
+            button.className = 'visibility-toggle w3-btn w3-round w3-orange';
+            button.innerHTML = '🔒 Privado';
+        }
+        
+        // Update item data attribute
+        const itemContainer = button.closest('.user-item');
+        if (itemContainer) {
+            itemContainer.setAttribute('data-visibility', newVisibility);
+        }
+        
+        showMessage(`Post alterado para ${newVisibility}!`, 'success');
+        
+        updateStats();
+        
+        } else {
+        throw new Error('Erro ao alterar visibilidade');
+        }
+        
+    } catch (error) {
+        console.error('Erro:', error);
+        showMessage('Erro ao alterar visibilidade do post', 'error');
+        
+        button.innerHTML = originalText;
+    }
+        button.disabled = false;
+    }
+    
+    // Function to delete an item
+    async function deleteItem(itemId, itemTitle) {
+    const confirmDelete = confirm(`Tem a certeza que deseja eliminar o post "${itemTitle}"?\n\nEsta ação não pode ser desfeita.`);
+    
+    if (!confirmDelete) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${window.location.origin}/api/items/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${document.cookie.split('token=')[1]?.split(';')[0] || ''}`
+        }
+        });
+        
+        if (response.ok) {
+        showMessage('Post eliminado com sucesso!', 'success');
+        
+        const itemElement = document.querySelector(`[data-item-id="${itemId}"]`).closest('.user-item');
+        if (itemElement) {
+            itemElement.style.transition = 'opacity 0.3s';
+            itemElement.style.opacity = '0';
+            setTimeout(() => {
+            itemElement.remove();
+            updateStats();
+            
+            // Check if no items left
+            const remainingItems = document.querySelectorAll('.user-item');
+            if (remainingItems.length === 0) {
+                location.reload(); // Reload to show "no items" message
+            }
+            }, 300);
+        }
+        
+        } else {
+        throw new Error('Erro ao eliminar post');
+        }
+        
+    } catch (error) {
+        console.error('Erro:', error);
+        showMessage('Erro ao eliminar o post', 'error');
+    }
+    }
+    
+    // Function to update stats
+    function updateStats() {
+    const visibleItems = document.querySelectorAll('.user-item[style*="display: block"], .user-item:not([style*="display: none"])');
+    const publicItems = Array.from(visibleItems).filter(item => item.getAttribute('data-visibility') === 'publico').length;
+    const privateItems = Array.from(visibleItems).filter(item => item.getAttribute('data-visibility') === 'privado').length;
+    
+    const statsElements = document.querySelectorAll('.w3-col.s4 h3');
+    if (statsElements.length >= 3) {
+        statsElements[0].textContent = visibleItems.length;
+        statsElements[1].textContent = publicItems;
+        statsElements[2].textContent = privateItems;
+    }
+    }
+
+    // Function to export item as SIP 
+    async function exportItemAsSIP(itemId, itemTitle) {
+    try {
+        showMessage('A preparar exportação...', 'success');
+        
+        console.log('Enviando pedido de exportação para:', `${window.location.origin}/api/items/${itemId}/export`);
+        
+        // Com cookies httpOnly, não precisamos extrair o token manualmente
+        // O browser enviará automaticamente o cookie com o request
+        fetch(`${window.location.origin}/api/items/${itemId}/export`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/zip',
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include' // Isto é CRUCIAL para enviar cookies httpOnly
+        })
+        .then(response => {
+        console.log('Resposta recebida:', response.status, response.statusText);
+        
+        if (!response.ok) {
+            return response.text().then(text => {
+            let errorMsg = `Erro ${response.status}: ${response.statusText}`;
+            try {
+                const errorData = JSON.parse(text);
+                if (errorData.error || errorData.message) {
+                errorMsg = errorData.error || errorData.message;
+                }
+            } catch (e) {
+
+            }
+            throw new Error(errorMsg);
+            });
+        }
+        return response.blob();
+        })
+        .then(blob => {
+        console.log('Blob recebido, tamanho:', blob.size);
+        
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${itemTitle.replace(/[^a-zA-Z0-9]/g, '_')}_SIP.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        showMessage('SIP exportado com sucesso!', 'success');
+        })
+        .catch(error => {
+        console.error('Erro ao exportar:', error);
+        showMessage('Erro ao exportar SIP: ' + error.message, 'error');
+        });
+        
+    } catch (error) {
+        console.error('Erro ao exportar SIP:', error);
+        showMessage('Erro ao exportar SIP: ' + error.message, 'error');
+    }
+    }
+
+    async function addComment(itemId) {
+        const textarea = document.getElementById(`comment-${itemId}`);
+        const commentText = textarea.value.trim();
+        
+        if (!commentText) {
+            showMessage('Por favor, escreva um comentário antes de enviar.', 'error');
+            return;
+        }
+        
+        // Show loading state
+        const submitButton = textarea.parentElement.nextElementSibling.querySelector('button');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '⏳ Enviando...';
+        submitButton.disabled = true;
+        textarea.disabled = true;
+            try {
+            const response = await fetch(`${window.location.origin}/api/items/${itemId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${document.cookie.split('token=')[1]?.split(';')[0] || ''}`
+            },
+            body: JSON.stringify({ texto: commentText })
+            });
+            
+            if (response.ok) {
+            const result = await response.json();
+            showMessage('Comentário adicionado com sucesso!', 'success');
+            
+            textarea.value = '';
+            
+            // Reload the page to show the new comment
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+            
+            } else {
+            const error = await response.json();
+            throw new Error(error.message || 'Erro ao adicionar comentário');
+            }
+            
+        } catch (error) {
+            console.error('Erro:', error);
+            showMessage('Erro ao adicionar comentário: ' + error.message, 'error');
+        }
+            // Restore button state
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+        textarea.disabled = false;
+        }
+
+
+    // Function to delete item from homepage (admin only)
+    async function deleteItemFromHomepage(itemId, itemTitle) {
+    // Confirm deletion
+    if (!confirm(`Tem a certeza que pretende eliminar o post "${itemTitle}"?\n\nEsta ação não pode ser desfeita.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${window.location.origin}/api/items/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${document.cookie.split('token=')[1]?.split(';')[0] || ''}`
+        }
+        });
+        
+        if (response.ok || response.status === 204) {
+        showMessage('Post eliminado com sucesso!', 'success');
+        
+        // Remove the post from the page
+        const postElement = document.querySelector(`[data-item-id="${itemId}"]`)?.closest('.contedor-de-1-post');
+        if (postElement) {
+            postElement.style.transition = 'opacity 0.5s ease';
+            postElement.style.opacity = '0';
+            setTimeout(() => {
+            postElement.remove();
+            }, 500);
+        } else {
+            // If we can't find the specific element, reload the page
+            setTimeout(() => {
+            window.location.reload();
+            }, 1500);
+        }
+        
+        } else {
+        const error = await response.json();
+        throw new Error(error.message || 'Erro ao eliminar post');
+        }
+        } catch (error) {
+        console.error('Erro ao eliminar post:', error);
+        showMessage('Erro ao eliminar post: ' + error.message, 'error');
+    }
+    }  
+
+
+  style. 
+        .comentario {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-left: 4px solid #2196F3;
+        }
+        
+        .comentario p {
+        margin: 5px 0;
+        }
+        
+        .comentario strong {
+        font-size: 1.1em;
+        }
+        
+        .comentario small {
+        font-style: italic;
+        opacity: 0.8;
+        }
+
+        .contedor-de-1-post {
+        width: 100%;
+        padding: 5%;
+        border-radius: 20px;
+        background-color: #1a1a1a;  
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        margin-bottom: 10%;
+        }
+        
+        .w3-tag {
+        border-radius: 1.2%;
+        font-size: 1.2%;
+        padding: 0.4% 0.8%;
+        }
+
+        .w3-border-grey {
+        border-color: #555 !important;
+        background-color: #2a2a2a;
+        border-radius: 8px;
+        }
+        
+        .visibility-toggle {
+        transition: all 0.3s ease;
+        font-weight: bold;
+        font-size: 0.9em;
+        padding: 8px 12px;
+        cursor: pointer;
+        }
+        
+        .visibility-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .visibility-toggle:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        }
+
+        
+        
+        .w3-btn.w3-red {
+        transition: all 0.3s ease;
+        font-weight: bold;
+        }
+        
+        .w3-btn.w3-red:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 4px rgba(211, 47, 47, 0.5);
+        }
+
+        .w3-btn.w3-blue {
+        transition: all 0.3s ease;
+        font-weight: bold;
+        }
+        
+        .w3-btn.w3-blue:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 4px rgba(211, 47, 47, 0.5);
+        }
+        
+        .user-link {
+        text-decoration: none;
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+        cursor: pointer;
+        }
+        
+        .user-link:hover {
+        color: #ffc107 !important;
+        text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+        text-decoration: underline;
+        }
+        
+        .user-link:visited {
+        color: #ffffff !important;
+        }
+
+        // Comment form styling
+        .comment-input {
+        background-color: #2a2a2a !important;
+        color: white !important;
+        border: 2px solid #555 !important;
+        border-radius: 8px;
+        padding: 10px;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+        }
+        
+        .comment-input:focus {
+        border-color: #2196F3 !important;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+        }
+        
+        .comment-input::placeholder {
+        color: #888;
+        }
+        
+        .comments-scrollable {
+          max-height: 400px;
+          overflow-y: auto;
+          padding-right: 5px;
+          padding: 15px;
+          background-color: #1a1a1a;
+        }
+        
+        .comments-scrollable::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .comments-scrollable::-webkit-scrollbar-thumb {
+          background: #555;
+          border-radius: 3px;
+        }

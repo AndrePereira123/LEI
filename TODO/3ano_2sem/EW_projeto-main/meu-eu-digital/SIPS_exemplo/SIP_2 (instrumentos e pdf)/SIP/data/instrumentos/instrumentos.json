@@ -1,0 +1,19 @@
+{
+    "titulo": "Instrumentos Musicais",
+    "tipoRecurso": "musica",
+    "dataCriacao": "2025-05-24",
+    "dataSubmissao": "",
+    "produtor": "andre.pereira",
+    "submetidoPor": "",
+    "visibilidade": "publico",
+    "descricao": "Esta imagem contém varios instrumentos musicais. É uma representação visual da diversidade musical.",
+    "classificadores": ["Instrumentos", "Musica", "Guitarra"],
+    "ficheiros": [
+        {
+            "nomeOriginal": "instrumentos.jpg",
+            "caminho": "/instrumentos.jpg"
+        }
+    ],
+    "comentarios": [
+    ]
+}

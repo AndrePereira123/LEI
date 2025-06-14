@@ -1,0 +1,113 @@
+extends layout
+
+block content
+  .contedor 
+    .w3-container.w3-dark-grey
+      // Hero Section
+      .w3-center.w3-padding-large.w3-margin-bottom
+        h1.w3-xxxlarge.w3-text-yellow= title
+        p.w3-large.w3-text-white.w3-bold Encontre os conteúdos que procura
+      
+      // Search Section
+      .w3-center.w3-margin-bottom.w3-padding
+        .search-container.w3-container
+          h2.w3-text-white.w3-margin-bottom 🔍 Pesquisar
+          
+          // Search Form
+          form(method="GET" action="/search")
+            // Search Input
+            .w3-margin-bottom
+              input#searchInput.w3-input.w3-border.w3-round.w3-xlarge(
+                type="text"
+                name="q"
+                value=searchQuery
+                style="background-color: #2a2a2a; color: white; border-color: #555; padding: 15px;"
+              )
+            
+            // Category Filter
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="categoriaFilter") Filtrar por categoria:
+              .w3-margin-top
+                select#categoriaFilter.w3-select.w3-border.w3-round(
+                  name="categoria"
+                  style="width: 100%; background-color: #2a2a2a; color: white; border-color: #555; padding: 10px;"
+                )
+                  option(value="") Todos os classificadores
+                  if searchResults 
+                    if searchResults.results && searchResults.results.length > 0
+                      - const uniqueCategories = [...new Set(searchResults.results.flatMap(item => item.classificadores || []))]
+                      each categoria in uniqueCategories
+                        option(value=categoria)= categoria.charAt(0).toUpperCase() + categoria.slice(1)
+            
+            // Search Button
+            .w3-margin-top
+              button.w3-btn.w3-yellow.w3-large.w3-round(type="submit") 🔍 Pesquisar
+
+      // Error Message
+      if error
+        .w3-panel.w3-red.w3-leftbar.w3-border-red.w3-dark-grey
+          h3.w3-text-white ⚠️ Erro
+          p.w3-text-light-grey= error
+
+      // Search Results Container
+      #searchResults.w3-container
+        if searchResults
+          if searchResults.success && searchResults.results && searchResults.results.length > 0
+            // Display results header
+            .w3-margin-bottom
+              h3.w3-text-white
+                | 📊 #{searchResults.count} resultado#{searchResults.count !== 1 ? 's' : ''} encontrado#{searchResults.count !== 1 ? 's' : ''}
+              
+              if searchQuery
+                p.w3-text-light-grey Pesquisa por: "<strong>#{searchQuery}</strong>"
+              
+              if selectedCategory
+                p.w3-text-light-grey Categoria: <strong>#{selectedCategory}</strong>
+            
+            // Display each result
+            each item in searchResults.results
+              - let showVisibility = false
+              - let showDelete = false
+              - let showSIP = true
+              if user && (user.username === item.submetidoPor.username || user.tipo === 'admin')
+                - showVisibility = true
+                - showDelete = true
+              include _post.pug
+          
+          else if searchResults.success
+            // No results found
+            .w3-center.w3-padding-large
+              .w3-text-light-grey.w3-xxxlarge 📭
+              h3.w3-text-light-grey Nenhum resultado encontrado
+              p.w3-text-grey Tente usar outras palavras-chave ou remover filtros
+        
+        else if searchQuery || selectedCategory
+          // Show message if search was attempted but no searchResults
+          .w3-center.w3-padding-large
+            .w3-text-light-grey.w3-xxxlarge ⏳
+            h3.w3-text-light-grey A pesquisar...
+        
+        else
+          // Initial empty state
+          .w3-center.w3-padding-large
+            .w3-text-light-grey.w3-xxxlarge 🔍
+            h3.w3-text-light-grey Digite algo na barra de pesquisa para começar
+
+  // Styles remain the same...
+  style.
+    body {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+    }
+    
+    .search-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+
+    @media (max-width: 1000px) {
+      .search-container {
+        max-width: 90%;
+      }
+    }

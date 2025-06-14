@@ -1,0 +1,78 @@
+{
+    "vaults": [
+        {
+            "owner_id": "VAULT_CLI1",
+            "files": [
+                {
+                    "file_id": "coisas.txt_f0c8081b",
+                    "file_name": "coisas.txt",
+                    "permissions": [
+                        {
+                            "user_id": "VAULT_CLI1",
+                            "permission": "RW"
+                        }
+                    ]
+                },
+                {
+                    "file_id": "coisas.txt_e2b6d8e9",
+                    "file_name": "coisas.txt",
+                    "permissions": [
+                        {
+                            "user_id": "VAULT_CLI1",
+                            "permission": "RW"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "groups": [
+        {
+            "group_id": "teste_a49573fe",
+            "group_name": "teste",
+            "owner_id": "VAULT_CLI1",
+            "users": [
+                {
+                    "user_id": "VAULT_CLI1",
+                    "permission": "RW"
+                }
+            ],
+            "files": [
+                {
+                    "file_id": "coisas.txt_50a3d4f8",
+                    "file_name": "coisas.txt",
+                    "permissions": [
+                        {
+                            "user_id": "VAULT_CLI1",
+                            "permission": "RW"
+                        },
+                        {
+                            "user_id": "VAULT_CLI2",
+                            "permission": "R"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "group_id": "aula_b9fe9e50",
+            "group_name": "aula",
+            "owner_id": "VAULT_CLI1",
+            "users": [
+                {
+                    "user_id": "VAULT_CLI1",
+                    "permission": "RW"
+                },
+                {
+                    "user_id": "VAULT_CLI2",
+                    "permission": "R"
+                }
+            ],
+            "files": []
+        }
+    ],
+    "public_keys": {
+        "VAULT_CLI1": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtImM+XTzNobVHnk2SiCX\nsFcZ/Xih90yRNxNoG0+NEx9ehBjXCp0Ya9H9HLvJc6aruDVvhNZPOytYwvQ1vFAA\nCUfWykA3RdHoix8YGYIYHasYnqXDSfN9oPjVPIufJOXoJtpqz8TTfzjo6kdSkd8V\n1VZAN1zqEFfLONDtQ5NtEMBMrvhNBK8NmekkK+t1txEaJamVnpyi8D4Y96aZvpqT\n5Di0uqeE64cS865Cl7eUF9+crD9CbfOrqb0IrWNjmnwuIkjcrZ0mdr4zvde/6xkk\nL3BgupwvoM3V3fayfqOlY9GOu+t1dga1gnRPvjx1++Y/71JPRFeDjao8FoX1EvEs\nzQIDAQAB\n-----END PUBLIC KEY-----\n",
+        "VAULT_CLI2": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxgjYnr1d5qDDSUcqTow9\nFO4ezyO/0F/opsvm1Ywp6lYhdCXeWOMeq9nWP4ypIOslQdHD67BBssSMwMNnHLHj\n7YzFhB9xdIZHw/o77/XxbnNey2B+AQ/M1VaEZrhsRygxCFXTaUtbMMoZenBoQmYL\nmDor+WyByFwuZihhpw0DlkNsU8VEW3Af4iFeck5PTY0x+YYix/YIOvx/0NI0gmLD\ndMqrlf7fALlPkwcE2N4+lvUiyJNaCm+lozYqXuDOWfCa5FhIpAreuGafTHHX/CcJ\nYSNuNXDKV7Klt0IhGnWmb/Iakn3SloJ8ALb77ybpL45FKJ3q1fr8gZcXR/8dCE23\nrwIDAQAB\n-----END PUBLIC KEY-----\n"
+    }
+}

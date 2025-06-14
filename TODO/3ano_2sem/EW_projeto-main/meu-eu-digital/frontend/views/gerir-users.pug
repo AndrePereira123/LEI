@@ -1,0 +1,563 @@
+extends layout
+
+block content
+  .w3-container.w3-dark-grey.w3-padding.redondinho
+    // Mensagem de sucesso
+    if success
+      .w3-panel.w3-green.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-green.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ✅ Sucesso!
+        p.w3-text-white= success
+    
+    // Mensagem de erro
+    if error
+      .w3-panel.w3-red.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-red.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ❌ Erro!
+        p.w3-text-white= error
+
+    // Header da página
+    .w3-center.w3-margin-bottom
+      h1.w3-xxxlarge.w3-text-yellow 👥 Gestão de Utilizadores
+      p.w3-large.w3-text-light-grey Administração de contas de utilizador
+    
+    // Statistics Card
+    if users && users.length > 0
+      .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+        header.w3-blue.w3-padding.redondo-so-em-cima
+          h2.w3-text-white 📊 Estatísticas do Sistema
+        
+        .w3-container.w3-padding-large
+          .w3-row-padding
+            .w3-third
+              .w3-card.w3-dark-grey.w3-padding.w3-center.redondinho
+                h3.w3-text-green.w3-xlarge= users.length
+                p.w3-text-white.w3-large
+                  strong Total de Utilizadores
+            .w3-third
+              .w3-card.w3-dark-grey.w3-padding.w3-center.redondinho
+                - const admins = users.filter(user => user.tipo === 'admin').length
+                h3.w3-text-orange.w3-xlarge= admins
+                p.w3-text-white.w3-large
+                  strong Administradores
+            .w3-third
+              .w3-card.w3-dark-grey.w3-padding.w3-center.redondinho
+                - const producers = users.filter(user => user.tipo === 'produtor').length
+                h3.w3-text-blue.w3-xlarge= producers
+                p.w3-text-white.w3-large
+                  strong Produtores
+
+    // Users List Card
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white 👤 Lista de Utilizadores
+      
+      .w3-container.w3-padding-large
+        if users && users.length > 0
+          .w3-responsive.w3-round-xlarge
+            table.w3-table-all.w3-hoverable.w3-dark-grey.redondinho
+              thead
+                tr.w3-blue
+                  th.w3-text-white
+                    strong Username
+                  th.w3-text-white
+                    strong Nome
+                  th.w3-text-white
+                    strong Email
+                  th.w3-text-white
+                    strong Tipo
+                  th.w3-text-white
+                    strong Membro desde
+                  th.w3-text-white
+                    strong Ações
+              tbody
+                each user in users
+                  tr.user-row(data-user-id=user.id)
+                    td.w3-text-light-grey= user.username
+                    td.w3-text-light-grey= user.nome
+                    td.w3-text-light-grey= user.email
+                    td
+                      span.w3-badge.w3-round(class=user.tipo === 'admin' ? 'w3-orange' : 'w3-blue')
+                        = user.tipo === 'admin' ? '👑 Administrador' : '👤 Produtor'
+                    td.w3-text-light-grey
+                      if user.dataCriacao
+                        script.
+                          document.write(formatPortugueseDateLong('#{user.dataCriacao}'));
+                      else
+                        span.w3-text-grey -
+                    td
+                      .w3-bar
+                        a.w3-bar-item.w3-button.w3-blue.w3-small.w3-round.w3-margin-right(
+                          href=`/gerir-users/editar/${user.id}`
+                          title="Editar utilizador"
+                        ) ✏️ Editar
+                        
+                        // Delete button (not for current admin)
+                        if user.id !== currentAdminId
+                          button.w3-bar-item.w3-button.w3-red.w3-small.w3-round(
+                            onclick=`deleteUser('${user.id}', '${user.nome}')`
+                            title="Eliminar utilizador e todos os seus posts"
+                          ) 🗑️ Eliminar
+                        else
+                          span.w3-text-grey.w3-small.w3-italic (Conta atual)
+        else
+          // No users found card
+          .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+            header.w3-yellow.w3-padding.redondo-so-em-cima
+              h3.w3-text-black 📭 Nenhum Utilizador Encontrado
+            
+            .w3-container.w3-padding-large.w3-center
+              .w3-text-light-grey.w3-xxxlarge 👥
+              h3.w3-text-light-grey Nenhum utilizador no sistema
+              p.w3-text-grey Não existem utilizadores registados na plataforma
+
+  
+        .w3-center
+          button.w3-btn.w3-orange.w3-large.w3-round.w3-block(
+            onclick="generateReport()"
+            title="Gerar relatório de utilizadores"
+          ) 📋 Gerar Relatório
+
+  script.
+    // Function to delete user
+    async function deleteUser(userId, userName) {
+      // Confirm deletion with enhanced dialog
+      const confirmed = confirm(`🗑️ ELIMINAR UTILIZADOR\n\nTem a certeza que pretende eliminar o utilizador "${userName}"?\n\n⚠️ ATENÇÃO: Esta ação irá:\n• Eliminar a conta do utilizador\n• Eliminar TODOS os posts do utilizador\n• Esta ação NÃO PODE ser desfeita\n\nClique OK para continuar ou Cancelar para abortar.`);
+      
+      if (!confirmed) {
+        return;
+      }
+      
+      // Double confirmation
+      const confirmation = prompt('🔒 CONFIRMAÇÃO FINAL\n\nPara confirmar esta ação irreversível, digite "CONFIRMAR" (em maiúsculas):');
+      if (confirmation !== 'CONFIRMAR') {
+        showMessage('❌ Operação cancelada. É necessário digitar "CONFIRMAR" para prosseguir.', 'error');
+        return;
+      }
+      
+      try {
+        showMessage('⏳ A eliminar utilizador...', 'info');
+        
+        const response = await fetch(`${window.location.origin}/api/users/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${document.cookie.split('token=')[1]?.split(';')[0] || ''}`
+          }
+        });
+        
+        if (response.ok || response.status === 204) {
+          showMessage(`✅ Utilizador "${userName}" eliminado com sucesso!`, 'success');
+          
+          const row = document.querySelector(`[data-user-id="${userId}"]`);
+          if (row) {
+            row.style.transition = 'all 0.5s ease';
+            row.style.backgroundColor = '#f44336';
+            row.style.opacity = '0';
+            row.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+              row.remove();
+              updateStatistics();
+              
+              const remainingRows = document.querySelectorAll('.user-row');
+              if (remainingRows.length === 0) {
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              }
+            }, 500);
+          } else {
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          }
+          
+        } else {
+          const error = await response.json();
+          throw new Error(error.message || 'Erro ao eliminar utilizador');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao eliminar utilizador:', error);
+        showMessage('❌ Erro ao eliminar utilizador: ' + error.message, 'error');
+      }
+    }
+    
+    function updateStatistics() {
+      const rows = document.querySelectorAll('.user-row');
+      const totalUsers = rows.length;
+      
+      let admins = 0;
+      let producers = 0;
+      
+      rows.forEach(row => {
+        const badge = row.querySelector('.w3-badge');
+        if (badge && badge.textContent.includes('Administrador')) {
+          admins++;
+        } else {
+          producers++;
+        }
+      });
+      
+      // atualiza as estatísticas 
+      const statsElements = document.querySelectorAll('.w3-third h3');
+      if (statsElements.length >= 3) {
+        statsElements[0].textContent = totalUsers;
+        statsElements[1].textContent = admins;
+        statsElements[2].textContent = producers;
+      }
+    }
+    
+    // gerar o relatório de utilizadores
+    function generateReport() {
+      showMessage('📊 A gerar relatório de utilizadores...', 'info');
+      
+      const users = document.querySelectorAll('.user-row');
+      let reportData = 'RELATÓRIO DE UTILIZADORES\n';
+      reportData += '='.repeat(50) + '\n\n';
+      reportData += `Total de utilizadores: ${users.length}\n`;
+      reportData += `Data do relatório: ${new Date().toLocaleDateString('pt-PT')}\n\n`;
+      
+      users.forEach((row, index) => {
+        const cells = row.querySelectorAll('td');
+        const username = cells[0].textContent;
+        const nome = cells[1].textContent;
+        const email = cells[2].textContent;
+        const tipo = cells[3].textContent.includes('Administrador') ? 'Administrador' : 'Produtor';
+        
+        reportData += `${index + 1}. ${nome} (${username})\n`;
+        reportData += `   Email: ${email}\n`;
+        reportData += `   Tipo: ${tipo}\n\n`;
+      });
+      
+      
+      const blob = new Blob([reportData], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio_utilizadores_${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      showMessage('✅ Relatório gerado e transferido com sucesso!', 'success');
+    }
+    
+    // função de mensagens de aviso
+    function showMessage(message, type) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `w3-panel w3-${type === 'success' ? 'green' : type === 'error' ? 'red' : 'blue'} w3-round w3-margin-top redondinho`;
+      messageDiv.innerHTML = `<p><b>${message}</b></p>`;
+      messageDiv.style.position = 'fixed';
+      messageDiv.style.top = '20px';
+      messageDiv.style.right = '20px';
+      messageDiv.style.zIndex = '9999';
+      messageDiv.style.minWidth = '350px';
+      messageDiv.style.maxWidth = '500px';
+      messageDiv.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.3)';
+      
+      document.body.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        if (document.body.contains(messageDiv)) {
+          messageDiv.style.transition = 'opacity 0.5s ease';
+          messageDiv.style.opacity = '0';
+          setTimeout(() => {
+            if (document.body.contains(messageDiv)) {
+              document.body.removeChild(messageDiv);
+            }
+          }, 500);
+        }
+      }, 4000);
+    }
+
+  style.
+    .redondinho {
+      border-radius: 30px;
+    }
+
+    .redondinho-canto-dir {
+      border-radius: 0 15px 0 0;
+    }
+
+    .redondo-so-em-cima {
+      border-radius: 20px 20px 0 0;
+    }
+    
+    body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    
+    .w3-dark-gray {
+      background-color: #000000 !important;
+    }
+    
+    .w3-hover-dark-gray:hover {
+      background-color: #000000 !important;
+    }
+    
+    .w3-text-light-grey {
+      color: #cccccc !important;
+    }
+    
+
+    .w3-table-all {
+      background-color: #1a1a1a !important;
+      border-radius: 15px !important;
+      overflow: hidden;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .w3-table-all tr {
+      border: none !important;
+      border-bottom: 1px solid #333 !important;
+      transition: all 0.3s ease;
+    }
+    
+    .w3-table-all tr:last-child {
+      border-bottom: none !important;
+    }
+    
+    .w3-table-all th {
+      background-color: #2196F3 !important;
+      color: #ffffff !important;
+      padding: 16px !important;
+      font-weight: bold !important;
+      border: none !important;
+      text-align: center;
+    }
+    
+    .w3-table-all th:first-child {
+      border-top-left-radius: 15px;
+    }
+    
+    .w3-table-all th:last-child {
+      border-top-right-radius: 15px;
+    }
+    
+    .w3-table-all td {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      padding: 16px !important;
+      border: none !important;
+      text-align: center;
+      vertical-align: middle;
+    }
+    
+    .w3-table-all tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 15px;
+    }
+    
+    .w3-table-all tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 15px;
+    }
+    
+    .w3-hoverable tbody tr:hover {
+      background-color: #2a2a2a !important;
+      transform: scale(1.02);
+      box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    }
+    
+    .w3-hoverable tbody tr:hover td {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+    }
+    
+    // Responsive table container
+    .w3-responsive {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      background-color: transparent !important;
+      border: none !important;
+    }
+    
+    // Enhanced button styling
+    .w3-button, .w3-btn {
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin: 2px;
+      font-weight: bold;
+      border: none !important;
+    }
+    
+    .w3-button:hover, .w3-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    // Enhanced card styling
+    .w3-card-4 {
+      border-radius: 15px;
+      background-color: #1a1a1a !important;
+      box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+      transition: transform 0.3s ease;
+      border: none !important;
+    }
+    
+    .w3-card-4:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255,255,255,0.15);
+    }
+    
+    // Enhanced badge styling
+    .w3-badge {
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-size: 0.9em;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    // Enhanced panel styling
+    .w3-panel {
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border-left: 4px solid transparent;
+      border: none !important;
+    }
+    
+    .w3-panel.w3-green {
+      border-left: 4px solid #4CAF50 !important;
+    }
+    
+    .w3-panel.w3-red {
+      border-left: 4px solid #f44336 !important;
+    }
+    
+    .w3-panel.w3-blue {
+      border-left: 4px solid #2196F3 !important;
+    }
+    
+    // Statistics cards styling
+    .w3-third .w3-card {
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    }
+    
+    .w3-third .w3-card:hover {
+      transform: translateY(-5px);
+      border-color: #2196F3;
+      box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+    }
+    
+    // Button actions styling
+    .w3-bar .w3-button {
+      margin: 0 2px;
+      font-size: 0.85em;
+      padding: 6px 12px;
+    }
+    
+    .w3-button.w3-blue {
+      background-color: #2196F3 !important;
+      color: white !important;
+    }
+    
+    .w3-button.w3-blue:hover {
+      background-color: #1976D2 !important;
+    }
+    
+    .w3-button.w3-red {
+      background-color: #f44336 !important;
+      color: white !important;
+    }
+    
+    .w3-button.w3-red:hover {
+      background-color: #d32f2f !important;
+    }
+    
+    // Username and email styling
+    .w3-table-all td:first-child {
+      font-weight: bold;
+      color: #2196F3 !important;
+    }
+    
+    .w3-table-all td:nth-child(3) {
+      color: #cccccc !important;
+      font-style: italic;
+    }
+    
+    // Badge hover effects
+    .w3-badge.w3-orange {
+      background: linear-gradient(45deg, #ff9800, #f57c00);
+      transition: all 0.3s ease;
+    }
+    
+    .w3-badge.w3-orange:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+    }
+    
+    .w3-badge.w3-blue {
+      background: linear-gradient(45deg, #2196F3, #1976D2);
+      transition: all 0.3s ease;
+    }
+    
+    .w3-badge.w3-blue:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+    }
+    
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      .w3-responsive {
+        overflow-x: auto;
+      }
+      
+      .w3-button, .w3-btn {
+        padding: 4px 8px;
+        font-size: 0.8em;
+        margin: 1px;
+      }
+      
+      .w3-table-all th,
+      .w3-table-all td {
+        padding: 8px !important;
+        font-size: 0.9em;
+      }
+      
+      .w3-third {
+        margin-bottom: 15px;
+      }
+      
+      .w3-bar .w3-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 4px;
+      }
+    }
+    
+    // Loading and animation effects
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .user-row {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    // Scrollbar styling for responsive table
+    .w3-responsive::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    .w3-responsive::-webkit-scrollbar-track {
+      background: #1a1a1a;
+      border-radius: 4px;
+    }
+    
+    .w3-responsive::-webkit-scrollbar-thumb {
+      background: #2196F3;
+      border-radius: 4px;
+    }
+    
+    .w3-responsive::-webkit-scrollbar-thumb:hover {
+      background: #1976D2;
+    }

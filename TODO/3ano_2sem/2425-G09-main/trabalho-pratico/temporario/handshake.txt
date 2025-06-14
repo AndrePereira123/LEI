@@ -1,0 +1,18 @@
+Server : espera pedido de conexao
+
+Client : inicia conexao TCP 
+
+
+Server : gera parametros DH e envia 
+Client : recebe os parametros DH
+Client : envia chave publica
+Server : recebe chave pub. cliente e envia a sua chave publica + assinatura + certificadora
+Server : gera a "shared key"
+Client : valida assinatura (falta implementar) e certificado do server
+Client : envia a sua assinatura e certificado
+Client : gera a "shared key"
+Server : recebe e valida a assinatura (falta implementar) e certificado do cliente
+                    Fim de handshake
+
+
+Autenticidade,integridade,confidencialidade (para com terceiros) garantida.

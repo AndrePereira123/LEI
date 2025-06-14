@@ -1,0 +1,144 @@
+extends layout
+
+block content
+  .w3-container.w3-dark-grey.w3-display-middle
+    // Hero Section
+    .w3-center.w3-padding-large.w3-margin-bottom
+      h1.w3-xxxlarge.w3-text-yellow Meu Eu Digital
+    
+    // Success Message
+    if success
+      .w3-panel.w3-green.w3-leftbar.w3-border-green.w3-dark-grey.w3-display-container.w3-margin-bottom
+        span.w3-button.w3-red.w3-small.w3-display-topright(onclick="this.parentElement.style.display = 'none';") ×
+        h3.w3-text-white ✅ Sucesso
+        p.w3-text-light-grey= success
+
+    // Error Message  
+    if error
+      .w3-panel.w3-red.w3-leftbar.w3-border-red.w3-dark-grey.w3-display-container.w3-margin-bottom
+        span.w3-button.w3-red.w3-small.w3-display-topright(onclick="this.parentElement.style.display = 'none';") ×
+        h3.w3-text-white ⚠️ Erro
+        p.w3-text-light-grey= error
+    
+    // Register Form Card
+    .w3-container.w3-margin.w3-padding.w3-center.tirar-padding
+      
+        h2.w3-text-yellow Registar
+        
+        form(action="/register" method="post").w3-margin-top
+          .w3-section
+            label(for="nome").w3-text-light-grey.w3-left Nome 
+            input#nome.w3-input.w3-border.w3-margin-bottom(
+              name="nome" 
+              type="text" 
+              required 
+              style="background-color: #2a2a2a; color: white; border-color: #555;"
+            )
+
+          .w3-section
+            label(for="username").w3-text-light-grey.w3-left Username 
+            input#username.w3-input.w3-border.w3-margin-bottom(
+              name="username" 
+              type="text" 
+              required 
+              style="background-color: #2a2a2a; color: white; border-color: #555;"
+            )
+          
+          .w3-section
+            label(for="email").w3-text-light-grey.w3-left Email
+            input#email.w3-input.w3-border.w3-margin-bottom(
+              name="email" 
+              type="email" 
+              required 
+              style="background-color: #2a2a2a; color: white; border-color: #555;"
+            )
+          
+          .w3-section
+            label(for="password").w3-text-light-grey.w3-left Password
+            input#password.w3-input.w3-border.w3-margin-bottom(
+              name="password" 
+              type="password" 
+              required
+              minlength="6"
+              style="background-color: #2a2a2a; color: white; border-color: #555;"
+            )
+          
+          .w3-section
+            label(for="confirmPassword").w3-text-light-grey.w3-left Confirmar Password
+            input#confirmPassword.w3-input.w3-border.w3-margin-bottom(
+              name="confirmPassword" 
+              type="password" 
+              required
+              minlength="6"
+              style="background-color: #2a2a2a; color: white; border-color: #555;"
+            )
+          
+          .w3-section
+            label(for="tipo").w3-text-light-grey.w3-left Tipo de Conta
+            select#tipo.w3-select.w3-border.w3-margin-bottom(
+              name="tipo"
+              style="background-color: #2a2a2a; color: white; border-color: #555;"
+            )
+              option(value="produtor") Produtor
+              option(value="admin") Administrador
+          
+          button.w3-button.w3-blue.w3-large.w3-margin-top(type="submit") 📝 Criar Conta
+        
+        .w3-margin-top
+          a.w3-text-blue(href="/login") Fazer Login
+
+  style.
+    body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    
+    .w3-container {
+      min-width: 30%;
+      border-radius: 30px;
+      margin: 0 auto;
+      padding: 3%;
+      padding-top: 1%;
+      background-color: #000000;
+    }
+
+    .tirar-padding {
+      padding: 1%;
+    }
+    
+    .w3-card-4 {
+      border-radius: 15px;
+      background-color: #1a1a1a !important;
+      box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+    }
+    
+    .w3-input, .w3-select {
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .w3-input:focus, .w3-select:focus {
+      border-color: #2196F3 !important;
+      box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+    }
+    
+    .w3-button {
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .w3-button:hover {
+      transform: scale(1.02);
+    }
+
+  script.
+    // Sempre limpar URL no carregamento da página
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUrl = new URL(window.location);
+      
+      // Se tem parâmetros success/error, mostrar mensagem e limpar
+      if (currentUrl.searchParams.has('success') || currentUrl.searchParams.has('error')) {
+        // Limpar URL imediatamente (sem afetar a exibição da mensagem)
+        window.history.replaceState({}, document.title, '/register');
+      }
+    });

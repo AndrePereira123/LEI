@@ -1,0 +1,7 @@
+Dadas as caracteristicas da cifra ChaCha20 , se for reutilizado um mesmo nonce sera
+o equivalente a não usufruir de nenhum, ou seja
+a nossa chave permite desincriptar todas as mensagens que tenham sido incriptadas,
+o mesmo keystream será gerado para todas as mensagens criptografadas.
+
+Isto permite que um atacante que capture múltiplos ciphertexts consiga recuperar informações dos textos originais e facilitar
+as decriptações futuras pois certos excertos já serão conhecidos. (XORs)

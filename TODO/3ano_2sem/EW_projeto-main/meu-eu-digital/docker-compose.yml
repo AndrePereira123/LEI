@@ -1,0 +1,47 @@
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: oMeuEuDigital
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api-backend:
+    build:
+      context: ./backend
+    container_name: api-backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/minha_base
+      - FRONTEND_URL=http://localhost:3002
+      - FRONTEND_URL_AXIOS_GET=http://api-frontend:3002 
+      - SECRET_KEY=chave_super_secreta
+      - MY_URL=http://localhost:3001
+      - PORT=3001
+    volumes:
+      - uploads_data:/app/uploads
+
+  api-frontend:
+    build:
+      context: ./frontend
+    container_name: api-frontend
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongo
+      - api-backend
+    environment:
+      - BACKEND_URL= http://localhost:3001
+      - SECRET_KEY=chave_super_secreta
+      - BACKEND_URL_AXIOS_GET=http://api-backend:3001  
+      - MY_URL=http://localhost:3002
+      - PORT=3002
+
+volumes:
+  mongo_data:
+  uploads_data:

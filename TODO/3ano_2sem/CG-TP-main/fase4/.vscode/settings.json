@@ -1,0 +1,8 @@
+{
+    "cmake.sourceDirectory": "/home/leonardo/Desktop/CG/TP/CG-TP/fase4/src",
+    "cmake.debugConfig": {
+        "args": [
+            "test.xml"
+        ]
+    }
+}

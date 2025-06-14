@@ -1,0 +1,20 @@
+
+{
+    "titulo": "Sapo",
+    "tipoRecurso": "imagem",
+    "dataCriacao": "2025-05-24",
+    "dataSubmissao": "",
+    "produtor": "ProdutorGenerico",
+    "submetidoPor": "",
+    "visibilidade": "publico",
+    "descricao": "Este sapo foi encontrado no lago perto da minha casa. É um animal aquático comum na região.",
+    "classificadores": ["Animal", "Aquatico", "Sapo"],
+    "ficheiros": [
+        {
+            "nomeOriginal": "sapo.png",
+            "caminho": "/sapo.png"
+        }
+    ],
+    "comentarios": [
+    ]
+}

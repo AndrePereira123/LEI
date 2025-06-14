@@ -1,0 +1,387 @@
+extends layout
+
+block content
+  .w3-container.w3-dark-grey.w3-padding.redondinho
+    // Mensagem de sucesso
+    if success
+      .w3-panel.w3-green.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-green.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ✅ Sucesso!
+        p.w3-text-white= success
+    
+    // Mensagem de erro
+    if error
+      .w3-panel.w3-red.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-red.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ❌ Erro!
+        p.w3-text-white= error
+
+    // Header da página
+    .w3-center.w3-margin-bottom
+      h1.w3-xxxlarge.w3-text-yellow ✏️ Editar Utilizador
+      p.w3-large.w3-text-light-grey Edição administrativa de #{editUser.nome}
+      
+    // Back button
+    .w3-margin-bottom
+      a.w3-btn.w3-grey.w3-large.w3-round(href="/gerir-users") ← Voltar à Gestão
+
+    // User Info Card
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white 📋 Informações do Utilizador
+      
+      .w3-container.w3-padding-large
+        .w3-row-padding
+          .w3-half
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Username: 
+              span.w3-text-yellow= editUser.username
+            
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Nome: 
+              span.w3-text-yellow= editUser.nome
+            
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Email: 
+              span.w3-text-yellow= editUser.email
+          
+          .w3-half
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Tipo: 
+              span(class=`w3-badge w3-round ${editUser.tipo === 'admin' ? 'w3-orange' : 'w3-blue'}`)= editUser.tipo === 'admin' ? 'Administrador' : 'Produtor'
+              
+            if editUser.dataCriacao
+              p.w3-text-light-grey.w3-large
+                strong.w3-text-white Membro desde: 
+                span.w3-text-yellow
+                  script.
+                    document.write(formatPortugueseDateLong('#{editUser.dataCriacao}'));
+
+    // Edit Profile Card
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white ✏️ Editar Perfil
+      
+      form.w3-container.w3-padding-large(action=`/gerir-users/editar/${editUser.id}` method="post")
+        .w3-row-padding
+          .w3-half            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="nome")
+                b Nome Completo:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  input#nome.w3-input.w3-border.w3-dark-grey.w3-text-white(
+                    name="nome" 
+                    type="text" 
+                    value=editUser.nome
+                    data-original=editUser.nome
+                    required
+                  )
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('nome')" title="Restaurar valor original") 🔄
+            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="email")
+                b Email:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  input#email.w3-input.w3-border.w3-dark-grey.w3-text-white(
+                    name="email" 
+                    type="email" 
+                    value=editUser.email
+                    data-original=editUser.email
+                    required
+                  )
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('email')" title="Restaurar valor original") 🔄
+          
+          .w3-half            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="username")
+                b Username:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  input#username.w3-input.w3-border.w3-dark-grey.w3-text-white(
+                    name="username" 
+                    type="text" 
+                    value=editUser.username
+                    data-original=editUser.username
+                    required
+                  )
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('username')" title="Restaurar valor original") 🔄
+            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="tipo")
+                b Tipo de Conta:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  select#tipo.w3-select.w3-border.w3-dark-grey.w3-text-white(
+                    name="tipo"
+                    data-original=editUser.tipo
+                  )
+                    option(value="produtor" selected=(editUser.tipo === 'produtor')) Produtor
+                    option(value="admin" selected=(editUser.tipo === 'admin')) Administrador
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('tipo')" title="Restaurar valor original") 🔄
+          .w3-center.w3-margin-top
+            input.w3-btn.w3-blue.w3-large.w3-round.w3-margin-right(type='submit', value='💾 Atualizar Utilizador')
+            button.w3-btn.w3-grey.w3-large.w3-round(type="button" onclick="resetAllFields()" title="Restaurar todos os valores originais") 🔄 Restaurar Tudo
+
+    // Danger Zone
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-red.w3-padding.redondo-so-em-cima
+        h2.w3-text-white ⚠️ Zona de Perigo
+      
+      .w3-container.w3-padding-large
+        .w3-row-padding
+          .w3-col
+            h3.w3-text-white Eliminar Utilizador
+            p.w3-text-light-grey 
+              | Eliminar este utilizador irá remover permanentemente:
+            ul.w3-text-light-grey
+              li A conta do utilizador
+              li Todos os posts criados pelo utilizador
+              li Todos os comentários do utilizador
+              li Esta ação NÃO PODE ser desfeita
+            
+            .w3-center.w3-margin-top              
+            button.w3-btn.w3-red.w3-large.w3-round(
+                onclick=`deleteUser('${editUser.id}', '${editUser.nome}')`
+              ) 🗑️ Eliminar Utilizador
+
+  script.    
+    if (window.location.search) {
+      const url = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      window.history.replaceState({path: url}, '', url);
+    }
+    
+    // Reset individual field to original value
+    function resetField(fieldId) {
+      const field = document.getElementById(fieldId);
+      const originalValue = field.getAttribute('data-original');
+      
+      if (field.tagName.toLowerCase() === 'select') {
+        // For select elements, select the option with the original value
+        field.value = originalValue;
+      } else {
+        field.value = originalValue;
+      }
+      
+      // Add visual feedback
+      field.style.backgroundColor = '#4CAF50';
+      field.style.color = '#ffffff';
+      setTimeout(() => {
+        field.style.backgroundColor = '#2a2a2a';
+        field.style.color = '#ffffff';
+      }, 500);
+    }
+    
+    // Reset all form fields to original values
+    function resetAllFields() {
+      const fields = ['nome', 'email', 'username', 'tipo'];
+      fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        const originalValue = field.getAttribute('data-original');
+        
+        if (field.tagName.toLowerCase() === 'select') {
+          field.value = originalValue;
+        } else {
+          field.value = originalValue;
+        }
+      });
+      
+      // Add visual feedback for all fields
+      fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        field.style.backgroundColor = '#4CAF50';
+        field.style.color = '#ffffff';
+      });
+      
+      setTimeout(() => {
+        fields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          field.style.backgroundColor = '#2a2a2a';
+          field.style.color = '#ffffff';
+        });
+      }, 1000);
+      
+      // Show confirmation message
+      const confirmMsg = document.createElement('div');
+      confirmMsg.className = 'w3-panel w3-green w3-round w3-margin-top';
+      confirmMsg.innerHTML = '<p><b>✅ Todos os campos foram restaurados para os valores originais!</b></p>';
+      confirmMsg.style.position = 'fixed';
+      confirmMsg.style.top = '20px';
+      confirmMsg.style.right = '20px';
+      confirmMsg.style.zIndex = '9999';
+      confirmMsg.style.minWidth = '300px';
+      
+      document.body.appendChild(confirmMsg);
+      
+      setTimeout(() => {
+        document.body.removeChild(confirmMsg);
+      }, 3000);
+    }
+    
+    // Function to delete user (same as in gerir-users.pug)
+    async function deleteUser(userId, userName) {
+      // Confirm deletion
+      if (!confirm(`Tem a certeza que pretende eliminar o utilizador "${userName}"?\n\n⚠️ ATENÇÃO: Esta ação irá:\n- Eliminar a conta do utilizador\n- Eliminar TODOS os posts do utilizador\n- Esta ação NÃO PODE ser desfeita\n\nDigite "CONFIRMAR" para prosseguir:`)) {
+        return;
+      }
+      
+      // Double confirmation
+      const confirmation = prompt('Para confirmar, digite "CONFIRMAR":');
+      if (confirmation !== 'CONFIRMAR') {
+        alert('Operação cancelada. É necessário digitar "CONFIRMAR" para prosseguir.');
+        return;
+      }
+      
+      try {
+        showMessage('A eliminar utilizador...', 'info');
+        
+        const response = await fetch(`${window.location.origin}/api/users/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${document.cookie.split('token=')[1]?.split(';')[0] || ''}`
+          }
+        });
+        
+        if (response.ok || response.status === 204) {
+          showMessage(`Utilizador "${userName}" eliminado com sucesso!`, 'success');
+          
+          // Redirect to user management page after successful deletion
+          setTimeout(() => {
+            window.location.href = '/gerir-users?success=' + encodeURIComponent(`Utilizador "${userName}" eliminado com sucesso!`);
+          }, 1500);
+          
+        } else {
+          const error = await response.json();
+          throw new Error(error.message || 'Erro ao eliminar utilizador');
+        }
+        
+      } catch (error) {
+        console.error('Erro ao eliminar utilizador:', error);
+        showMessage('Erro ao eliminar utilizador: ' + error.message, 'error');
+      }
+    }
+    
+    // Function to show messages
+    function showMessage(message, type) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `w3-panel w3-${type === 'success' ? 'green' : type === 'error' ? 'red' : 'blue'} w3-round w3-margin-top`;
+      messageDiv.innerHTML = `<p><b>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'} ${message}</b></p>`;
+      messageDiv.style.position = 'fixed';
+      messageDiv.style.top = '20px';
+      messageDiv.style.right = '20px';
+      messageDiv.style.zIndex = '9999';
+      messageDiv.style.minWidth = '300px';
+      
+      document.body.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        if (document.body.contains(messageDiv)) {
+          document.body.removeChild(messageDiv);
+        }
+      }, 4000);
+    }
+
+  style.
+    .redondinho {
+      border-radius: 30px;
+    }
+
+    .redondinho-canto-dir {
+      border-radius: 0 15px 0 0;
+    }
+
+    .redondo-so-em-cima {
+      border-radius: 20px 20px 0 0;
+    }
+    
+    body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    
+    .w3-dark-gray {
+      background-color: #000000 !important;
+    }
+    
+    .w3-hover-dark-gray:hover {
+      background-color: #000000 !important;
+    }
+    
+    .w3-text-light-grey {
+      color: #cccccc !important;
+    }
+    
+    // Form styling
+    .w3-input, .w3-select {
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+      border: 1px solid #555 !important;
+    }
+    
+    .w3-input:focus, .w3-select:focus {
+      border-color: #2196F3 !important;
+      box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+    }
+    
+    .w3-select option {
+      background-color: #2a2a2a;
+      color: white;
+    }
+    
+    .w3-button {
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .w3-button:hover {
+      transform: scale(1.02);
+    }
+    
+    // Reset button styling
+    .w3-btn.w3-small {
+      padding: 4px 8px;
+      font-size: 0.8em;
+      margin-left: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .w3-btn.w3-small:hover {
+      background-color: #616161 !important;
+      transform: rotate(180deg);
+    }
+    
+    // Card styling
+    .w3-card-4 {
+      border-radius: 15px;
+      background-color: #1a1a1a !important;
+      box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+    }
+    
+    // Badge styling
+    .w3-badge {
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-size: 0.9em;
+    }
+    
+    // Panel styling
+    .w3-panel {
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      .w3-col.w3-padding-right,
+      .w3-col.w3-padding-left {
+        padding: 0 !important;
+        margin-bottom: 20px;
+      }
+    }
