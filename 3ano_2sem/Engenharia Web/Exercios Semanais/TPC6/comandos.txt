@@ -1,0 +1,31 @@
+jq 'map(.idcontrato as $id | del(.idcontrato) | ._id = $id)' contratos2024.json > out.json
+
+db.contratos.drop()
+
+
+
+mongoimport -d contratos -c contratos out.json --jsonArray
+
+
+npx express-generator apiContratos
+- mudar porta para 16000
+- mudar "listen" no fim do www 
+
+npm install
+npm i mongoose
+npm start
+
+
+criar controllers 
+criar modells
+copiar para contrato.js dentro de modells 
+
+Criar uma API dadoc c/MongoDB 
+1. Gerar projeto (express.js)
+2. Implementar ligação DB
+3. Testar
+4. Definir Data Models DB
+5. Testar
+6. Definir Controllers 
+7. Definir Routes
+8. Fazer o exercício 

@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/stylesheets/w3.css")
+    title Detalhes do Contrato
+  body
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1 Detalhes do Contrato
+      .w3-container
+        table.w3-table-all
+          tr
+            th ID Contrato
+            td= contrato._id
+          if contrato.nAnuncio
+            tr
+              th Número do Anúncio
+              td= contrato.nAnuncio
+          tr
+            th Tipo de Procedimento
+            td= contrato.tipoprocedimento
+          tr
+            th Objeto do Contrato
+            td= contrato.objectoContrato
+          tr
+            th Data de Publicação
+            td= contrato.dataPublicacao
+          tr
+            th Data de Celebração
+            td= contrato.dataCelebracaoContrato
+          tr
+            th Preço Contratual
+            td= contrato.precoContratual
+          tr
+            th Prazo de Execução
+            td= contrato.prazoExecucao
+          tr
+            th NIPC Entidade Comunicante
+            td= contrato.NIPC_entidade_comunicante
+          tr
+            th Entidade Comunicante
+            td= contrato.entidade_comunicante
+          tr
+            th Fundamentação
+            td= contrato.fundamentacao
+      footer.w3-container.w3-teal
+        a.w3-btn.w3-round.w3-grey(href="/") Voltar à Lista de Contratos
+        h5 Gerado por EngWeb2025 em #{new Date().toLocaleDateString()}

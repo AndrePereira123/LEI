@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://localhost:2510/filmes/edit/4 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title></title><link rel="stylesheet" href="./editar_files/style.css"></head><body><div class="w3-card-4"><header class="w3-container w3-orange"><h1>Editar filme "The 6th Day"</h1><h4><a href="http://localhost:2510/filmes">Voltar</a></h4></header><form class="w3-container" method="POST"><fieldset><legend>Metadata</legend><label>Id</label><input class="w3-input w3-round" type="text" name="id" readonly="" value="4"><label>Nome</label><input class="w3-input w3-round" type="text" name="title" value="The 6th Day"><label>Ano</label><input class="w3-input w3-round" type="text" name="year" value="2000"></fieldset><fieldset><legend>Cast</legend><div id="cast-container"><div class="cast-item"><input class="w3-input w3-round" type="text" name="cast" value="Arnold Schwarzenegger"><button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button></div><div class="cast-item"><input class="w3-input w3-round" type="text" name="cast" value="Robert Duvall"><button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button></div></div><div class="container" style="text-align:center;"><button class="w3-btn w3-green" type="button" style="width:30%;" onclick="addCast()">+</button></div></fieldset><fieldset><legend>Genres</legend><div id="genres-container"><div class="genre-item"><input class="w3-input w3-round" type="text" name="genres" value="Science Fiction"><button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button></div></div><div class="container" style="text-align:center;"><button class="w3-btn w3-green" type="button" style="width:30%;" onclick="addGenre()">+</button></div></fieldset><br><button class="w3-btn w3-purple w3-mb-2" type="submit">Register</button></form></div><script>function addCast() {
+    var container = document.getElementById('cast-container');
+    var div = document.createElement('div');
+    div.className = 'cast-item';
+    div.innerHTML = '<input type="text" name="cast" class="w3-input w3-round"> <button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button>';
+    container.appendChild(div);
+}
+
+function addGenre() {
+    var container = document.getElementById('genres-container');
+    var div = document.createElement('div');
+    div.className = 'genre-item';
+    div.innerHTML = '<input type="text" name="genres" class="w3-input w3-round"> <button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button>';
+    container.appendChild(div);
+}
+
+function removeElement(button) {
+    button.parentElement.remove();
+}</script></body></html>

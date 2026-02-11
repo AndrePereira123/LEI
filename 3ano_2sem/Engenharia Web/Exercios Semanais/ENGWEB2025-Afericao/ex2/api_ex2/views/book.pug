@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/stylesheets/w3.css")
+    title= `Detalhes do Livro: ${book.title}`
+  body
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1= `Detalhes do Livro: ${book.title}`
+      .w3-container
+        dl
+          dt ID
+          dd= book._id
+          dt Título
+          dd= book.title
+          dt Autor(es)
+          dd= book.author.join(', ')
+          dt Data de Publicação
+          dd= book.publishDate || 'N/A'
+          dt Páginas
+          dd= book.pages || 'N/A'
+          dt Gêneros
+          dd= book.genres.join(', ')
+          dt Descrição
+          dd= book.description || 'Sem descrição disponível.'
+          dt Capa
+          dd
+            if book.coverImg
+              img(src=book.coverImg, alt=`Capa de ${book.title}`, width="200")
+            else
+              p Sem imagem disponível.
+      footer.w3-container.w3-teal
+        a(href="/" class="w3-button w3-light-grey") Voltar
+        h5 Gerado por EngWeb2025

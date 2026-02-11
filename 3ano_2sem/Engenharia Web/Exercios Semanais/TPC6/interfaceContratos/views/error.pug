@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    title Erro
+  body
+    h1 Ocorreu um erro
+    h2= message
+    if error
+      h3 Detalhes:
+      pre= error.stack

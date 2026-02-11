@@ -1,0 +1,17 @@
+
+{
+    "produtor": "andre.pereira",
+    "submetidoPor": "",
+    "dataCriacao": "2025-05-24",
+    "dataSubmissao": "",
+    "items": [
+        {
+            "ficheiro": "SIP/data/projeto/projeto.pdf",
+            "metadados": "SIP/data/projeto/projeto.json"
+        },
+        {
+            "ficheiro": "SIP/data/instrumentos/instrumentos.jpg",
+            "metadados": "SIP/data/instrumentos/instrumentos.json"
+        }
+    ]
+}

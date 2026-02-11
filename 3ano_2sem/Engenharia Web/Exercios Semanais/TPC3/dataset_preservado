@@ -1,0 +1,179 @@
+{
+  "alunos": [
+    {
+      "id": "A100758",
+      "nome": "Hugo Arantes Dias",
+      "git": "https://github.com/hugodiasUM/EngWeb2024/tree/main"
+    },
+    {
+      "id": "A100615",
+      "nome": "João Miguel Mendes Moura",
+      "git": "https://github.com/joaomoura12/EngWeb2024"
+    },
+    {
+      "id": "A94015",
+      "nome": "João Daniel da Silva Carvalho",
+      "git": "https://github.com/joodanic/EngWeb2024"
+    },
+    {
+      "id": "A95345",
+      "nome": "Eduardo Miguel Pacheco Silva",
+      "git": "https://github.com/dud4s/EngWeb2024"
+    },
+    {
+      "id": "A100660",
+      "nome": "Francisco Macedo Ferreira",
+      "git": "https://github.com/chicoferreira/EngWeb2024"
+    },
+    {
+      "id": "A96208",
+      "nome": "Rafael João Ferreira Gomes",
+      "git": "https://github.com/RafaGomes1/EngWeb2024"
+    },
+    {
+      "id": "A323232",
+      "nome": "Rafael1 João Ferreira Gomes",
+      "git": "https://github.com/RafaGomes1/EngWeb2024"
+    },
+    {
+      "id": "A313131",
+      "nome": "Rafael2 João Ferreira Gomes",
+      "git": "https://github.com/RafaGomes1/EngWeb2024"
+    },
+    {
+      "id": "A100780",
+      "nome": "Sofia Alexandra Moreira",
+      "git": "https://github.com/sofiamoreira/EngWeb2024"
+    },
+    {
+      "id": "A100781",
+      "nome": "Diogo André Martins",
+      "git": "https://github.com/diogomartins/EngWeb2024"
+    },
+    {
+      "id": "A100782",
+      "nome": "Beatriz Filipa Costa",
+      "git": "https://github.com/beatrizcosta/EngWeb2024"
+    },
+    {
+      "id": "A100783",
+      "nome": "Gonçalo Miguel Rocha",
+      "git": "https://github.com/goncalorocha/EngWeb2024"
+    },
+    {
+      "id": "A100785",
+      "nome": "Ricardo José Fernandes",
+      "git": "https://github.com/ricardofernandes/EngWeb2024"
+    },
+    {
+      "id": "A100786",
+      "nome": "Pedro Manuel Rodrigues",
+      "git": "https://github.com/pedrorodrigues/EngWeb2024"
+    },
+    {
+      "id": "A100787",
+      "nome": "Marta Sofia Antunes",
+      "git": "https://github.com/martasantunes/EngWeb2024"
+    },
+    {
+      "id": "A100788",
+      "nome": "Bruno Alexandre Carvalho",
+      "git": "https://github.com/brunocarvalho/EngWeb2024"
+    },
+    {
+      "id": "A100789",
+      "nome": "Ana Rita Matos",
+      "git": "https://github.com/anamatos/EngWeb2024"
+    },
+    {
+      "id": "A100790",
+      "nome": "Fábio Daniel Sousa",
+      "git": "https://github.com/fabiosousa/EngWeb2024"
+    },
+    {
+      "id": "A100791",
+      "nome": "Catarina Isabel Moreira",
+      "git": "https://github.com/catarinamoreira/EngWeb2024"
+    },
+    {
+      "id": "A100792",
+      "nome": "Miguel Ângelo Fernandes",
+      "git": "https://github.com/miguelfernandes/EngWeb2024"
+    },
+    {
+      "id": "A100793",
+      "nome": "Sérgio Filipe Barros",
+      "git": "https://github.com/sergiobarros/EngWeb2024"
+    },
+    {
+      "id": "A100794",
+      "nome": "Patrícia Raquel Costa",
+      "git": "https://github.com/patriciacosta/EngWeb2024"
+    },
+    {
+      "id": "A100795",
+      "nome": "André Filipe Teixeira",
+      "git": "https://github.com/andreteixeira/EngWeb2024"
+    },
+    {
+      "id": "A100796",
+      "nome": "Joana Margarida Lopes",
+      "git": "https://github.com/joanalopes/EngWeb2024"
+    },
+    {
+      "id": "A100797",
+      "nome": "Carlos Eduardo Pinto",
+      "git": "https://github.com/carlospinto/EngWeb2024"
+    },
+    {
+      "id": "A100798",
+      "nome": "Vanessa Raquel Neves",
+      "git": "https://github.com/vanessaneves/EngWeb2024"
+    },
+    {
+      "id": "A100799",
+      "nome": "Fernando Luís Oliveira",
+      "git": "https://github.com/fernandooliveira/EngWeb2024"
+    },
+    {
+      "id": "A100800",
+      "nome": "Sílvia Helena Martins",
+      "git": "https://github.com/silviamartins/EngWeb2024"
+    },
+    {
+      "id": "A100801",
+      "nome": "Rui Jorge Sousa",
+      "git": "https://github.com/ruisousa/EngWeb2024"
+    },
+    {
+      "id": "A100802",
+      "nome": "Helena Maria Barbosa",
+      "git": "https://github.com/helenabarbosa/EngWeb2024"
+    },
+    {
+      "id": "A100803",
+      "nome": "Gustavo Filipe Andrade",
+      "git": "https://github.com/gustavoandrade/EngWeb2024"
+    },
+    {
+      "id": "A100804",
+      "nome": "Raquel Andreia Figueiredo",
+      "git": "https://github.com/raquelfigueiredo/EngWeb2024"
+    },
+    {
+      "id": "A100805",
+      "nome": "Marco Aurélio Dias",
+      "git": "https://github.com/marcodias/EngWeb2024"
+    },
+    {
+      "id": "A100806",
+      "nome": "Tatiana Sofia Mendes",
+      "git": "https://github.com/tatianamendes/EngWeb2024"
+    },
+    {
+      "id": "A100807",
+      "nome": "Nuno Filipe Monteiro",
+      "git": "https://github.com/nunomonteiro/EngWeb2024"
+    }
+  ]
+}

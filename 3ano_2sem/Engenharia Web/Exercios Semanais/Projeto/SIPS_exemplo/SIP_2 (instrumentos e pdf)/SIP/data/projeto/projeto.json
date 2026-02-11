@@ -1,0 +1,19 @@
+{
+    "titulo": "Projeto EW 2025",
+    "tipoRecurso": "documento",
+    "dataCriacao": "2025-05-24",
+    "dataSubmissao": "",
+    "produtor": "andre.pereira",
+    "submetidoPor": "",
+    "visibilidade": "publico",
+    "descricao": "Este é um projeto de exemplo para o ano de 2025. Contém informações sobre o desenvolvimento e implementação de uma aplicação.",
+    "classificadores": ["EW", "2025", "Projeto"],
+    "ficheiros": [
+        {
+            "nomeOriginal": "projeto.pdf",
+            "caminho": "/projeto.pdf"
+        }
+    ],
+    "comentarios": [
+    ]
+}

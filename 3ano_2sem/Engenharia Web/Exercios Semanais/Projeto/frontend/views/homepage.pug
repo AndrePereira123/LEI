@@ -1,0 +1,162 @@
+extends layout
+
+block content
+  .contedor 
+    
+
+    .w3-container.w3-dark-grey     
+      .w3-center.w3-padding-large.w3-margin-bottom
+        h1.w3-xxxlarge.w3-text-yellow= title
+        p.w3-large.w3-text-white.w3-bold= 'Bem-vindo ao Meu Eu Digital'
+        
+      
+      // Error Message
+      if error
+        .w3-panel.w3-red.w3-leftbar.w3-border-red.w3-dark-grey
+          h3.w3-text-white ⚠️ Erro de Conexão
+          p.w3-text-light-grey= error
+      
+      
+      #itemsContainer
+        // Check if data exists and has items
+        if data && data.length > 0
+          // Loop through user's items
+          each item in data   
+            - let showVisibility = false
+            - let showDelete = false
+            - let showSIP = false
+            if user && (user.username === item.submetidoPor.username || item.visibilidade === 'publico')
+              - showSIP = true
+            if user && (user.username === item.submetidoPor.username)
+              - showVisibility = true
+            if user && user.tipo === 'admin'
+              - showDelete = true
+              - showVisibility = true
+              - showSIP = true
+            - let homepage = true
+            include _post.pug
+        
+        else
+          // No data available
+          .w3-panel.w3-yellow.w3-leftbar.w3-border-yellow.w3-pale-yellow.w3-black-border
+            h3.w3-text-black 📭 Nenhum item encontrado
+            p.w3-text-black Ainda não existem items públicos para mostrar.
+
+    .w3-right
+    .filter-container
+      label.w3-text-white.w3-large.w3-center(for="categoriaFilter") Filtro:
+      .w3-margin-top
+        select#categoriaFilter.w3-select.w3-border.w3-round(style="width: 100%; margin: 0 auto; background-color: #2a2a2a; color: white; border-color: #555;")
+          option(value="") Todos os classificadores
+          if data && data.length > 0
+            - const uniqueCategories = [...new Set(data.flatMap(item => item.classificadores || []))]
+            each categoria in uniqueCategories
+              option(value=categoria)= categoria.charAt(0).toUpperCase() + categoria.slice(1)
+
+  script(src="/javascript/scripts.js")
+  
+  script.
+    
+    // Function to show temporary messages
+    function showMessage(message, type) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `w3-panel w3-round w3-margin-top ${type === 'success' ? 'w3-green' : 'w3-red'}`;
+      messageDiv.innerHTML = `<p><b>${type === 'success' ? '✅' : '❌'} ${message}</b></p>`;
+      messageDiv.style.position = 'fixed';
+      messageDiv.style.top = '20px';
+      messageDiv.style.right = '20px';
+      messageDiv.style.zIndex = '9999';
+      messageDiv.style.minWidth = '300px';
+      
+      document.body.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        if (document.body.contains(messageDiv)) {
+          document.body.removeChild(messageDiv);
+        }
+      }, 3000);
+    }    
+
+    
+  style.
+    body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }    
+
+    .contedor {
+      gap : 20px;
+      display: flex;
+      flex-direction: row;
+    }
+    
+    .w3-container {
+      width: 65%;
+      border-radius: 30px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #000000;
+    }
+    
+    .w3-dark-gray {
+      background-color: #000000 !important;
+    }
+    
+    .w3-hover-dark-gray:hover {
+      background-color: #000000 !important;
+    }
+    
+    .w3-text-light-grey {
+      color: #cccccc !important;
+    }
+    
+    
+    #categoriaFilter {
+      background-color: #2a2a2a !important;
+      color: white !important;
+      border: 2px solid #555 !important;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    
+    #categoriaFilter:focus {
+      border-color: #ffc107 !important;
+      outline: none;
+    }
+    
+    #categoriaFilter option {
+      background-color: #2a2a2a;
+      color: white;
+    }
+    
+    .w3-border-grey {
+      border-color: #555 !important;
+      background-color: #2a2a2a;
+      border-radius: 8px;
+    }
+      
+    
+    .w3-btn.w3-red {
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+    
+    .w3-btn.w3-red:hover {
+      background-color: #d32f2f !important;
+      transform: scale(1.05);
+      box-shadow: 0 2px 4px rgba(211, 47, 47, 0.5);
+    }
+
+    @media (max-width: 1000px) {
+        .filter-container {
+          display: none;
+        }
+
+        .w3-container {
+          max-width: 75%;
+        }
+    }
+

@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    title Aluno: #{aluno.id}
+    meta(charset="utf-8")
+    link(rel="icon", href="/images/favicon.png")
+    link(rel="stylesheet", href="/stylesheets/w3.css")
+  body
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1 Aluno #{aluno.id}
+      .w3-container
+        ul.w3-ul.w3-card-4(style="width:50%")
+          li
+            b Nome:
+            | #{aluno.nome}
+          li
+            b Número:
+            | #{aluno.id}
+          li
+            b Git (link):
+            a(href=aluno.git)= aluno.git
+      .w3-container.w3-margin-8
+        ul.w3-ul
+          each i in [1, 2, 3, 4, 5, 6, 7, 8]
+            li
+              b TPC#{i}:
+              if aluno[`tpc${i}`] == 1
+                span.w3-tag.w3-green.w3-large(style="margin-left:10px") ✔ Completed
+              else
+                span.w3-tag.w3-red.w3-large(style="margin-left:10px") ✘ Not Completed
+      footer.w3-container.w3-teal
+        address Gerado por galuno::RPCW2022 em #{d} - 
+          a(href=`/`) Back

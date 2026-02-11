@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/stylesheets/w3.css")
+    title Lista de Contratos
+  body
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1 Lista de Contratos - #{contratos.length > 0 ? contratos[0].entidade_comunicante : 'Entidade Desconhecida'} - #{NIPC}
+      .w3-container
+        if contratos.length
+          table.w3-table-all
+            tr
+              th ID Contrato
+              th Objeto do Contrato
+              th Data de Celebração
+              th Preço Contratual
+              th NIPC Entidade Comunicante
+              th Entidade Comunicante
+            each contrato in contratos
+              tr
+                td 
+                  a(href=`/${contrato._id}`)=contrato._id
+                td= contrato.objectoContrato
+                td= contrato.dataCelebracaoContrato
+                td= contrato.precoContratual
+                td= contrato.NIPC_entidade_comunicante
+                td= contrato.entidade_comunicante
+          // Adiciona o somatório dos valores
+          p.w3-container.w3-pale-green.w3-padding
+            b Total do Preço Contratual: 
+            | #{contratos.reduce((sum, contrato) => sum + (contrato.precoContratual || 0), 0).toFixed(2)} €
+        else
+          p Nenhum contrato encontrado.
+      footer.w3-container.w3-teal
+        a.w3-btn.w3-round.w3-grey(href="/") Voltar à Lista de Contratos
+        h5 Gerado por EngWeb2025 em #{new Date().toLocaleDateString()}

@@ -1,0 +1,15 @@
+Queries do ex1 
+
+
+
+db.livros.countDocuments({"title": {$regex: "Love"}})
+
+db.livros.find({ "author": { $regex: "Austen$", $options: "i" } }, { "title": 1, "_id": 0 }).sort({ "title": 1 })
+
+db.livros.distinct("author")
+
+
+db.livros.aggregate([{ $unwind: "$genres" },{ $group: { _id: "$genres", count: { $sum: 1 }}}])
+
+
+db.livros.find({ "characters": "Sirius Black" }, { "title": 1, "isbn": 1, "_id": 0 }).sort({ "title": 1 })

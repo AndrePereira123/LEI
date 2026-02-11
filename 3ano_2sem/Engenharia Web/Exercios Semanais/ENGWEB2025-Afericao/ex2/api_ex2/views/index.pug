@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/stylesheets/w3.css")
+    title= title
+  body
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1=title
+      .w3-container
+        if books.length
+          table.w3-table-all
+            tr
+              th ID
+              th Título
+              th Autor(es)
+              th Data de Publicação
+              th Páginas
+              th Capa
+            each book in books
+              tr
+                td
+                  a(href=`/${book._id}`)= book._id
+                td= book.title
+                td
+                  each author in book.author
+                    a(href=`/entidades/${author}`)= author
+                    br
+                td= book.publishDate || 'N/A'
+                td= book.pages || 'N/A'
+                td
+                  if book.coverImg
+                    img(src=book.coverImg, alt=`Capa de ${book.title}`, width="100")
+                  else
+                    p Sem imagem
+        else
+          p Nenhum registo encontrado.
+      footer.w3-container.w3-teal
+        h5 Gerado por EngWeb2025 

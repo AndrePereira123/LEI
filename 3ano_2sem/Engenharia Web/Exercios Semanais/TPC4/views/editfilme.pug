@@ -1,0 +1,60 @@
+extends layout
+block content
+    .w3-card-4
+        header.w3-container.w3-orange
+            h1= tit
+            h4
+                a(href="/filmes") Voltar
+        form.w3-container(method="POST")
+            fieldset
+                legend Metadata
+                label Id
+                input.w3-input.w3-round(type="text" name="id" readonly value=filme.id)
+                label Nome
+                input.w3-input.w3-round(type="text" name="title" value=filme.title)
+                label Ano
+                input.w3-input.w3-round(type="text" name="year" value=filme.year)
+
+            fieldset
+                legend Cast
+                #cast-container
+                    each c in cast
+                        .cast-item
+                            input.w3-input.w3-round(type="text" name="cast" value=c)
+                            button.w3-btn.w3-red(type="button" onclick="removeElement(this)") x
+                .container(style="text-align:center;")
+                    button.w3-btn.w3-green(type="button" style="width:30%;" onclick="addCast()") +
+
+            fieldset
+                legend Genres
+                #genres-container
+                    each g in genres
+                        .genre-item
+                            input.w3-input.w3-round(type="text" name="genres" value=g)
+                            button.w3-btn.w3-red(type="button" onclick="removeElement(this)") x
+                .container(style="text-align:center;")
+                    button.w3-btn.w3-green(type="button" style="width:30%;" onclick="addGenre()") +
+
+            br
+            button.w3-btn.w3-purple.w3-mb-2(type="submit") Register
+
+    script.
+        function addCast() {
+            var container = document.getElementById('cast-container');
+            var div = document.createElement('div');
+            div.className = 'cast-item';
+            div.innerHTML = '<input type="text" name="cast" class="w3-input w3-round"> <button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button>';
+            container.appendChild(div);
+        }
+
+        function addGenre() {
+            var container = document.getElementById('genres-container');
+            var div = document.createElement('div');
+            div.className = 'genre-item';
+            div.innerHTML = '<input type="text" name="genres" class="w3-input w3-round"> <button class="w3-btn w3-red" type="button" onclick="removeElement(this)">x</button>';
+            container.appendChild(div);
+        }
+
+        function removeElement(button) {
+            button.parentElement.remove();
+        }

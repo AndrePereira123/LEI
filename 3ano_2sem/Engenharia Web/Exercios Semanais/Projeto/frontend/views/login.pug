@@ -1,0 +1,98 @@
+extends layout
+
+block content
+  .w3-container.w3-dark-grey.w3-display-middle
+    // Hero Section
+    .w3-center.w3-padding-large.w3-margin-bottom
+      h1.w3-xxxlarge.w3-text-yellow Meu Eu Digital
+    
+
+    if error
+      .w3-panel.w3-red.w3-leftbar.w3-border-red.w3-dark-grey
+        h3.w3-text-white ⚠️ Erro
+        p.w3-text-light-grey= error
+        span.w3-button.w3-red.w3-small(onclick="this.parentElement.style.display = 'none';") Fechar
+    
+    // Login Form Card
+    .w3-container.w3-padding.w3-center
+      h2.w3-text-yellow Login
+      
+      form(action="/login/password" method="post").w3-margin-top
+        .w3-section
+          label(for="username").w3-text-light-grey.w3-left Username
+          input#username.w3-input.w3-border.w3-margin-bottom(
+            name="username" 
+            type="text" 
+            autocomplete="username" 
+            autofocus
+            style="background-color: #2a2a2a; color: white; border-color: #555;"
+          )
+        
+        .w3-section
+          label(for="current-password").w3-text-light-grey.w3-left Password
+          input#current-password.w3-input.w3-border.w3-margin-bottom(
+            name="password" 
+            type="password" 
+            autocomplete="current-password" 
+            style="background-color: #2a2a2a; color: white; border-color: #555;"
+          )
+        
+        button.w3-button.w3-blue.w3-large.w3-margin-top.w3-margin-right(type="submit") 🔐 Sign in
+
+      .w3-margin-top
+        a.w3-text-blue(href="/register") Criar Conta
+
+
+
+  style.
+    body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    
+    .w3-container {
+      min-width : 30%;
+      border-radius: 30px;
+      padding: 3%;
+      background-color: #000000;
+    }
+    
+    .w3-dark-gray {
+      background-color: #000000 !important;
+    }
+    
+    .w3-hover-dark-gray:hover {
+      background-color: #000000 !important;
+    }
+    
+    .w3-text-light-grey {
+      color: #cccccc !important;
+    }
+    
+    // Form styling
+    .w3-input {
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .w3-input:focus {
+      border-color: #2196F3 !important;
+      box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+    }
+    
+    .w3-button {
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .w3-button:hover {
+      transform: scale(1.02);
+    }
+    
+    // Card styling
+    .w3-card-4 {
+      border-radius: 15px;
+      background-color: #1a1a1a !important;
+      box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+    }

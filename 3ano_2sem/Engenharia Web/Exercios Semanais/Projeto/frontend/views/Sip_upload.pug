@@ -1,0 +1,153 @@
+extends layout
+
+block content
+  .w3-container.w3-dark-grey.w3-padding.redondinho
+    // Mensagem de sucesso
+    if success
+      .w3-panel.w3-green.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-green.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ✅ Sucesso!
+        p.w3-text-white SIP foi processado com sucesso e os items foram criados na base de dados.
+    
+    // Mensagem de erro
+    if error
+      .w3-panel.w3-red.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-green.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ❌ Erro!
+        p.w3-text-white= error
+
+    // Header da página
+    .w3-center.w3-margin-bottom
+      h1.w3-xxxlarge.w3-text-yellow 📤 Upload de SIP
+      p.w3-large.w3-text-light-grey Submeta o seu Sistema de Informação de Preservação
+
+    // Formulário de upload simples
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white Selecionar Ficheiro SIP
+      
+      form.w3-container.w3-padding-large(
+        action=`/sip/upload`, 
+        method='POST', 
+        enctype='multipart/form-data'
+      )
+
+        .w3-margin-bottom
+          label.w3-text-white.w3-large
+            b Ficheiro ZIP do SIP:
+          input.w3-input.w3-border.w3-dark-grey.w3-text-white(
+            type='file', 
+            name='sip', 
+            accept='.zip',
+            required
+          )
+          p.w3-text-light-grey.w3-small Apenas ficheiros ZIP são aceites
+        
+        .w3-center.w3-margin-top
+          input.w3-btn.w3-blue.w3-large.w3-round(type='submit', value='🚀 Submeter SIP')
+          input.w3-btn.w3-red.w3-large.w3-round.w3-margin-left(type='reset', value='🗑️ Limpar')
+
+    // Informações sobre SIP
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white ℹ️ Informações sobre SIP
+      .w3-container.w3-padding-large
+        .w3-row-padding
+          .w3-half
+            h3.w3-text-white O que é um SIP?
+            p.w3-text-light-grey 
+              | Um Sistema de Informação de Preservação (SIP) é um pacote que contém 
+              | dados digitais e metadados necessários para a preservação a longo prazo.
+            
+            h3.w3-text-white Estrutura obrigatória:
+            ul.w3-text-light-grey
+              li 📄 manifesto-SIP.json (obrigatório)
+              li 📁 Ficheiros de dados
+              li 📄 Ficheiros de metadados
+          
+          .w3-half
+            h3.w3-text-white Formato aceite:
+            p.w3-text-light-grey 
+              | Apenas ficheiros ZIP são aceites. O ZIP deve conter o manifesto 
+              | e todos os ficheiros referenciados.
+            
+            h3.w3-text-white Exemplo de manifesto:
+            pre.w3-code.w3-dark-gray.w3-text-green.w3-small
+              | {
+              |   "produtor": "utilizador",  
+              |   "submetidoPor": "utilizador",
+              |   "dataCriacao": "2025-05-28",
+              |   "dataSubmissao": "",
+              |   "items": [
+              |     {
+              |       "ficheiro": "SIP/data/crocodilo/crocodilo.png",
+              |       "metadados": "SIP/data/crocodilo/crocodilo.json"
+              |     }
+              |   ]
+              | }
+
+  style.
+
+    .redondinho {
+      border-radius: 30px;
+    }
+
+    .redondinho-canto-dir {
+      border-radius: 0 15px 0 0;
+    }
+
+    .redondo-so-em-cima {
+      border-radius: 20px 20px 0 0;
+    }
+
+    .w3-code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      line-height: 1.4;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    
+    .w3-input {
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+      border: 1px solid #555 !important;
+    }
+    
+    .w3-input:focus {
+      border-color: #2196F3 !important;
+      box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+    }
+    
+    textarea.w3-input {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .w3-table-all {
+      background-color: #2a2a2a !important;
+    }
+    
+    .w3-table-all th {
+      background-color: #2196F3 !important;
+      color: white !important;
+    }
+    
+    .w3-panel {
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+  script.
+
+    // Sempre limpar URL no carregamento da página
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUrl = new URL(window.location);
+      
+      // Se tem parâmetros success/error, mostrar mensagem e limpar
+      if (currentUrl.searchParams.has('success') || currentUrl.searchParams.has('error')) {
+        // Limpar URL imediatamente (sem afetar a exibição da mensagem)
+        window.history.replaceState({}, document.title, '/sip/upload');
+      }
+    });

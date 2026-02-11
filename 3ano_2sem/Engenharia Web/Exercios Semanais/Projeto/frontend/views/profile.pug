@@ -1,0 +1,329 @@
+extends layout
+
+block content
+  .w3-container.w3-dark-grey.w3-padding.redondinho
+    // Mensagem de sucesso
+    if success
+      .w3-panel.w3-green.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-green.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ✅ Sucesso!
+        p.w3-text-white= success
+    
+    // Mensagem de erro
+    if error
+      .w3-panel.w3-red.w3-display-container.w3-margin-bottom.w3-animate-top.redondinho
+        span.w3-button.w3-red.w3-large.w3-display-topright(onclick="this.parentElement.style.display = 'none';").redondinho-canto-dir ×
+        h3.w3-text-white ❌ Erro!
+        p.w3-text-white= error
+
+    // Header da página
+    .w3-center.w3-margin-bottom
+      h1.w3-xxxlarge.w3-text-yellow 👤 Perfil
+      p.w3-large.w3-text-light-grey Gerir as suas informações pessoais
+    
+    // Profile Info Card
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white 📋 Informações do Perfil
+      
+      .w3-container.w3-padding-large
+        .w3-row-padding
+          .w3-half
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Username: 
+              span.w3-text-yellow= user.username
+            
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Nome: 
+              span.w3-text-yellow= user.nome
+            
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Email: 
+              span.w3-text-yellow= user.email
+          
+          .w3-half
+            p.w3-text-light-grey.w3-large
+              strong.w3-text-white Tipo: 
+              span(class=`w3-badge w3-round ${user.tipo === 'admin' ? 'w3-orange' : 'w3-blue'}`)= user.tipo === 'admin' ? 'Administrador' : 'Produtor'
+                if user.dataCriacao
+              p.w3-text-light-grey.w3-large
+                strong.w3-text-white Membro desde: 
+                span.w3-text-yellow
+                  script.
+                    document.write(formatPortugueseDateLong('#{user.dataCriacao}'));
+
+    // Edit Profile Card
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white ✏️ Editar Perfil
+      
+      form.w3-container.w3-padding-large(action="/profile/update" method="post")
+        .w3-row-padding
+          .w3-half            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="nome")
+                b Nome Completo:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  input#nome.w3-input.w3-border.w3-dark-grey.w3-text-white(
+                    name="nome" 
+                    type="text" 
+                    value=user.nome
+                    data-original=user.nome
+                    required
+                  )
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('nome')" title="Restaurar valor original") 🔄
+            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="email")
+                b Email:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  input#email.w3-input.w3-border.w3-dark-grey.w3-text-white(
+                    name="email" 
+                    type="email" 
+                    value=user.email
+                    data-original=user.email
+                    required
+                  )
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('email')" title="Restaurar valor original") 🔄
+          
+          .w3-half            
+            .w3-margin-bottom
+              label.w3-text-white.w3-large(for="username")
+                b Username:
+              .w3-row-padding.w3-margin-top
+                .w3-col.s9
+                  input#username.w3-input.w3-border.w3-dark-grey.w3-text-white(
+                    name="username" 
+                    type="text" 
+                    value=user.username
+                    data-original=user.username
+                    required
+                  )
+                .w3-col.s3
+                  button.w3-btn.w3-grey.w3-small.w3-round(type="button" onclick="resetField('username')" title="Restaurar valor original") 🔄
+        
+        .w3-center.w3-margin-top
+          input.w3-btn.w3-blue.w3-large.w3-round.w3-margin-right(type='submit', value='💾 Atualizar Perfil')
+          button.w3-btn.w3-grey.w3-large.w3-round(type="button" onclick="resetAllFields()" title="Restaurar todos os valores originais") 🔄 Restaurar Tudo
+
+    // Security Section
+    .w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho
+      header.w3-blue.w3-padding.redondo-so-em-cima
+        h2.w3-text-white 🔒 Segurança
+      
+      .w3-container.w3-padding-large
+        .w3-row-padding
+            h3.w3-text-white Alterar Password
+            p.w3-text-light-grey 
+              | Mantenha a sua conta segura com uma password forte. 
+              | Utilize pelo menos 6 caracteres.
+            
+            .w3-center.w3-margin-top
+              button.w3-btn.w3-orange.w3-large.w3-round(type="button" onclick="togglePasswordForm()") 🔑 Alterar Password
+              
+    // Password Change Form (hidden by default)
+    #passwordForm.w3-card-4.w3-dark-grey.w3-margin-bottom.redondinho(style="display: none;")
+      header.w3-orange.w3-padding.redondo-so-em-cima
+        h2.w3-text-white 🔑 Alterar Password
+      
+      form.w3-container.w3-padding-large(action="/profile/change-password" method="post")
+        .w3-margin-bottom
+          label.w3-text-white.w3-large
+            b Password Atual:
+          input.w3-input.w3-border.w3-dark-grey.w3-text-white(
+            name="currentPassword" 
+            type="password" 
+            required
+          )
+        
+        .w3-margin-bottom
+          label.w3-text-white.w3-large
+            b Nova Password:
+          input.w3-input.w3-border.w3-dark-grey.w3-text-white(
+            name="newPassword" 
+            type="password" 
+            required
+            minlength="6"
+          )
+          p.w3-text-light-grey.w3-small Mínimo de 6 caracteres
+        
+        .w3-margin-bottom
+          label.w3-text-white.w3-large
+            b Confirmar Nova Password:
+          input.w3-input.w3-border.w3-dark-grey.w3-text-white(
+            name="confirmPassword" 
+            type="password" 
+            required
+            minlength="6"
+          )
+        
+        .w3-center.w3-margin-top
+          input.w3-btn.w3-green.w3-large.w3-round.w3-margin-right(type='submit', value='✅ Confirmar Alteração')
+          button.w3-btn.w3-grey.w3-large.w3-round(type="button" onclick="togglePasswordForm()") ❌ Cancelar
+  script.
+
+    if (window.location.search) {
+      const url = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      window.history.replaceState({path: url}, '', url);
+    }
+    
+    function togglePasswordForm() {
+      const form = document.getElementById('passwordForm');
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        form.style.display = 'none';
+      }
+    }
+    
+    // Reset individual field to original value
+    function resetField(fieldId) {
+      const field = document.getElementById(fieldId);
+      const originalValue = field.getAttribute('data-original');
+      field.value = originalValue;
+      
+      field.style.backgroundColor = '#4CAF50';
+      field.style.color = '#ffffff';
+      setTimeout(() => {
+        field.style.backgroundColor = '#2a2a2a';
+        field.style.color = '#ffffff';
+      }, 500);
+    }
+    
+    // Reset all form fields to original values
+    function resetAllFields() {
+      const fields = ['nome', 'email', 'username'];
+      fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        const originalValue = field.getAttribute('data-original');
+        field.value = originalValue;
+      });
+      
+      fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        field.style.backgroundColor = '#4CAF50';
+        field.style.color = '#ffffff';
+      });
+      
+      setTimeout(() => {
+        fields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          field.style.backgroundColor = '#2a2a2a';
+          field.style.color = '#ffffff';
+        });
+      }, 1000);
+      
+      // Show confirmation message
+      const confirmMsg = document.createElement('div');
+      confirmMsg.className = 'w3-panel w3-green w3-round w3-margin-top';
+      confirmMsg.innerHTML = '<p><b>✅ Todos os campos foram restaurados para os valores originais!</b></p>';
+      confirmMsg.style.position = 'fixed';
+      confirmMsg.style.top = '20px';
+      confirmMsg.style.right = '20px';
+      confirmMsg.style.zIndex = '9999';
+      confirmMsg.style.minWidth = '300px';
+      
+      document.body.appendChild(confirmMsg);
+      
+      setTimeout(() => {
+        document.body.removeChild(confirmMsg);
+      }, 3000);
+    }
+  style.
+    .redondinho {
+      border-radius: 30px;
+    }
+
+    .redondinho-canto-dir {
+      border-radius: 0 15px 0 0;
+    }
+
+    .redondo-so-em-cima {
+      border-radius: 20px 20px 0 0;
+    }
+    
+    body {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    
+    .w3-dark-gray {
+      background-color: #000000 !important;
+    }
+    
+    .w3-hover-dark-gray:hover {
+      background-color: #000000 !important;
+    }
+    
+    .w3-text-light-grey {
+      color: #cccccc !important;
+    }
+    
+    // Form styling
+    .w3-input {
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+      background-color: #2a2a2a !important;
+      color: #ffffff !important;
+      border: 1px solid #555 !important;
+    }
+    
+    .w3-input:focus {
+      border-color: #2196F3 !important;
+      box-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+    }
+      .w3-button {
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .w3-button:hover {
+      transform: scale(1.02);
+    }
+    
+    // Reset button styling
+    .w3-btn.w3-small {
+      padding: 4px 8px;
+      font-size: 0.8em;
+      margin-left: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .w3-btn.w3-small:hover {
+      background-color: #616161 !important;
+      transform: rotate(180deg);
+    }
+    
+    // Card styling
+    .w3-card-4 {
+      border-radius: 15px;
+      background-color: #1a1a1a !important;
+      box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+    }
+    
+    // Badge styling
+    .w3-badge {
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-size: 0.9em;
+    }
+    
+    // Panel styling
+    .w3-panel {
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      .w3-col.w3-padding-right,
+      .w3-col.w3-padding-left {
+        padding: 0 !important;
+        margin-bottom: 20px;
+      }
+    }
